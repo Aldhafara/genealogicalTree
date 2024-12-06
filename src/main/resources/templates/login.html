@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html lang="pl-PL" xmlns:th="http://www.thymeleaf.org">
+    <div th:insert="~{static/fragments :: bootstrapStylesheet}"></div>
+    <head>
+        <title>Index</title>
+        <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    </head>
+    <body th:style="'background: #f7f2e9'">
+        <div th:insert="~{static/fragments :: header}"></div>
+
+        <h1>Login</h1>
+        <form th:action="@{/login}" method="post">
+            <div>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username">
+            </div>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password">
+            </div>
+            <button type="submit">Login</button>
+        </form>
+
+        <div th:insert="~{static/fragments :: footer}"></div>
+    </body>
+</html>
