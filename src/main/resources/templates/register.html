@@ -9,16 +9,49 @@
         <div th:insert="~{static/fragments :: header}"></div>
 
         <h1>Register</h1>
-        <form th:action="@{/register}" method="post">
-            <div>
-                <label for="login">Username:</label>
-                <input type="text" id="login" name="login">
+        <form th:action="@{/register}" class="col-sm-6" method="post" oninput='retypePassword.setCustomValidity(retypePassword.value !== password.value ? "Passwords do not match." : "")'>
+            <div class="row-sm-7">
+                <label for="firstName" class="col-sm-2 form-label">Imię:</label>
+                <div class="col-sm-12">
+                    <input required type="text" id="firstName" class="form-control" name="firstName" th:field="*{person.firstName}">
+                </div>
+            </div>
+            <div class="row-sm-7">
+                <label for="lastName" class="col-sm-2 form-label">Nazwisko:</label>
+                <div class="col-sm-12">
+                    <input required type="text" id="lastName" class="form-control" name="lastName" th:field="*{person.lastName}">
+                </div>
+            </div>
+            <div th:if="${loginError}" class="row-sm-7">
+                <label for="login" class="col-sm-2 form-label">Login:</label>
+                <div class="col-sm-12">
+                    <input id="login" placeholder="Enter Login" required type="text" class="form-control is-invalid" name="login"/>
+                </div>
+                <div class="invalid-feedback col-sm-7" th:text="${loginError}"></div>
+            </div>
+            <div th:if="!${loginError}" class="row-sm-7">
+                <label for="login" class="col-sm-2 form-label">Login:</label>
+                <div class="col-sm-12">
+                    <input id="login" placeholder="Enter Login" required type="text" class="form-control" name="login"/>
+                </div>
+                <div class="valid-feedback col-sm-7"> </div>
+            </div>
+            <div class="row-sm-7">
+                <label for="password" class="col-sm-2 form-label">Hasło:</label>
+                <div class="col-sm-12">
+                    <input required type="password" id="password" class="form-control" name="password">
+                </div>
+            </div>
+            <div class="row-sm-7">
+                <label for="retypePassword" class="col-sm-4 form-label">Powtórz hasło:</label>
+                <div class="col-sm-12">
+                    <input required type="password" id="retypePassword" class="form-control" name="retypePassword">
+                </div>
             </div>
             <div>
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password">
+                <br>
+                <button class="btn btn-primary btn-lg" type="submit">Register</button>
             </div>
-            <button type="submit">Register</button>
         </form>
 
         <div th:insert="~{static/fragments :: footer}"></div>

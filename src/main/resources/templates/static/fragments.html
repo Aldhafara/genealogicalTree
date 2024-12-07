@@ -1,31 +1,30 @@
 <!DOCTYPE html>
 <html  lang="pl-PL" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
-<div th:fragment="bootstrapStylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-</div>
-<head>
-    <title>Domyślny tytuł</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-</head>
-<body th:style="'background: #f7f2e9'">
-    <div  th:fragment="header">
-        <header>
-            <h1>Moje drzewo genealogiczne</h1>
-            <nav>
-                <a href="/">Strona główna</a>
-                <a sec:authorize="isAnonymous()" href="/login">Log in</a>
-                <a sec:authorize="isAuthenticated()" href="/logout">Log out</a>
-                <a sec:authorize="isAnonymous()" href="/register">Register</a>
-                <a sec:authorize="isAuthenticated()" href="/person/all">My Family</a>
-            </nav>
-        </header>
+    <div th:fragment="bootstrapStylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     </div>
+    <head>
+        <title>Domyślny tytuł</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    </head>
+    <body th:style="'background: #f7f2e9'">
+        <div  th:fragment="header">
+            <header>
+                <h1>Moje drzewo genealogiczne</h1>
+                <nav>
+                    <a href="/">Strona główna</a>
+                    <a sec:authorize="isAnonymous()" href="/login">Log in</a>
+                    <a sec:authorize="isAnonymous()" href="/register">Register</a>
+                    <a sec:authorize="!isAnonymous()" href="/logout">Log out</a>
+                </nav>
+            </header>
+        </div>
 
-    <div th:fragment="footer">
-        <footer>
-            <p>&copy; 2024 Aldhafara company</p>
-        </footer>
-    </div>
+        <div th:fragment="footer">
+            <footer>
+                <p>&copy; 2024 Aldhafara company</p>
+            </footer>
+        </div>
 
-</body>
+    </body>
 </html>

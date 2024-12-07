@@ -11,6 +11,16 @@ public class DefaultController {
         return "index";
     }
 
+    @GetMapping("/logout")
+    public String logout() {
+        return "redirect:/";
+    }
+
+    @GetMapping("/home")
+    public String homePage() {
+        return "homePage";
+    }
+
     @GetMapping("/login")
     public String loginPage() {
         return "login";
