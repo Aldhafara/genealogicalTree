@@ -1,15 +1,15 @@
 <!DOCTYPE HTML>
-<html lang="pl-PL" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en-EN" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
     <div th:insert="~{static/fragments :: bootstrapStylesheet}"></div>
     <head>
-        <title>Index</title>
+        <div th:insert="~{static/fragments :: languageScript}"></div>
+        <title data-i18n="mainPage">Main page</title>
         <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     </head>
     <body th:style="'background: #f7f2e9'">
         <div th:insert="~{static/fragments :: header}"></div>
 
-        <p sec:authorize="isAuthenticated()">Witaj, <span sec:utext="${#authentication.name}"></span>!</p>
-
+        <p sec:authorize="!isAnonymous()" data-i18n="welcome">Welcome, <span th:text="${userName}"></span>!</p>
 
         <div th:insert="~{static/fragments :: footer}"></div>
     </body>

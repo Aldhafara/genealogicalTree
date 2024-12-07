@@ -1,0 +1,12 @@
+{
+  "title": "Moje drzewo genealogiczne",
+  "welcome" : "Witaj, ",
+  "mainPage" : "Strona główna",
+  "login" : "Zaloguj się",
+  "register" : "Zarejestruj się",
+  "logout" : "Wyloguj się",
+  "firstName" : "Imię:",
+  "lastName" : "Nazwisko:",
+  "password" : "Hasło:",
+  "repeatPassword" : "Powtórz hasło:"
+}

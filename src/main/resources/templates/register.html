@@ -1,56 +1,57 @@
 <!DOCTYPE HTML>
-<html lang="pl-PL" xmlns:th="http://www.thymeleaf.org">
+<html lang="en-EN" xmlns:th="http://www.thymeleaf.org">
     <div th:insert="~{static/fragments :: bootstrapStylesheet}"></div>
     <head>
-        <title>Index</title>
+        <div th:insert="~{static/fragments :: languageScript}"></div>
+        <title data-i18n="register">Register</title>
         <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     </head>
     <body th:style="'background: #f7f2e9'">
         <div th:insert="~{static/fragments :: header}"></div>
 
-        <h1>Register</h1>
+        <h1 data-i18n="register">Register</h1>
         <form th:action="@{/register}" class="col-sm-6" method="post" oninput='retypePassword.setCustomValidity(retypePassword.value !== password.value ? "Passwords do not match." : "")'>
             <div class="row-sm-7">
-                <label for="firstName" class="col-sm-2 form-label">Imię:</label>
+                <label for="firstName" class="col-sm-5 form-label" data-i18n="firstName">First name:</label>
                 <div class="col-sm-12">
                     <input required type="text" id="firstName" class="form-control" name="firstName" th:field="*{person.firstName}">
                 </div>
             </div>
             <div class="row-sm-7">
-                <label for="lastName" class="col-sm-2 form-label">Nazwisko:</label>
+                <label for="lastName" class="col-sm-5 form-label" data-i18n="lastName">Last name:</label>
                 <div class="col-sm-12">
                     <input required type="text" id="lastName" class="form-control" name="lastName" th:field="*{person.lastName}">
                 </div>
             </div>
             <div th:if="${loginError}" class="row-sm-7">
-                <label for="login" class="col-sm-2 form-label">Login:</label>
+                <label for="login" class="col-sm-5 form-label">Login:</label>
                 <div class="col-sm-12">
                     <input id="login" placeholder="Enter Login" required type="text" class="form-control is-invalid" name="login"/>
                 </div>
                 <div class="invalid-feedback col-sm-7" th:text="${loginError}"></div>
             </div>
             <div th:if="!${loginError}" class="row-sm-7">
-                <label for="login" class="col-sm-2 form-label">Login:</label>
+                <label for="login" class="col-sm-5 form-label">Login:</label>
                 <div class="col-sm-12">
                     <input id="login" placeholder="Enter Login" required type="text" class="form-control" name="login"/>
                 </div>
                 <div class="valid-feedback col-sm-7"> </div>
             </div>
             <div class="row-sm-7">
-                <label for="password" class="col-sm-2 form-label">Hasło:</label>
+                <label for="password" class="col-sm-5 form-label" data-i18n="password">Password:</label>
                 <div class="col-sm-12">
                     <input required type="password" id="password" class="form-control" name="password">
                 </div>
             </div>
             <div class="row-sm-7">
-                <label for="retypePassword" class="col-sm-4 form-label">Powtórz hasło:</label>
+                <label for="retypePassword" class="col-sm-5 form-label" data-i18n="repeatPassword">Repeat password:</label>
                 <div class="col-sm-12">
                     <input required type="password" id="retypePassword" class="form-control" name="retypePassword">
                 </div>
             </div>
             <div>
                 <br>
-                <button class="btn btn-primary btn-lg" type="submit">Register</button>
+                <button class="btn btn-primary btn-lg" type="submit" data-i18n="register">Register</button>
             </div>
         </form>
 

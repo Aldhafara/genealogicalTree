@@ -1,0 +1,12 @@
+{
+  "title": "My Genealogical Tree",
+  "welcome" : "Welcome, ",
+  "mainPage" : "Main page",
+  "login" : "Login",
+  "register" : "Register",
+  "logout" : "Logout",
+  "firstName" : "First name:",
+  "lastName" : "Last name:",
+  "password" : "Password:",
+  "repeatPassword" : "Repeat password:"
+}

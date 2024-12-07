@@ -1,6 +1,9 @@
 package com.aldhafara.genealogicalTree.controllers;
 
+import org.springframework.security.core.annotation.CurrentSecurityContext;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
@@ -17,7 +20,9 @@ public class DefaultController {
     }
 
     @GetMapping("/home")
-    public String homePage() {
+    public String homePage(Model model,
+                           @CurrentSecurityContext SecurityContext context) {
+        model.addAttribute("userName", context.getAuthentication().getName());
         return "homePage";
     }
 

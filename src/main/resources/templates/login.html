@@ -1,8 +1,9 @@
 <!DOCTYPE HTML>
-<html lang="pl-PL" xmlns:th="http://www.thymeleaf.org">
+<html lang="en-EN" xmlns:th="http://www.thymeleaf.org">
     <div th:insert="~{static/fragments :: bootstrapStylesheet}"></div>
     <head>
-        <title>Index</title>
+        <div th:insert="~{static/fragments :: languageScript}"></div>
+        <title data-i18n="login">Login</title>
         <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     </head>
     <body th:style="'background: #f7f2e9'">
@@ -11,20 +12,20 @@
         <h1>Login</h1>
         <form th:action="@{/login}" class="col-sm-6" method="post">
             <div class="row mb-3">
-                <label for="username" class="col-sm-2 col-form-label">Username:</label>
+                <label for="username" class="col-sm-2 col-form-label">Login:</label>
                 <div class="col-sm-10">
                     <input type="text" id="username" class="form-control" name="username">
                 </div>
             </div>
             <div class="row mb-3">
-                <label for="password" class="col-sm-2 col-form-label">Password:</label>
+                <label for="password" class="col-sm-2 col-form-label" data-i18n="password">Password:</label>
                 <div class="col-sm-10">
                     <input type="password" id="password" class="form-control" name="password">
                 </div>
             </div>
             <div>
                 <br>
-                <button class="btn btn-primary btn-lg" type="submit">Login</button>
+                <button class="btn btn-primary btn-lg" type="submit" data-i18n="login">Login</button>
             </div>
         </form>
 
