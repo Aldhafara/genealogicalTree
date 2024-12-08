@@ -1,50 +1,19 @@
-package com.aldhafara.genealogicalTree.entities;
+package com.aldhafara.genealogicalTree.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
-@Entity
-@Table(name = "register_users")
-public class RegisterUser implements UserDetails {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+public class UserModel implements UserDetails {
     private UUID id;
-    private UUID detailsId;
     private String login;
     private String password;
     private String roles;
+    private UUID detailsId;
 
-    public RegisterUser() {
-    }
-
-    public RegisterUser(String login, String password, String roles, UUID detailsId) {
-        this.login = login;
-        this.password = password;
-        this.roles = roles;
-        this.detailsId = detailsId;
-    }
-
-    public RegisterUser(String login, String password, Set<String> roles) {
-        this.login = login;
-        this.password = password;
-        if (!roles.isEmpty()) {
-            this.roles = roles.stream().reduce((a, b) -> a + " ; " + b).get();
-        }
-    }
-
-    public RegisterUser(Builder builder) {
+    public UserModel(Builder builder) {
         this.id = builder.id;
         this.login = builder.login;
         this.password = builder.password;
@@ -52,8 +21,11 @@ public class RegisterUser implements UserDetails {
         this.detailsId = builder.detailsId;
     }
 
-    public static RegisterUser.Builder builder() {
-        return new RegisterUser.Builder();
+    public UserModel() {
+    }
+
+    public static Builder builder() {
+        return new UserModel.Builder();
     }
 
     public UUID getId() {
@@ -70,11 +42,7 @@ public class RegisterUser implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Collection<SimpleGrantedAuthority> collection = new HashSet<>();
-        for (String role : roles.toUpperCase().split(" ; ")) {
-            collection.add(new SimpleGrantedAuthority(role));
-        }
-        return collection;
+        return null;
     }
 
     public String getPassword() {
@@ -133,33 +101,33 @@ public class RegisterUser implements UserDetails {
         private String roles;
         private UUID detailsId;
 
-        public RegisterUser.Builder id(UUID id) {
+        public Builder id(UUID id) {
             this.id = id;
             return this;
         }
 
-        public RegisterUser.Builder login(String login) {
+        public Builder login(String login) {
             this.login = login;
             return this;
         }
 
-        public RegisterUser.Builder password(String password) {
+        public Builder password(String password) {
             this.password = password;
             return this;
         }
 
-        public RegisterUser.Builder roles(String roles) {
+        public Builder roles(String roles) {
             this.roles = roles;
             return this;
         }
 
-        public RegisterUser.Builder details(UUID details) {
-            this.detailsId = details;
+        public Builder detailsId(UUID detailsId) {
+            this.detailsId = detailsId;
             return this;
         }
 
-        public RegisterUser build() {
-            return new RegisterUser(this);
+        public UserModel build() {
+            return new UserModel(this);
         }
     }
 }

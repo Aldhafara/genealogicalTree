@@ -8,5 +8,7 @@
   "firstName" : "First name:",
   "lastName" : "Last name:",
   "password" : "Password:",
-  "repeatPassword" : "Repeat password:"
+  "repeatPassword" : "Repeat password:",
+  "myDetails" : "Details about me",
+  "myDetailsDescription" : "Here you find details about yourself"
 }

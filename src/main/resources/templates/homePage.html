@@ -9,7 +9,45 @@
     <body th:style="'background: #f7f2e9'">
         <div th:insert="~{static/fragments :: header}"></div>
 
-        <p sec:authorize="!isAnonymous()" data-i18n="welcome">Welcome, <span th:text="${userName}"></span>!</p>
+        <div class="container my-4">
+            <div class="d-flex row align-items-stretch">
+                <div class="col-md-6 d-flex align-items-stretch p-3">
+                    <div class="rounded-3 text-center bg-light mh-150 w-100" onclick="location.href='/person/aboutme';" style="cursor: pointer;">
+                        <div class="align-self-center">
+                            <h1 class="display-4" data-i18n="myDetails">My details</h1>
+                            <p class="lead" data-i18n="myDetailsDescription"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 d-flex align-items-stretch p-3">
+                    <div class="rounded-3 text-center bg-light mh-150 w-100">
+                        <div class="align-self-center">
+                            <h1 class="display-4">Lorem ipsum</h1>
+                            <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam porta ac mi eu efficitur.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 d-flex align-items-stretch p-3">
+                    <div class="rounded-3 text-center bg-light mh-150 w-100">
+                        <div class="align-self-center">
+                            <h1 class="display-4">Lorem ipsum</h1>
+                            <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam porta ac mi eu efficitur.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 d-flex align-items-stretch p-3">
+                    <div class="rounded-3 text-center bg-light mh-150 w-100">
+                        <div class="align-self-center">
+                            <h1 class="display-4">Lorem ipsum</h1>
+                            <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam porta ac mi eu efficitur.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
 
         <div th:insert="~{static/fragments :: footer}"></div>
     </body>

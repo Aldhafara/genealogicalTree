@@ -14,33 +14,33 @@
             <div class="row-sm-7">
                 <label for="firstName" class="col-sm-5 form-label" data-i18n="firstName">First name:</label>
                 <div class="col-sm-12">
-                    <input required type="text" id="firstName" class="form-control" name="firstName" th:field="*{person.firstName}">
+                    <input required type="text" id="firstName" class="form-control" name="person.firstName" th:field="*{person.firstName}">
                 </div>
             </div>
             <div class="row-sm-7">
                 <label for="lastName" class="col-sm-5 form-label" data-i18n="lastName">Last name:</label>
                 <div class="col-sm-12">
-                    <input required type="text" id="lastName" class="form-control" name="lastName" th:field="*{person.lastName}">
+                    <input required type="text" id="lastName" class="form-control" name="person.lastName" th:field="*{person.lastName}">
                 </div>
             </div>
             <div th:if="${loginError}" class="row-sm-7">
                 <label for="login" class="col-sm-5 form-label">Login:</label>
                 <div class="col-sm-12">
-                    <input id="login" placeholder="Enter Login" required type="text" class="form-control is-invalid" name="login"/>
+                    <input id="login" placeholder="Enter Login" required type="text" class="form-control is-invalid" name="user.login" th:field="*{user.login}"/>
                 </div>
                 <div class="invalid-feedback col-sm-7" th:text="${loginError}"></div>
             </div>
             <div th:if="!${loginError}" class="row-sm-7">
                 <label for="login" class="col-sm-5 form-label">Login:</label>
                 <div class="col-sm-12">
-                    <input id="login" placeholder="Enter Login" required type="text" class="form-control" name="login"/>
+                    <input id="login" placeholder="Enter Login" required type="text" class="form-control" name="user.login" th:field="*{user.login}"/>
                 </div>
                 <div class="valid-feedback col-sm-7"> </div>
             </div>
             <div class="row-sm-7">
                 <label for="password" class="col-sm-5 form-label" data-i18n="password">Password:</label>
                 <div class="col-sm-12">
-                    <input required type="password" id="password" class="form-control" name="password">
+                    <input required type="password" id="password" class="form-control" name="user.password" th:field="*{user.password}">
                 </div>
             </div>
             <div class="row-sm-7">

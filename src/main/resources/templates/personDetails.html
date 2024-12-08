@@ -1,0 +1,16 @@
+<!DOCTYPE HTML>
+<html lang="en-EN" xmlns:th="http://www.thymeleaf.org">
+    <div th:insert="~{static/fragments :: bootstrapStylesheet}"></div>
+    <head>
+        <div th:insert="~{static/fragments :: languageScript}"></div>
+        <title >Index</title>
+        <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    </head>
+    <body th:style="'background: #f7f2e9'">
+        <div th:insert="~{static/fragments :: header}"></div>
+
+        <p>Hello User <span th:text="${person.firstName}"></span> <span th:text="${person.lastName}"></span>.</p>
+
+        <div th:insert="~{static/fragments :: footer}"></div>
+    </body>
+</html>
