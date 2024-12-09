@@ -1,14 +1,15 @@
 package com.aldhafara.genealogicalTree.entities;
 
+import com.aldhafara.genealogicalTree.models.SexEnum;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Entity
@@ -18,16 +19,20 @@ public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private RegisterUser addBy;
+    private UUID addBy;
     private String firstName;
     private String lastName;
+    private Instant updateDate;
+    private String familyName;
+    @Enumerated(EnumType.STRING)
+    private SexEnum sex;
+    private Instant birthDate;
+    private String birthPlace;
 
     public Person() {
     }
 
-    public Person(RegisterUser addBy, String firstName, String lastName) {
+    public Person(UUID addBy, String firstName, String lastName) {
         this.addBy = addBy;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -38,6 +43,11 @@ public class Person {
         this.addBy = builder.addBy;
         this.firstName = builder.firstName;
         this.lastName = builder.lastName;
+        this.updateDate = builder.updateDate;
+        this.familyName = builder.familyName;
+        this.sex = builder.sex;
+        this.birthDate = builder.birthDate;
+        this.birthPlace = builder.birthPlace;
     }
 
     public static Person.Builder builder() {
@@ -48,11 +58,11 @@ public class Person {
         return id;
     }
 
-    public RegisterUser getAddBy() {
+    public UUID getAddBy() {
         return addBy;
     }
 
-    public void setAddBy(RegisterUser addBy) {
+    public void setAddBy(UUID addBy) {
         this.addBy = addBy;
     }
 
@@ -72,18 +82,63 @@ public class Person {
         this.lastName = lastName;
     }
 
+    public Instant getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Instant updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    public String getFamilyName() {
+        return familyName;
+    }
+
+    public void setFamilyName(String familyName) {
+        this.familyName = familyName;
+    }
+
+    public SexEnum getSex() {
+        return sex;
+    }
+
+    public void setSex(SexEnum sex) {
+        this.sex = sex;
+    }
+
+    public Instant getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Instant birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public String getBirthPlace() {
+        return birthPlace;
+    }
+
+    public void setBirthPlace(String birthPlace) {
+        this.birthPlace = birthPlace;
+    }
+
     public static final class Builder {
         private UUID id;
-        private RegisterUser addBy;
+        private UUID addBy;
         private String firstName;
         private String lastName;
+        private Instant updateDate;
+        private String familyName;
+        private SexEnum sex;
+        private Instant birthDate;
+        private String birthPlace;
 
         public Person.Builder id(UUID id) {
             this.id = id;
             return this;
         }
 
-        public Person.Builder addBy(RegisterUser addBy) {
+        public Person.Builder addBy(UUID addBy) {
             this.addBy = addBy;
             return this;
         }
@@ -95,6 +150,31 @@ public class Person {
 
         public Person.Builder lastName(String lastName) {
             this.lastName = lastName;
+            return this;
+        }
+
+        public Person.Builder updateDate(Instant updateDate) {
+            this.updateDate = updateDate;
+            return this;
+        }
+
+        public Person.Builder familyName(String familyName) {
+            this.familyName = familyName;
+            return this;
+        }
+
+        public Person.Builder sex(SexEnum sex) {
+            this.sex = sex;
+            return this;
+        }
+
+        public Person.Builder birthDate(Instant birthDate) {
+            this.birthDate = birthDate;
+            return this;
+        }
+
+        public Person.Builder birthPlace(String birthPlace) {
+            this.birthPlace = birthPlace;
             return this;
         }
 

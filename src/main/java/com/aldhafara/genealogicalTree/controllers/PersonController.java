@@ -3,6 +3,7 @@ package com.aldhafara.genealogicalTree.controllers;
 import com.aldhafara.genealogicalTree.exceptions.PersonNotFoundException;
 import com.aldhafara.genealogicalTree.mappers.PersonMapper;
 import com.aldhafara.genealogicalTree.models.PersonModel;
+import com.aldhafara.genealogicalTree.models.SexEnum;
 import com.aldhafara.genealogicalTree.models.UserModel;
 import com.aldhafara.genealogicalTree.services.PersonServiceImpl;
 import org.springframework.http.HttpStatus;
@@ -12,7 +13,9 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.UUID;
@@ -38,7 +41,7 @@ public class PersonController {
     public Object getDetails(@CurrentSecurityContext SecurityContext context,
                              @PathVariable UUID id,
                              Model model) {
-        PersonModel personModel = null;
+        PersonModel personModel;
         try {
             personModel = personMapper.mapPersonToPersonModel(personService.getById(id));
         } catch (PersonNotFoundException e) {
@@ -46,6 +49,14 @@ public class PersonController {
                     "Person not found", HttpStatus.NOT_FOUND);
         }
         model.addAttribute("person", personModel);
+        model.addAttribute("sexOptions", SexEnum.values());
         return "personDetails";
+    }
+
+    @PostMapping("/edit")
+    public Object editPerson(@ModelAttribute PersonModel personModel) {
+        personService.save(personModel);
+
+        return "redirect:/person/" + personModel.getId();
     }
 }

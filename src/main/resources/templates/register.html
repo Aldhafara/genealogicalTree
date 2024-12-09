@@ -23,6 +23,16 @@
                     <input required type="text" id="lastName" class="form-control" name="person.lastName" th:field="*{person.lastName}">
                 </div>
             </div>
+            <div class="row-sm-7">
+                <label class="col-sm-5"></label>
+                <div class="col-sm-12 input-group mb-3">
+                    <label for="sex" class="input-group-text col-sm-2" data-i18n="sex">Sex</label>
+                    <select class="form-select col-sm-10" id="sex" required name="person.sex" th:field="*{person.sex}">
+                        <option value="" disabled selected data-i18n="choose">Choose...</option>
+                        <option th:each="option : ${sexOptions}" th:value="${option}" th:text="${option.getAlternativeName()}"></option>
+                    </select>
+                </div>
+            </div>
             <div th:if="${loginError}" class="row-sm-7">
                 <label for="login" class="col-sm-5 form-label">Login:</label>
                 <div class="col-sm-12">

@@ -1,5 +1,6 @@
 package com.aldhafara.genealogicalTree.services;
 
+import com.aldhafara.genealogicalTree.configuration.SecurityContextFacade;
 import com.aldhafara.genealogicalTree.entities.Person;
 import com.aldhafara.genealogicalTree.exceptions.PersonNotFoundException;
 import com.aldhafara.genealogicalTree.mappers.PersonMapper;
@@ -8,6 +9,7 @@ import com.aldhafara.genealogicalTree.repositories.PersonRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -16,10 +18,12 @@ public class PersonServiceImpl implements PersonService {
 
     private final PersonRepository personRepository;
     private final PersonMapper personMapper;
+    private final SecurityContextFacade securityContextFacade;
 
-    public PersonServiceImpl(PersonRepository personRepository, PersonMapper personMapper) {
+    public PersonServiceImpl(PersonRepository personRepository, PersonMapper personMapper, SecurityContextFacade securityContextFacade) {
         this.personRepository = personRepository;
         this.personMapper = personMapper;
+        this.securityContextFacade = securityContextFacade;
     }
 
     @Override
@@ -41,6 +45,13 @@ public class PersonServiceImpl implements PersonService {
     @Transactional
     public UUID save(PersonModel personModel) {
         Person person = personMapper.mapPersonModelToPerson(personModel);
+        person.setUpdateDate(Instant.now());
+
+        UUID registerUserId = securityContextFacade.getCurrentUserId();
+        if (person.getAddBy() == null) {
+            person.setAddBy(registerUserId);
+        }
+
         Person savedPerson = personRepository.save(person);
         return savedPerson.getId();
     }

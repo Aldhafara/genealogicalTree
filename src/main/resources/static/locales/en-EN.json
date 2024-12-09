@@ -10,5 +10,17 @@
   "password" : "Password:",
   "repeatPassword" : "Repeat password:",
   "myDetails" : "Details about me",
-  "myDetailsDescription" : "Here you find details about yourself"
+  "myDetailsDescription" : "Here you find details about yourself",
+  "addMother" :  "Add mother",
+  "addFather" : "Add father",
+  "addDaughter" :  "Add daughter",
+  "addSon" : "Add son",
+  "sex" : "Sex",
+  "choose" : "Choose...",
+  "edit" : "Edit",
+  "save" : "Save",
+  "updateDate" : "Updated at",
+  "familyName" : "Family name",
+  "birthDate" : "Birth date",
+  "birthPlace" : "Birth place"
 }

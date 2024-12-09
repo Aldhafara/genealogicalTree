@@ -5,12 +5,163 @@
         <div th:insert="~{static/fragments :: languageScript}"></div>
         <title >Index</title>
         <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+        <style>
+            .hidden {
+                display: none;
+            }
+        </style>
     </head>
     <body th:style="'background: #f7f2e9'">
         <div th:insert="~{static/fragments :: header}"></div>
 
-        <p>Hello User <span th:text="${person.firstName}"></span> <span th:text="${person.lastName}"></span>.</p>
+        <div class="container">
+            <div class="row parents">
+                <div class="col text-center mother">
+                    <button type="button" class="btn btn-lg btn-primary" disabled data-i18n="addMother">Add mother</button>
+                </div>
+                <div class="col text-center father">
+                    <button type="button" class="btn btn-lg btn-primary" disabled data-i18n="addFather">Add father</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3 text-center p-3 siblings">
+                </div>
+                <div class="col-6 text-center p-3 details">
+                    <form id="viewForm" class="col-sm-12">
+                        <input type="hidden" id="id"  class="form-control" name="person.id" th:field="*{person.id}"/>
+                        <div class="row-sm-7">
+                            <label for="firstName" class="col-sm-5 form-label" data-i18n="firstName">First name:</label>
+                            <div class="col-sm-12">
+                                <input disabled type="text" id="firstName" class="form-control" name="person.firstName" th:field="*{person.firstName}">
+                            </div>
+                        </div>
+                        <div class="row-sm-7">
+                            <label for="lastName" class="col-sm-5 form-label" data-i18n="lastName">Last name:</label>
+                            <div class="col-sm-12">
+                                <input disabled type="text" id="lastName" class="form-control" name="person.lastName" th:field="*{person.lastName}">
+                            </div>
+                        </div>
+                        <div class="row-sm-7">
+                            <label class="col-sm-5"></label>
+                            <div class="col-sm-12 input-group mb-3">
+                                <label for="sex" class="input-group-text col-sm-2" data-i18n="sex">Sex</label>
+                                <select disabled class="form-select col-sm-10" id="sex" required name="person.sex" th:field="*{person.sex}">
+                                    <option value="" disabled selected data-i18n="choose">Choose...</option>
+                                    <option th:each="option : ${sexOptions}" th:value="${option}" th:text="${option.getAlternativeName()}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row-sm-7">
+                            <label for="familyName" class="col-sm-5 form-label" data-i18n="familyName">Family name:</label>
+                            <div class="col-sm-12">
+                                <input disabled type="text" id="familyName" class="form-control" name="person.familyName" th:field="*{person.familyName}"/>
+                            </div>
+                        </div>
+                        <div class="row-sm-7">
+                            <label for="birthPlace" class="col-sm-5 form-label" data-i18n="birthPlace">Birth place:</label>
+                            <div class="col-sm-12">
+                                <input disabled type="text" id="birthPlace" class="form-control" name="person.birthPlace" th:field="*{person.birthPlace}">
+                            </div>
+                        </div>
+                        <div class="row-sm-7">
+                            <label for="birthDate" class="col-sm-5 form-label" data-i18n="birthDate">Birth date:</label>
+                            <div class="col-sm-12">
+                                <input disabled type="date" id="birthDate" class="form-control" name="person.birthDate" th:field="*{person.birthDate}"/>
+                            </div>
+                        </div>
+                        <div class="row-sm-7">
+                            <div class="col-sm-12">
+                                <p><span data-i18n="updateDate">Update date:</span> <span th:text="${#dates.format(person.updateDate,' dd-MM-yyyy HH:mm:ss')}"></span></p>
+                            </div>
+                        </div>
+                        <div>
+                            <br>
+                            <button class="btn btn-primary btn-lg" type="button" id="editButton" data-i18n="edit">Edit</button>
+                        </div>
+                    </form>
 
+                    <form id="editForm" th:action="@{/person/edit}" class="col-sm-12 hidden" method="post">
+                        <input type="hidden" id="id"  class="form-control" name="person.id" th:field="*{person.id}"/>
+                        <div class="row-sm-7">
+                            <label for="firstName" class="col-sm-5 form-label" data-i18n="firstName">First name:</label>
+                            <div class="col-sm-12">
+                                <input required type="text" id="firstName" class="form-control" name="person.firstName" th:field="*{person.firstName}">
+                            </div>
+                        </div>
+                        <div class="row-sm-7">
+                            <label for="lastName" class="col-sm-5 form-label" data-i18n="lastName">Last name:</label>
+                            <div class="col-sm-12">
+                                <input required type="text" id="lastName" class="form-control" name="person.lastName" th:field="*{person.lastName}">
+                            </div>
+                        </div>
+                        <div class="row-sm-7">
+                            <label class="col-sm-5"></label>
+                            <div class="col-sm-12 input-group mb-3">
+                                <label for="sex" class="input-group-text col-sm-2" data-i18n="sex">Sex</label>
+                                <select class="form-select col-sm-10" id="sex" required name="person.sex" th:field="*{person.sex}">
+                                    <option value="" disabled selected data-i18n="choose">Choose...</option>
+                                    <option th:each="option : ${sexOptions}" th:value="${option}" th:text="${option.getAlternativeName()}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row-sm-7">
+                            <label for="familyName" class="col-sm-5 form-label" data-i18n="familyName">Family name:</label>
+                            <div class="col-sm-12">
+                                <input type="text" id="familyName" class="form-control" name="person.familyName" th:field="*{person.familyName}"/>
+                            </div>
+                        </div>
+                        <div class="row-sm-7">
+                            <label for="birthPlace" class="col-sm-5 form-label" data-i18n="birthPlace">Birth place:</label>
+                            <div class="col-sm-12">
+                                <input required type="text" id="birthPlace" class="form-control" name="person.birthPlace" th:field="*{person.birthPlace}">
+                            </div>
+                        </div>
+                        <div class="row-sm-7">
+                            <label for="birthDate" class="col-sm-5 form-label" data-i18n="birthDate">Birth date:</label>
+                            <div class="col-sm-12">
+                                <input required type="date" id="birthDate" class="form-control" name="person.birthDate" th:field="*{person.birthDate}"/>
+                            </div>
+                        </div>
+                        <div class="row-sm-7">
+                            <div class="col-sm-12">
+                                <p><span data-i18n="updateDate">Update date:</span> <span th:text="${#dates.format(person.updateDate, 'dd-MM-yyyy HH:mm:ss')}"></span></p>
+                            </div>
+                        </div>
+                        <div>
+                            <br>
+                            <button class="btn btn-primary btn-lg" type="submit" id="saveButton" data-i18n="save">Save</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-3 text-center p-3 partner">
+                </div>
+            </div>
+            <div class="row children">
+                <div class="col text-center daughter">
+                    <button type="button" class="btn btn-lg btn-primary" disabled data-i18n="addDaughter">Add daughter</button>
+                </div>
+                <div class="col text-center son">
+                    <button type="button" class="btn btn-lg btn-primary" disabled data-i18n="addSon">Add son</button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            const viewForm = document.getElementById("viewForm");
+            const editForm = document.getElementById("editForm");
+            const editButton = document.getElementById("editButton");
+            const saveButton = document.getElementById("saveButton");
+
+            editButton.addEventListener("click", () => {
+                viewForm.classList.add("hidden");
+                editForm.classList.remove("hidden");
+            });
+
+            saveButton.addEventListener("click", () => {
+                editForm.classList.add("hidden");
+                viewForm.classList.remove("hidden");
+            });
+        </script>
         <div th:insert="~{static/fragments :: footer}"></div>
     </body>
 </html>

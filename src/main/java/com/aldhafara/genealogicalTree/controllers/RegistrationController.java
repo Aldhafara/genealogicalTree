@@ -2,6 +2,7 @@ package com.aldhafara.genealogicalTree.controllers;
 
 import com.aldhafara.genealogicalTree.exceptions.NotUniqueLogin;
 import com.aldhafara.genealogicalTree.models.PersonModel;
+import com.aldhafara.genealogicalTree.models.SexEnum;
 import com.aldhafara.genealogicalTree.models.UserModel;
 import com.aldhafara.genealogicalTree.services.PersonServiceImpl;
 import com.aldhafara.genealogicalTree.services.RegisterUserServiceImpl;
@@ -28,6 +29,7 @@ public class RegistrationController {
     public String registerPage(Model model) {
         model.addAttribute("user", new UserModel());
         model.addAttribute("person", new PersonModel());
+        model.addAttribute("sexOptions", SexEnum.values());
         return "register";
     }
 
@@ -37,7 +39,7 @@ public class RegistrationController {
                                @ModelAttribute PersonModel personModel) {
         try {
             UserModel saveUser = userService.save(userModel);
-            personModel.setAddBy(saveUser);
+            personModel.setAddBy(saveUser.getId());
             UUID savedPersonId = personService.save(personModel);
             saveUser.setDetailsId(savedPersonId);
             userService.update(saveUser);

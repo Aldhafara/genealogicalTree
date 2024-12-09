@@ -10,5 +10,17 @@
   "password" : "Hasło:",
   "repeatPassword" : "Powtórz hasło:",
   "myDetails" : "Szczegóły o mnie",
-  "myDetailsDescription" : "Tutaj znajdziesz szczegółowe dane o sobie"
+  "myDetailsDescription" : "Tutaj znajdziesz szczegółowe dane o sobie",
+  "addMother" :  "Dodaj matkę",
+  "addFather" : "Dodaj ojca",
+  "addDaughter" :  "Dodaj córkę",
+  "addSon" : "Dodaj syna",
+  "sex" : "Płeć",
+  "choose" : "Wybierz...",
+  "edit" : "Edytuj",
+  "save" : "Zapisz",
+  "updateDate" : "Zaktualizowano",
+  "familyName" : "Nazwisko rodowe",
+  "birthDate" : "Data urodzenia",
+  "birthPlace" : "Miejsce urodzenia"
 }
