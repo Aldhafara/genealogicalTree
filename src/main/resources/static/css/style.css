@@ -1,3 +1,17 @@
+.btn-nav {
+    color: #fff;
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+}
+.btn-language {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+.person-details-font {
+    font-weight: 300;
+    line-height: 1.2;
+}
 .hidden {
     display: none;
 }
