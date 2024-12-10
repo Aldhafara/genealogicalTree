@@ -1,10 +1,13 @@
 package com.aldhafara.genealogicalTree.controllers;
 
+import com.aldhafara.genealogicalTree.entities.Person;
 import com.aldhafara.genealogicalTree.exceptions.PersonNotFoundException;
 import com.aldhafara.genealogicalTree.mappers.PersonMapper;
+import com.aldhafara.genealogicalTree.models.FamilyModel;
 import com.aldhafara.genealogicalTree.models.PersonModel;
 import com.aldhafara.genealogicalTree.models.SexEnum;
 import com.aldhafara.genealogicalTree.models.UserModel;
+import com.aldhafara.genealogicalTree.services.FamilyServiceImpl;
 import com.aldhafara.genealogicalTree.services.PersonServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,10 +27,12 @@ import java.util.UUID;
 @RequestMapping(value = "/person")
 public class PersonController {
     private final PersonServiceImpl personService;
+    private final FamilyServiceImpl familyService;
     private final PersonMapper personMapper;
 
-    public PersonController(PersonServiceImpl personService, PersonMapper personMapper) {
+    public PersonController(PersonServiceImpl personService, FamilyServiceImpl familyService, PersonMapper personMapper) {
         this.personService = personService;
+        this.familyService = familyService;
         this.personMapper = personMapper;
     }
 
@@ -38,8 +43,7 @@ public class PersonController {
     }
 
     @GetMapping("/{id}")
-    public Object getDetails(@CurrentSecurityContext SecurityContext context,
-                             @PathVariable UUID id,
+    public Object getDetails(@PathVariable UUID id,
                              Model model) {
         PersonModel personModel;
         try {
@@ -49,14 +53,80 @@ public class PersonController {
                     "Person not found", HttpStatus.NOT_FOUND);
         }
         model.addAttribute("person", personModel);
+        model.addAttribute("siblings", personModel.getSiblings());
+        model.addAttribute("mother", personModel.getMother());
+        model.addAttribute("father", personModel.getFather());
         model.addAttribute("sexOptions", SexEnum.values());
         return "personDetails";
     }
 
     @PostMapping("/edit")
-    public Object editPerson(@ModelAttribute PersonModel personModel) {
-        personService.save(personModel);
+    public String editPerson(@ModelAttribute PersonModel personModel) {
+        personService.saveAndReturnId(personModel);
 
         return "redirect:/person/" + personModel.getId();
+    }
+
+    @GetMapping("/add")
+    public String addPerson() {
+        PersonModel personModel = new PersonModel();
+        UUID newPersonId = personService.saveAndReturnId(personModel);
+
+        return "redirect:/person/" + newPersonId;
+    }
+
+    @GetMapping("/add/for/{id}/mother")
+    public Object addMother(@PathVariable UUID id) {
+        Person child;
+        try {
+            child = personService.getById(id);
+        } catch (PersonNotFoundException e) {
+            return new ResponseEntity<>(
+                    "Person not found", HttpStatus.NOT_FOUND);
+        }
+        PersonModel parentModel = new PersonModel();
+        parentModel.setSex(SexEnum.FEMALE);
+        Person parent = personService.saveParent(parentModel, child);
+
+        UUID familyId = familyService.save(getFamilyModel(child, parent));
+
+        return "redirect:/person/" + parent.getId();
+    }
+
+    @GetMapping("/add/for/{id}/father")
+    public Object addFather(@PathVariable UUID id) {
+        Person child;
+        try {
+            child = personService.getById(id);
+        } catch (PersonNotFoundException e) {
+            return new ResponseEntity<>(
+                    "Person not found", HttpStatus.NOT_FOUND);
+        }
+        PersonModel parentModel = new PersonModel();
+        parentModel.setSex(SexEnum.MALE);
+        Person parent = personService.saveParent(parentModel, child);
+
+
+        UUID familyId = familyService.save(getFamilyModel(child, parent));
+
+        return "redirect:/person/" + parent.getId();
+    }
+
+    private FamilyModel getFamilyModel(Person child, Person parent) {
+        FamilyModel familyModel;
+        if (child.getFamily() != null) {
+            familyModel = familyService.getFamilyModel(child.getFamily());
+        } else {
+             familyModel = new FamilyModel();
+        }
+
+        if (!familyModel.hasChild(child.getId())) {
+            familyModel.addChild(child);
+        }
+        switch (parent.getSex()) {
+            case FEMALE -> familyModel.setMother(parent);
+            case MALE -> familyModel.setFather(parent);
+        }
+        return familyModel;
     }
 }

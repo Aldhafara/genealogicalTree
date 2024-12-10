@@ -7,6 +7,7 @@
         <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
         <style>
             .hoverAnimation {
+                cursor: pointer;
                 transition: transform 0.5s;
             }
             .hoverAnimation:hover {
@@ -20,7 +21,7 @@
         <div class="container my-4">
             <div class="d-flex row align-items-stretch">
                 <div class="col-md-6 d-flex align-items-stretch p-3">
-                    <div class="rounded-3 text-center bg-light mh-150 w-100 hoverAnimation" onclick="location.href='/person/aboutme';" style="cursor: pointer;">
+                    <div class="rounded-3 text-center bg-light mh-150 w-100 d-flex justify-content-center align-items-center hoverAnimation" onclick="location.href='/person/aboutme';">
                         <div class="align-self-center">
                             <h1 class="display-4" data-i18n="myDetails">My details</h1>
                             <p class="lead" data-i18n="myDetailsDescription"></p>
@@ -28,23 +29,23 @@
                     </div>
                 </div>
                 <div class="col-md-6 d-flex align-items-stretch p-3">
-                    <div class="rounded-3 text-center bg-light mh-150 w-100 hoverAnimation">
+                    <div class="rounded-3 text-center bg-light mh-150 w-100 d-flex justify-content-center align-items-center hoverAnimation" onclick="location.href='/person/add';">
                         <div class="align-self-center">
-                            <h1 class="display-4">Lorem ipsum</h1>
-                            <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam porta ac mi eu efficitur.</p>
+                            <h1 class="display-4" data-i18n="addFamilyMember">Add family member</h1>
+                            <p class="lead"></p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6 d-flex align-items-stretch p-3">
-                    <div class="rounded-3 text-center bg-light mh-150 w-100 hoverAnimation">
+                    <div class="rounded-3 text-center bg-light mh-150 w-100 d-flex justify-content-center align-items-center hoverAnimation" onclick="location.href='/person/all';">
                         <div class="align-self-center">
-                            <h1 class="display-4">Lorem ipsum</h1>
-                            <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam porta ac mi eu efficitur.</p>
+                            <h1 class="display-4" data-i18n="allFamilyMembers">Members of your family</h1>
+                            <p class="lead" data-i18n="allFamilyMembersDescription"></p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6 d-flex align-items-stretch p-3">
-                    <div class="rounded-3 text-center bg-light mh-150 w-100 hoverAnimation">
+                    <div class="rounded-3 text-center bg-light mh-150 w-100 d-flex justify-content-center align-items-center hoverAnimation">
                         <div class="align-self-center">
                             <h1 class="display-4">Lorem ipsum</h1>
                             <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam porta ac mi eu efficitur.</p>

@@ -15,7 +15,9 @@
 	<description>Project to store yours family members</description>
 	<properties>
 		<java.version>17</java.version>
-		<spring-boot.version>3.1.0</spring-boot.version>
+		<spring-boot.version>3.4.0</spring-boot.version>
+		<spock-core.version>2.4-M4-groovy-3.0</spock-core.version>
+		<groovy-all.version>3.0.23</groovy-all.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -62,6 +64,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+			<version>${spring-boot.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -69,6 +72,32 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>6.2.0</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.spockframework</groupId>
+			<artifactId>spock-core</artifactId>
+			<version>${spock-core.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.groovy</groupId>
+			<artifactId>groovy-all</artifactId>
+			<version>${groovy-all.version}</version>
+			<type>pom</type>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.groovy</groupId>
+			<artifactId>groovy</artifactId>
+			<version>${groovy-all.version}</version>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -79,10 +108,14 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.5.2</version>
 				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
+					<testSourceDirectory>src/test/groovy</testSourceDirectory>
+					<includes>
+						<include>**/*Spec.groovy</include>
+						<include>**/*Test.groovy</include>
+					</includes>
 				</configuration>
 			</plugin>
 		</plugins>

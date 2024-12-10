@@ -5,6 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.List;
 import java.util.UUID;
 
 public class PersonModel {
@@ -19,6 +20,10 @@ public class PersonModel {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
     private String birthPlace = "";
+    private List<PersonBasicData> children;
+    private List<PersonBasicData> siblings;
+    private PersonBasicData mother;
+    private PersonBasicData father;
 
     public PersonModel() {
     }
@@ -39,10 +44,14 @@ public class PersonModel {
         this.sex = builder.sex;
         this.birthDate = builder.birthDate;
         this.birthPlace = builder.birthPlace;
+        this.children = builder.children;
+        this.siblings = builder.siblings;
+        this.mother = builder.mother;
+        this.father = builder.father;
     }
 
-    public static PersonModel.Builder builder() {
-        return new PersonModel.Builder();
+    public static Builder builder() {
+        return new Builder();
     }
 
     public UUID getId() {
@@ -86,12 +95,12 @@ public class PersonModel {
     }
 
     public Instant getBirthDateAsInstant() {
-        return birthDate != null ? birthDate.atStartOfDay(ZoneId.systemDefault()).toInstant() : null;
+        return birthDate != null ? birthDate.atStartOfDay(ZoneId.of("UTC")).toInstant() : null;
     }
 
     public void setBirthDateFromInstant(Instant birthDateInstant) {
         this.birthDate = birthDateInstant != null ?
-                LocalDate.ofInstant(birthDateInstant, ZoneId.systemDefault()) : null;
+                LocalDate.ofInstant(birthDateInstant, ZoneId.of("UTC")) : null;
     }
 
     public String getBirthPlace() {
@@ -126,19 +135,36 @@ public class PersonModel {
         this.lastName = lastName;
     }
 
-    @Override
-    public String toString() {
-        return "PersonModel{" +
-                "id=" + id +
-                ", addBy=" + addBy +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", updateDate=" + updateDate +
-                ", familyName='" + familyName + '\'' +
-                ", sex=" + sex +
-                ", birthDate=" + birthDate +
-                ", birthPlace='" + birthPlace + '\'' +
-                '}';
+    public List<PersonBasicData> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<PersonBasicData> children) {
+        this.children = children;
+    }
+
+    public List<PersonBasicData> getSiblings() {
+        return siblings;
+    }
+
+    public void setSiblings(List<PersonBasicData> siblings) {
+        this.siblings = siblings;
+    }
+
+    public PersonBasicData getMother() {
+        return mother;
+    }
+
+    public void setMother(PersonBasicData mother) {
+        this.mother = mother;
+    }
+
+    public PersonBasicData getFather() {
+        return father;
+    }
+
+    public void setFather(PersonBasicData father) {
+        this.father = father;
     }
 
     public static final class Builder {
@@ -151,55 +177,79 @@ public class PersonModel {
         private SexEnum sex;
         private LocalDate birthDate;
         private String birthPlace;
+        private List<PersonBasicData> children;
+        private List<PersonBasicData> siblings;
+        private PersonBasicData mother;
+        private PersonBasicData father;
 
-        public PersonModel.Builder id(UUID id) {
+        public Builder id(UUID id) {
             this.id = id;
             return this;
         }
 
-        public PersonModel.Builder addBy(UUID addBy) {
+        public Builder addBy(UUID addBy) {
             this.addBy = addBy;
             return this;
         }
 
-        public PersonModel.Builder firstName(String firstName) {
+        public Builder firstName(String firstName) {
             this.firstName = firstName;
             return this;
         }
 
-        public PersonModel.Builder lastName(String lastName) {
+        public Builder lastName(String lastName) {
             this.lastName = lastName;
             return this;
         }
 
-        public PersonModel.Builder updateDate(Instant updateDate) {
+        public Builder updateDate(Instant updateDate) {
             this.updateDate = updateDate;
             return this;
         }
 
-        public PersonModel.Builder familyName(String familyName) {
+        public Builder familyName(String familyName) {
             this.familyName = familyName;
             return this;
         }
 
-        public PersonModel.Builder sex(SexEnum sex) {
+        public Builder sex(SexEnum sex) {
             this.sex = sex;
             return this;
         }
 
-        public PersonModel.Builder birthDate(LocalDate birthDate) {
+        public Builder birthDate(LocalDate birthDate) {
             this.birthDate = birthDate;
             return this;
         }
 
-        public PersonModel.Builder birthPlace(String birthPlace) {
+        public Builder birthPlace(String birthPlace) {
             this.birthPlace = birthPlace;
             return this;
         }
 
-        public PersonModel.Builder setBirthDateFromInstant(Instant birthDateInstant) {
+        public Builder setBirthDateFromInstant(Instant birthDateInstant) {
             this.birthDate = birthDateInstant != null ?
-                    LocalDate.ofInstant(birthDateInstant, ZoneId.systemDefault()) : null;
+                    LocalDate.ofInstant(birthDateInstant, ZoneId.of("UTC")) : null;
+            return this;
+        }
+
+        public Builder children(List<PersonBasicData> children) {
+            this.children = children;
+            return this;
+        }
+
+        public Builder siblings(List<PersonBasicData> siblings) {
+            this.siblings = siblings;
+            return this;
+        }
+
+        public Builder mother(PersonBasicData mother) {
+            this.mother = mother;
+            return this;
+        }
+
+        public Builder father(PersonBasicData father) {
+            this.father = father;
             return this;
         }
 

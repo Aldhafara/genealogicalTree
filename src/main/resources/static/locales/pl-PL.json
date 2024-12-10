@@ -22,5 +22,8 @@
   "updateDate" : "Zaktualizowano",
   "familyName" : "Nazwisko rodowe",
   "birthDate" : "Data urodzenia",
-  "birthPlace" : "Miejsce urodzenia"
+  "birthPlace" : "Miejsce urodzenia",
+  "addFamilyMember" : "Dodaj członka rodziny",
+  "allFamilyMembers" : "Członkowie Twojej rodziny",
+  "allFamilyMembersDescription" : "Znajdziesz tutaj wszystkich członków Twojej rodziny"
 }

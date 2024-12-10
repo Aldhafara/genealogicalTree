@@ -9,18 +9,59 @@
             .hidden {
                 display: none;
             }
+            .hoverAnimation {
+                cursor: pointer;
+                transition: transform 0.5s;
+            }
+            .hoverAnimation:hover {
+                transform: scale(1.1);
+            }
         </style>
     </head>
     <body th:style="'background: #f7f2e9'">
         <div th:insert="~{static/fragments :: header}"></div>
 
         <div class="container">
-            <div class="row parents">
+            <div class="row parents align-items-center">
                 <div class="col text-center mother">
-                    <button type="button" class="btn btn-lg btn-primary" disabled data-i18n="addMother">Add mother</button>
+                    <div th:if="*{mother != null}" class="d-flex justify-content-center p-3">
+                        <div class="rounded-3 text-center bg-light mh-100 hoverAnimation"
+                             th:data="*{mother.id}"
+                             onclick="redirectToDetails(this)">
+                            <div class="align-self-center">
+                                <h1 class="display-4 p-3" th:text="*{mother.firstName + ' ' + mother.lastName}"></h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:if="*{mother == null}" class="d-flex justify-content-center p-3">
+                        <div class="rounded-3 text-center mh-100 d-flex justify-content-center align-items-center">
+                            <div class="align-self-center">
+                                <a th:href="@{/person/add/for/{id}/mother(id=${person.id})}"
+                                   role="button" class="btn btn-lg btn-primary"
+                                   data-i18n="addMother">Add mother</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="col text-center father">
-                    <button type="button" class="btn btn-lg btn-primary" disabled data-i18n="addFather">Add father</button>
+                    <div th:if="*{father != null}" class="d-flex justify-content-center p-3">
+                        <div class="rounded-3 text-center bg-light mh-100 d-flex justify-content-center align-items-center hoverAnimation"
+                             th:data="*{father.id}"
+                             onclick="redirectToDetails(this)">
+                            <div class="align-self-center">
+                                <h1 class="display-4 p-3" th:text="*{father.firstName + ' ' + father.lastName}"></h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:if="*{father == null}" class="d-flex justify-content-center p-3">
+                        <div class="rounded-3 text-center mh-100 d-flex justify-content-center align-items-center">
+                            <div class="align-self-center">
+                                <a th:href="@{/person/add/for/{id}/father(id=${person.id})}"
+                                   role="button" class="btn btn-lg btn-primary"
+                                   data-i18n="addFather">Add father</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="row">
@@ -45,7 +86,7 @@
                             <label class="col-sm-5"></label>
                             <div class="col-sm-12 input-group mb-3">
                                 <label for="sex" class="input-group-text col-sm-2" data-i18n="sex">Sex</label>
-                                <select disabled class="form-select col-sm-10" id="sex" required name="person.sex" th:field="*{person.sex}">
+                                <select disabled class="form-select col-sm-10" id="sex" name="person.sex" th:field="*{person.sex}">
                                     <option value="" disabled selected data-i18n="choose">Choose...</option>
                                     <option th:each="option : ${sexOptions}" th:value="${option}" th:text="${option.getAlternativeName()}"></option>
                                 </select>
@@ -113,7 +154,7 @@
                         <div class="row-sm-7">
                             <label for="birthPlace" class="col-sm-5 form-label" data-i18n="birthPlace">Birth place:</label>
                             <div class="col-sm-12">
-                                <input required type="text" id="birthPlace" class="form-control" name="person.birthPlace" th:field="*{person.birthPlace}">
+                                <input type="text" id="birthPlace" class="form-control" name="person.birthPlace" th:field="*{person.birthPlace}">
                             </div>
                         </div>
                         <div class="row-sm-7">
@@ -161,6 +202,11 @@
                 editForm.classList.add("hidden");
                 viewForm.classList.remove("hidden");
             });
+
+            function redirectToDetails(element) {
+                const id = element.getAttribute('data');
+                window.location.href = `/person/${id}`;
+            }
         </script>
         <div th:insert="~{static/fragments :: footer}"></div>
     </body>

@@ -4,9 +4,12 @@ import com.aldhafara.genealogicalTree.models.SexEnum;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 import java.time.Instant;
@@ -28,6 +31,9 @@ public class Person {
     private SexEnum sex;
     private Instant birthDate;
     private String birthPlace;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="family_id")
+    private Family family;
 
     public Person() {
     }
@@ -48,10 +54,11 @@ public class Person {
         this.sex = builder.sex;
         this.birthDate = builder.birthDate;
         this.birthPlace = builder.birthPlace;
+        this.family = builder.family;
     }
 
     public static Person.Builder builder() {
-        return new Person.Builder();
+        return new Builder();
     }
 
     public UUID getId() {
@@ -122,6 +129,14 @@ public class Person {
         this.birthPlace = birthPlace;
     }
 
+    public Family getFamily() {
+        return family;
+    }
+
+    public void setFamily(Family family) {
+        this.family = family;
+    }
+
     public static final class Builder {
         private UUID id;
         private UUID addBy;
@@ -132,6 +147,7 @@ public class Person {
         private SexEnum sex;
         private Instant birthDate;
         private String birthPlace;
+        private Family family;
 
         public Person.Builder id(UUID id) {
             this.id = id;
@@ -178,8 +194,14 @@ public class Person {
             return this;
         }
 
+        public Person.Builder family(Family family) {
+            this.family = family;
+            return this;
+        }
+
         public Person build() {
             return new Person(this);
         }
     }
+
 }

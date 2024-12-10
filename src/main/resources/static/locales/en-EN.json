@@ -22,5 +22,8 @@
   "updateDate" : "Updated at",
   "familyName" : "Family name",
   "birthDate" : "Birth date",
-  "birthPlace" : "Birth place"
+  "birthPlace" : "Birth place",
+  "addFamilyMember" : "Add family member",
+  "allFamilyMembers" : "Members of your family",
+  "allFamilyMembersDescription" : "You will find all family members here"
 }

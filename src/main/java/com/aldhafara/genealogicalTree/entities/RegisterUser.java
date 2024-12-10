@@ -53,7 +53,7 @@ public class RegisterUser implements UserDetails {
     }
 
     public static RegisterUser.Builder builder() {
-        return new RegisterUser.Builder();
+        return new Builder();
     }
 
     public UUID getId() {

@@ -8,6 +8,6 @@ import java.util.UUID;
 
 @Service
 public interface PersonService {
-    UUID save(Person person);
+    Person save(Person person);
     Person getById(UUID id) throws PersonNotFoundException;
 }

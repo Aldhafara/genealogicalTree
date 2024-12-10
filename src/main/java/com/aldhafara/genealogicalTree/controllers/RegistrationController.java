@@ -26,7 +26,7 @@ public class RegistrationController {
     }
 
     @GetMapping("/register")
-    public String registerPage(Model model) {
+    public String getRegisterPage(Model model) {
         model.addAttribute("user", new UserModel());
         model.addAttribute("person", new PersonModel());
         model.addAttribute("sexOptions", SexEnum.values());
@@ -40,7 +40,7 @@ public class RegistrationController {
         try {
             UserModel saveUser = userService.save(userModel);
             personModel.setAddBy(saveUser.getId());
-            UUID savedPersonId = personService.save(personModel);
+            UUID savedPersonId = personService.saveAndReturnId(personModel);
             saveUser.setDetailsId(savedPersonId);
             userService.update(saveUser);
             return "redirect:/login";
