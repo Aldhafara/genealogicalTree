@@ -1,22 +1,11 @@
 <!DOCTYPE HTML>
 <html lang="en-EN" xmlns:th="http://www.thymeleaf.org">
     <div th:insert="~{static/fragments :: bootstrapStylesheet}"></div>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
     <head>
         <div th:insert="~{static/fragments :: languageScript}"></div>
-        <title >Index</title>
+        <title th:text="*{person.firstName + ' ' + person.lastName}"></title>
         <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
-        <style>
-            .hidden {
-                display: none;
-            }
-            .hoverAnimation {
-                cursor: pointer;
-                transition: transform 0.5s;
-            }
-            .hoverAnimation:hover {
-                transform: scale(1.1);
-            }
-        </style>
     </head>
     <body th:style="'background: #f7f2e9'">
         <div th:insert="~{static/fragments :: header}"></div>

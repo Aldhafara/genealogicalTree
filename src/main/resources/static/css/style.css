@@ -1,0 +1,11 @@
+.hidden {
+    display: none;
+}
+.hoverAnimation {
+    cursor: pointer;
+    transition: transform 0.5s, box-shadow 200ms ease-out;
+}
+.hoverAnimation:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 6px rgba(35, 173, 278, 1);
+}
