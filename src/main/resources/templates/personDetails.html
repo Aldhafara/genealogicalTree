@@ -1,7 +1,6 @@
 <!DOCTYPE HTML>
 <html lang="en-EN" xmlns:th="http://www.thymeleaf.org">
     <div th:insert="~{static/fragments :: bootstrapStylesheet}"></div>
-    <link rel="stylesheet" th:href="@{/css/style.css}" />
     <head>
         <div th:insert="~{static/fragments :: languageScript}"></div>
         <title th:text="*{person.firstName + ' ' + person.lastName}"></title>
