@@ -27,6 +27,10 @@ public class PersonServiceImpl implements PersonService {
         this.securityContextFacade = securityContextFacade;
     }
 
+    public void setClock(Clock clock) {
+        this.clock = clock;
+    }
+
     @Override
     public Person save(Person person) {
         person.setUpdateDate(clock.instant());
@@ -72,36 +76,26 @@ public class PersonServiceImpl implements PersonService {
         return save(person);
     }
 
-    public Person saveParent(PersonModel parent, Person child) {
-        switch (parent.getSex()) {
-            case MALE -> {
-                switch (child.getSex()) {
-                    case MALE -> parent.setLastName(child.getLastName());
-                    case FEMALE -> parent.setLastName(child.getFamilyName().isBlank() ? child.getLastName() : child.getFamilyName());
-                }
-            }
-            case FEMALE ->{
-                switch (child.getSex()) {
-                    case MALE -> parent.setLastName(child.getLastName());
-                    case FEMALE -> parent.setLastName(child.getFamilyName().isBlank() ? child.getLastName() : child.getFamilyName());
-                }
-            }
+    public Person saveParent(PersonModel parent, Person person) {
+        switch (person.getSex()) {
+            case MALE -> parent.setLastName(person.getLastName());
+            case FEMALE -> parent.setLastName(person.getFamilyName() == null || person.getFamilyName().isBlank() ? person.getLastName() : person.getFamilyName());
         }
         return saveAndReturn(parent);
     }
 
-    public Person saveSibling(PersonModel sibling, Person child) {
+    public Person saveSibling(PersonModel sibling, Person person) {
         switch (sibling.getSex()) {
             case MALE -> {
-                switch (child.getSex()) {
-                    case MALE -> sibling.setLastName(child.getLastName());
-                    case FEMALE -> sibling.setLastName(child.getFamilyName().isBlank() ? child.getLastName() : child.getFamilyName());
+                switch (person.getSex()) {
+                    case MALE -> sibling.setLastName(person.getLastName());
+                    case FEMALE -> sibling.setLastName(person.getFamilyName().isBlank() ? person.getLastName() : person.getFamilyName());
                 }
             }
             case FEMALE ->{
-                switch (child.getSex()) {
-                    case MALE -> sibling.setFamilyName(child.getLastName());
-                    case FEMALE -> sibling.setFamilyName(child.getFamilyName().isBlank() ? child.getLastName() : child.getFamilyName());
+                switch (person.getSex()) {
+                    case MALE -> sibling.setFamilyName(person.getLastName());
+                    case FEMALE -> sibling.setFamilyName(person.getFamilyName().isBlank() ? person.getLastName() : person.getFamilyName());
                 }
             }
         }

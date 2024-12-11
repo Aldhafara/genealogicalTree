@@ -15,11 +15,11 @@ public class PersonModel {
     private String firstName;
     private String lastName;
     private Instant updateDate;
-    private String familyName = "";
+    private String familyName;
     private SexEnum sex;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
-    private String birthPlace = "";
+    private String birthPlace;
     private List<PersonBasicData> children;
     private List<PersonBasicData> siblings;
     private PersonBasicData mother;
