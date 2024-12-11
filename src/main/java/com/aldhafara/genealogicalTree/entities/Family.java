@@ -15,21 +15,21 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name="families")
+@Table(name = "families")
 public class Family {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     private UUID addBy;
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="father_id")
+    @JoinColumn(name = "father_id")
     private Person father;
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="mother_id")
+    @JoinColumn(name = "mother_id")
     private Person mother;
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name="family_id")
+    @JoinColumn(name = "family_id")
     private List<Person> children;
     private Instant updateDate;
 
@@ -43,6 +43,10 @@ public class Family {
         this.mother = builder.mother;
         this.children = builder.children;
         this.updateDate = builder.updateDate;
+    }
+
+    public static Family.Builder builder() {
+        return new Builder();
     }
 
     public UUID getId() {
@@ -93,11 +97,6 @@ public class Family {
         this.updateDate = updateDate;
     }
 
-
-    public static Family.Builder builder() {
-        return new Builder();
-    }
-
     public void addChild(Person child) {
         if (children == null || children.isEmpty()) {
             this.children = List.of(child);
@@ -118,6 +117,7 @@ public class Family {
             this.id = id;
             return this;
         }
+
         public Family.Builder addBy(UUID addBy) {
             this.addBy = addBy;
             return this;

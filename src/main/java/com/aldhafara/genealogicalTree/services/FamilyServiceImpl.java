@@ -18,12 +18,16 @@ public class FamilyServiceImpl implements FamilyService{
     private final FamilyRepository familyRepository;
     private final FamilyMapper familyMapper;
     private final SecurityContextFacade securityContextFacade;
-    private final Clock clock = Clock.systemUTC();
+    private Clock clock = Clock.systemUTC();
 
     public FamilyServiceImpl(FamilyRepository familyRepository, FamilyMapper familyMapper, SecurityContextFacade securityContextFacade) {
         this.familyRepository = familyRepository;
         this.familyMapper = familyMapper;
         this.securityContextFacade = securityContextFacade;
+    }
+
+    public void setClock(Clock clock) {
+        this.clock = clock;
     }
 
     @Override
@@ -51,7 +55,9 @@ public class FamilyServiceImpl implements FamilyService{
     }
 
     public UUID save(Family family, Person child) {
-        family.addChild(child);
+        if (child != null) {
+            family.addChild(child);
+        }
         return save(family);
     }
 }

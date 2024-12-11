@@ -76,8 +76,8 @@ class PersonServiceImplSpec extends Specification {
 
     def "should map PersonModel to Person and save with current user as addBy"() {
         given:
-            def personModel = new PersonModel(sex: MALE)
-            def mappedPerson = new Person(sex: MALE)
+            def personModel = new PersonModel()
+            def mappedPerson = new Person()
             def currentUserId = UUID.randomUUID()
             def savedPerson = new Person(id: UUID.randomUUID())
         and:
@@ -102,7 +102,7 @@ class PersonServiceImplSpec extends Specification {
             def parentBrown = new Person(lastName: "Brown")
         and:
             PersonMapper personMapper = new PersonMapper()
-            PersonServiceImpl personService = new PersonServiceImpl(personRepository, personMapper, securityContextFacade)
+            personService = new PersonServiceImpl(personRepository, personMapper, securityContextFacade)
         and:
             personMapper.mapPersonModelToPerson(parentSmithModel) >> parentSmith
             personMapper.mapPersonModelToPerson(parentBrownModel) >> parentBrown
