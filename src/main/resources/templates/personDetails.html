@@ -54,6 +54,30 @@
             </div>
             <div class="row">
                 <div class="col-3 text-center p-3 siblings">
+                    <div class="row addButtons">
+                        <div class="col-6 text-center sister">
+                            <div class="d-flex justify-content-center p-2">
+                                <div class="rounded-3 text-center mh-100 d-flex justify-content-center align-items-center">
+                                    <div class="align-self-center">
+                                        <a th:href="@{/person/add/for/{id}/sister(id=${person.id})}"
+                                           role="button" class="btn btn-primary btn-sm"
+                                           data-i18n="addSister">Add sister</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 text-center brother">
+                            <div class="d-flex justify-content-center p-2">
+                                <div class="rounded-3 text-center mh-100 d-flex justify-content-center align-items-center">
+                                    <div class="align-self-center">
+                                        <a th:href="@{/person/add/for/{id}/brother(id=${person.id})}"
+                                           role="button" class="btn btn-primary btn-sm"
+                                           data-i18n="addBrother">Add brother</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-6 text-center p-3 details">
                     <form id="viewForm" class="col-sm-12">

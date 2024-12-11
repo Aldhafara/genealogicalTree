@@ -19,7 +19,7 @@ public class PersonServiceImpl implements PersonService {
     private final PersonRepository personRepository;
     private final PersonMapper personMapper;
     private final SecurityContextFacade securityContextFacade;
-    private final Clock clock = Clock.systemUTC();
+    private Clock clock = Clock.systemUTC();
 
     public PersonServiceImpl(PersonRepository personRepository, PersonMapper personMapper, SecurityContextFacade securityContextFacade) {
         this.personRepository = personRepository;
@@ -29,6 +29,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public Person save(Person person) {
+        person.setUpdateDate(clock.instant());
         return personRepository.save(person);
     }
 
@@ -50,7 +51,6 @@ public class PersonServiceImpl implements PersonService {
     @Transactional
     public UUID saveAndReturnId(PersonModel personModel) {
         Person person = personMapper.mapPersonModelToPerson(personModel);
-        person.setUpdateDate(clock.instant());
 
         if (person.getAddBy() == null) {
             UUID registerUserId = securityContextFacade.getCurrentUserId();
@@ -63,7 +63,6 @@ public class PersonServiceImpl implements PersonService {
     @Transactional
     public Person saveAndReturn(PersonModel personModel) {
         Person person = personMapper.mapPersonModelToPerson(personModel);
-        person.setUpdateDate(clock.instant());
 
         UUID registerUserId = securityContextFacade.getCurrentUserId();
         if (person.getAddBy() == null) {
@@ -89,5 +88,23 @@ public class PersonServiceImpl implements PersonService {
             }
         }
         return saveAndReturn(parent);
+    }
+
+    public Person saveSibling(PersonModel sibling, Person child) {
+        switch (sibling.getSex()) {
+            case MALE -> {
+                switch (child.getSex()) {
+                    case MALE -> sibling.setLastName(child.getLastName());
+                    case FEMALE -> sibling.setLastName(child.getFamilyName().isBlank() ? child.getLastName() : child.getFamilyName());
+                }
+            }
+            case FEMALE ->{
+                switch (child.getSex()) {
+                    case MALE -> sibling.setFamilyName(child.getLastName());
+                    case FEMALE -> sibling.setFamilyName(child.getFamilyName().isBlank() ? child.getLastName() : child.getFamilyName());
+                }
+            }
+        }
+        return saveAndReturn(sibling);
     }
 }

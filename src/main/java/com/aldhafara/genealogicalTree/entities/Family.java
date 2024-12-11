@@ -98,6 +98,14 @@ public class Family {
         return new Builder();
     }
 
+    public void addChild(Person child) {
+        if (children == null || children.isEmpty()) {
+            this.children = List.of(child);
+        } else {
+            this.children.add(child);
+        }
+    }
+
     public static final class Builder {
         private UUID id;
         private UUID addBy;

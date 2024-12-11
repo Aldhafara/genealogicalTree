@@ -88,7 +88,7 @@ public class PersonController {
         parentModel.setSex(SexEnum.FEMALE);
         Person parent = personService.saveParent(parentModel, child);
 
-        UUID familyId = familyService.save(getFamilyModel(child, parent));
+        familyService.save(getFamilyModel(child, parent));
 
         return "redirect:/person/" + parent.getId();
     }
@@ -106,10 +106,44 @@ public class PersonController {
         parentModel.setSex(SexEnum.MALE);
         Person parent = personService.saveParent(parentModel, child);
 
-
-        UUID familyId = familyService.save(getFamilyModel(child, parent));
+        familyService.save(getFamilyModel(child, parent));
 
         return "redirect:/person/" + parent.getId();
+    }
+
+    @GetMapping("/add/for/{id}/sister")
+    public Object addSister(@PathVariable UUID id) {
+        Person savedSibling;
+        try {
+            savedSibling = addSibling(id, SexEnum.FEMALE);
+        } catch (PersonNotFoundException e) {
+            return new ResponseEntity<>(
+                    "Person not found", HttpStatus.NOT_FOUND);
+        }
+
+        return "redirect:/person/" + savedSibling.getId();
+    }
+
+    @GetMapping("/add/for/{id}/brother")
+    public Object addBrother(@PathVariable UUID id) {
+        Person savedSibling;
+        try {
+            savedSibling = addSibling(id, SexEnum.MALE);
+        } catch (PersonNotFoundException e) {
+            return new ResponseEntity<>(
+                    "Person not found", HttpStatus.NOT_FOUND);
+        }
+        return "redirect:/person/" + savedSibling.getId();
+    }
+
+    private Person addSibling(UUID id, SexEnum female) throws PersonNotFoundException {
+        Person child = personService.getById(id);
+
+        PersonModel sibling = new PersonModel();
+        sibling.setSex(female);
+        Person savedSibling = personService.saveSibling(sibling, child);
+        familyService.save(child.getFamily(), savedSibling);
+        return savedSibling;
     }
 
     private FamilyModel getFamilyModel(Person child, Person parent) {
@@ -117,7 +151,7 @@ public class PersonController {
         if (child.getFamily() != null) {
             familyModel = familyService.getFamilyModel(child.getFamily());
         } else {
-             familyModel = new FamilyModel();
+            familyModel = new FamilyModel();
         }
 
         if (!familyModel.hasChild(child.getId())) {

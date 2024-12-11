@@ -23,6 +23,8 @@
   "addFather" : "Add father",
   "addDaughter" :  "Add daughter",
   "addSon" : "Add son",
+  "addSister" : "Add sister",
+  "addBrother" : "Add brother",
   "edit" : "Edit",
   "save" : "Save",
   "updateDate" : "Updated at",

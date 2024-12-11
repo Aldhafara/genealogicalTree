@@ -2,6 +2,7 @@ package com.aldhafara.genealogicalTree.services;
 
 import com.aldhafara.genealogicalTree.configuration.SecurityContextFacade;
 import com.aldhafara.genealogicalTree.entities.Family;
+import com.aldhafara.genealogicalTree.entities.Person;
 import com.aldhafara.genealogicalTree.mappers.FamilyMapper;
 import com.aldhafara.genealogicalTree.models.FamilyModel;
 import com.aldhafara.genealogicalTree.repositories.FamilyRepository;
@@ -27,6 +28,7 @@ public class FamilyServiceImpl implements FamilyService{
 
     @Override
     public UUID save(Family family) {
+        family.setUpdateDate(clock.instant());
         Family savedFamily = familyRepository.save(family);
         return savedFamily.getId();
     }
@@ -35,7 +37,6 @@ public class FamilyServiceImpl implements FamilyService{
     @Transactional
     public UUID save(FamilyModel familyModel) {
         Family family = familyMapper.mapFamilyModelToFamily(familyModel);
-        family.setUpdateDate(clock.instant());
 
         UUID registerUserId = securityContextFacade.getCurrentUserId();
         if (family.getAddBy() == null) {
@@ -47,5 +48,10 @@ public class FamilyServiceImpl implements FamilyService{
 
     public FamilyModel getFamilyModel(Family family) {
         return familyMapper.mapFamilyToFamilyModel(family);
+    }
+
+    public UUID save(Family family, Person child) {
+        family.addChild(child);
+        return save(family);
     }
 }
