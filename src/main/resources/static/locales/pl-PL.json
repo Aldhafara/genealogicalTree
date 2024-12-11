@@ -1,29 +1,32 @@
 {
   "title": "Moje drzewo genealogiczne",
-  "welcome" : "Witaj, ",
-  "mainPage" : "Strona główna",
+  "password" : "Hasło:",
   "login" : "Zaloguj się",
   "register" : "Zarejestruj się",
+  "sex" : "Płeć",
+  "choose" : "Wybierz...",
+
+  "mainPage" : "Strona główna",
   "logout" : "Wyloguj się",
+
   "firstName" : "Imię:",
   "lastName" : "Nazwisko:",
-  "password" : "Hasło:",
   "repeatPassword" : "Powtórz hasło:",
+
   "myDetails" : "Szczegóły o mnie",
   "myDetailsDescription" : "Tutaj znajdziesz szczegółowe dane o sobie",
+  "addFamilyMember" : "Dodaj członka rodziny",
+  "allFamilyMembers" : "Członkowie Twojej rodziny",
+  "allFamilyMembersDescription" : "Znajdziesz tutaj wszystkich członków Twojej rodziny",
+
   "addMother" :  "Dodaj matkę",
   "addFather" : "Dodaj ojca",
   "addDaughter" :  "Dodaj córkę",
   "addSon" : "Dodaj syna",
-  "sex" : "Płeć",
-  "choose" : "Wybierz...",
   "edit" : "Edytuj",
   "save" : "Zapisz",
   "updateDate" : "Zaktualizowano",
   "familyName" : "Nazwisko rodowe",
   "birthDate" : "Data urodzenia",
-  "birthPlace" : "Miejsce urodzenia",
-  "addFamilyMember" : "Dodaj członka rodziny",
-  "allFamilyMembers" : "Członkowie Twojej rodziny",
-  "allFamilyMembersDescription" : "Znajdziesz tutaj wszystkich członków Twojej rodziny"
+  "birthPlace" : "Miejsce urodzenia"
 }

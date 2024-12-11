@@ -1,29 +1,32 @@
 {
   "title": "My Genealogical Tree",
-  "welcome" : "Welcome, ",
-  "mainPage" : "Main page",
+  "password" : "Password:",
   "login" : "Login",
   "register" : "Register",
+  "sex" : "Sex",
+  "choose" : "Choose...",
+
+  "mainPage" : "Main page",
   "logout" : "Logout",
+
   "firstName" : "First name:",
   "lastName" : "Last name:",
-  "password" : "Password:",
   "repeatPassword" : "Repeat password:",
+
   "myDetails" : "Details about me",
   "myDetailsDescription" : "Here you find details about yourself",
+  "addFamilyMember" : "Add family member",
+  "allFamilyMembers" : "Members of your family",
+  "allFamilyMembersDescription" : "You will find all family members here",
+
   "addMother" :  "Add mother",
   "addFather" : "Add father",
   "addDaughter" :  "Add daughter",
   "addSon" : "Add son",
-  "sex" : "Sex",
-  "choose" : "Choose...",
   "edit" : "Edit",
   "save" : "Save",
   "updateDate" : "Updated at",
   "familyName" : "Family name",
   "birthDate" : "Birth date",
-  "birthPlace" : "Birth place",
-  "addFamilyMember" : "Add family member",
-  "allFamilyMembers" : "Members of your family",
-  "allFamilyMembersDescription" : "You will find all family members here"
+  "birthPlace" : "Birth place"
 }
