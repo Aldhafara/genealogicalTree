@@ -10,6 +10,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.Clock;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -59,5 +61,23 @@ public class FamilyServiceImpl implements FamilyService{
             family.addChild(child);
         }
         return save(family);
+    }
+
+    @Override
+    public List<Family> getFamiliesWithParent(UUID parentId) {
+        if (parentId == null) {
+            return null;
+        }
+        return familyRepository.findByParent(parentId);
+    }
+
+    @Override
+    public Family getFamilyById(UUID familyId) {
+        if (familyId == null) {
+            return null;
+        }
+        Optional<Family> familyOptional = familyRepository.findById(familyId);
+        return familyOptional.orElse(null);
+
     }
 }

@@ -1,6 +1,7 @@
 package com.aldhafara.genealogicalTree.services;
 
 import com.aldhafara.genealogicalTree.configuration.SecurityContextFacade;
+import com.aldhafara.genealogicalTree.entities.Family;
 import com.aldhafara.genealogicalTree.entities.Person;
 import com.aldhafara.genealogicalTree.exceptions.PersonNotFoundException;
 import com.aldhafara.genealogicalTree.mappers.PersonMapper;
@@ -37,11 +38,6 @@ public class PersonServiceImpl implements PersonService {
         return personRepository.save(person);
     }
 
-    public UUID saveAndReturnId(Person person) {
-        Person savedPerson = save(person);
-        return savedPerson.getId();
-    }
-
     @Override
     public Person getById(UUID id) throws PersonNotFoundException {
 
@@ -53,27 +49,18 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Transactional
-    public UUID saveAndReturnId(PersonModel personModel) {
-        Person person = personMapper.mapPersonModelToPerson(personModel);
+    public Person saveAndReturn(PersonModel personModel) {
+        Person person = getPerson(personMapper.mapPersonModelToPerson(personModel));
 
-        if (person.getAddBy() == null) {
+        return save(person);
+    }
+
+    private Person getPerson(Person person) {
+        if (person != null && person.getAddBy() == null) {
             UUID registerUserId = securityContextFacade.getCurrentUserId();
             person.setAddBy(registerUserId);
         }
-
-        return saveAndReturnId(person);
-    }
-
-    @Transactional
-    public Person saveAndReturn(PersonModel personModel) {
-        Person person = personMapper.mapPersonModelToPerson(personModel);
-
-        UUID registerUserId = securityContextFacade.getCurrentUserId();
-        if (person.getAddBy() == null) {
-            person.setAddBy(registerUserId);
-        }
-
-        return save(person);
+        return person;
     }
 
     public Person saveParent(PersonModel parent, Person person) {
@@ -100,5 +87,16 @@ public class PersonServiceImpl implements PersonService {
             }
         }
         return saveAndReturn(sibling);
+    }
+
+    @Transactional
+    public UUID saveAndReturnId(PersonModel personModel, Family family) {
+        Person person = getPerson(personMapper.mapPersonModelWithFamilyToPerson(personModel, family));
+        if (person == null) {
+            return null;
+        }
+
+        Person savedPerson = save(person);
+        return savedPerson.getId();
     }
 }

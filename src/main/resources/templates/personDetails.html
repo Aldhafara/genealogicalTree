@@ -78,6 +78,16 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row children">
+                        <div class="col">
+                            <div class="row d-flex justify-content-center" th:if="${siblings != null and !siblings.isEmpty()}">
+                                <label for="sibling" data-i18n="siblings">Siblings:</label>
+                            </div>
+                                <div class="row siblings-list list-group p-2" th:each="sibling : ${siblings}">
+                                    <a th:href="@{/person/{id}(id=${sibling.id})}" class="list-group-item list-group-item-action list-group-item-secondary" th:text="*{sibling.firstName + ' ' + sibling.lastName}">...</a>
+                                </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-6 text-center p-3 details">
                     <form id="viewForm" class="col-sm-12">
@@ -189,12 +199,24 @@
                 <div class="col-3 text-center p-3 partner">
                 </div>
             </div>
-            <div class="row children">
+            <div class="row add-children">
                 <div class="col text-center daughter">
                     <button type="button" class="btn btn-lg btn-primary" disabled data-i18n="addDaughter">Add daughter</button>
                 </div>
                 <div class="col text-center son">
                     <button type="button" class="btn btn-lg btn-primary" disabled data-i18n="addSon">Add son</button>
+                </div>
+            </div>
+            <div class="row children">
+                <div class="col">
+                    <div class="row d-flex justify-content-center" th:if="${children != null and !children.isEmpty()}">
+                        <label for="child" data-i18n="children">Children:</label>
+                    </div>
+                    <div class="row">
+                        <div class="col children-list list-group p-2" th:each="child : ${children}">
+                            <a th:href="@{/person/{id}(id=${child.id})}" class="list-group-item list-group-item-action list-group-item-secondary" th:text="*{child.firstName + ' ' + child.lastName}">...</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

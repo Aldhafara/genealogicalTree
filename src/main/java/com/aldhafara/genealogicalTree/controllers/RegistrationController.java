@@ -40,7 +40,7 @@ public class RegistrationController {
         try {
             UserModel saveUser = userService.save(userModel);
             personModel.setAddBy(saveUser.getId());
-            UUID savedPersonId = personService.saveAndReturnId(personModel);
+            UUID savedPersonId = personService.saveAndReturnId(personModel, null);
             saveUser.setDetailsId(savedPersonId);
             userService.update(saveUser);
             return "redirect:/login";

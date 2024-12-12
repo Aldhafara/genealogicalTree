@@ -1,5 +1,6 @@
 package com.aldhafara.genealogicalTree.entities;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -8,6 +9,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 
 import java.time.Instant;
@@ -22,13 +25,13 @@ public class Family {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     private UUID addBy;
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "father_id")
     private Person father;
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "mother_id")
     private Person mother;
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "family_id")
     private List<Person> children;
     private Instant updateDate;
@@ -43,6 +46,16 @@ public class Family {
         this.mother = builder.mother;
         this.children = builder.children;
         this.updateDate = builder.updateDate;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        this.updateDate = Instant.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updateDate = Instant.now();
     }
 
     public static Family.Builder builder() {

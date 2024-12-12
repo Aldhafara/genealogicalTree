@@ -47,13 +47,14 @@ public class PersonController {
                              Model model) {
         PersonModel personModel;
         try {
-            personModel = personMapper.mapPersonToPersonModel(personService.getById(id));
+            personModel = personMapper.mapPersonToPersonModel(personService.getById(id), familyService.getFamiliesWithParent(id));
         } catch (PersonNotFoundException e) {
             return new ResponseEntity<>(
                     "Person not found", HttpStatus.NOT_FOUND);
         }
         model.addAttribute("person", personModel);
         model.addAttribute("siblings", personModel.getSiblings());
+        model.addAttribute("children", personModel.getChildren());
         model.addAttribute("mother", personModel.getMother());
         model.addAttribute("father", personModel.getFather());
         model.addAttribute("sexOptions", SexEnum.values());
@@ -62,7 +63,7 @@ public class PersonController {
 
     @PostMapping("/edit")
     public String editPerson(@ModelAttribute PersonModel personModel) {
-        personService.saveAndReturnId(personModel);
+        personService.saveAndReturnId(personModel, familyService.getFamilyById(personModel.getFamilyId()));
 
         return "redirect:/person/" + personModel.getId();
     }
@@ -70,7 +71,7 @@ public class PersonController {
     @GetMapping("/add")
     public String addPerson() {
         PersonModel personModel = new PersonModel();
-        UUID newPersonId = personService.saveAndReturnId(personModel);
+        UUID newPersonId = personService.saveAndReturnId(personModel, familyService.getFamilyById(personModel.getFamilyId()));
 
         return "redirect:/person/" + newPersonId;
     }
@@ -137,12 +138,12 @@ public class PersonController {
     }
 
     private Person addSibling(UUID id, SexEnum female) throws PersonNotFoundException {
-        Person child = personService.getById(id);
+        Person person = personService.getById(id);
 
         PersonModel sibling = new PersonModel();
         sibling.setSex(female);
-        Person savedSibling = personService.saveSibling(sibling, child);
-        familyService.save(child.getFamily(), savedSibling);
+        Person savedSibling = personService.saveSibling(sibling, person);
+        familyService.save(person.getFamily(), savedSibling);
         return savedSibling;
     }
 

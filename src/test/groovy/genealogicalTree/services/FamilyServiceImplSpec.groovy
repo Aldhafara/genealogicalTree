@@ -12,14 +12,16 @@ import spock.lang.Subject
 
 import java.time.Clock
 import java.time.Instant
-import java.time.ZoneId
+
+import static java.time.Clock.fixed
+import static java.time.ZoneOffset.UTC
 
 class FamilyServiceImplSpec extends Specification {
 
     FamilyRepository familyRepository = Mock()
     FamilyMapper familyMapper = Mock()
     SecurityContextFacade securityContextFacade = Mock()
-    Clock clock = Clock.fixed(Instant.parse("2024-01-01T12:34:56Z"), ZoneId.of("UTC"))
+    Clock clock = fixed(Instant.parse("2024-01-01T12:34:56Z"), UTC)
 
     @Subject
     FamilyServiceImpl familyService = new FamilyServiceImpl(familyRepository, familyMapper, securityContextFacade)

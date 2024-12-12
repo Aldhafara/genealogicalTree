@@ -32,7 +32,7 @@ public class Person {
     private Instant birthDate;
     private String birthPlace;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="family_id")
+    @JoinColumn(name="family_id", insertable = false, updatable = false)
     private Family family;
 
     public Person() {

@@ -22,6 +22,12 @@ public class PersonBasicData {
         }
     }
 
+    public PersonBasicData(UUID id, String firstName, String lastName) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
     public UUID getId() {
         return id;
     }

@@ -4,9 +4,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.List;
 import java.util.UUID;
+
+import static java.time.ZoneOffset.UTC;
 
 public class PersonModel {
 
@@ -24,6 +25,7 @@ public class PersonModel {
     private List<PersonBasicData> siblings;
     private PersonBasicData mother;
     private PersonBasicData father;
+    private UUID familyId;
 
     public PersonModel() {
     }
@@ -95,12 +97,12 @@ public class PersonModel {
     }
 
     public Instant getBirthDateAsInstant() {
-        return birthDate != null ? birthDate.atStartOfDay(ZoneId.of("UTC")).toInstant() : null;
+        return birthDate != null ? birthDate.atStartOfDay(UTC).toInstant() : null;
     }
 
     public void setBirthDateFromInstant(Instant birthDateInstant) {
         this.birthDate = birthDateInstant != null ?
-                LocalDate.ofInstant(birthDateInstant, ZoneId.of("UTC")) : null;
+                LocalDate.ofInstant(birthDateInstant, UTC) : null;
     }
 
     public String getBirthPlace() {
@@ -167,6 +169,14 @@ public class PersonModel {
         this.father = father;
     }
 
+    public UUID getFamilyId() {
+        return familyId;
+    }
+
+    public void setFamilyId(UUID familyId) {
+        this.familyId = familyId;
+    }
+
     public static final class Builder {
         private UUID id;
         private UUID addBy;
@@ -229,7 +239,7 @@ public class PersonModel {
 
         public Builder setBirthDateFromInstant(Instant birthDateInstant) {
             this.birthDate = birthDateInstant != null ?
-                    LocalDate.ofInstant(birthDateInstant, ZoneId.of("UTC")) : null;
+                    LocalDate.ofInstant(birthDateInstant, UTC) : null;
             return this;
         }
 

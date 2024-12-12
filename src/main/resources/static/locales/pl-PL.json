@@ -30,5 +30,7 @@
   "updateDate" : "Zaktualizowano",
   "familyName" : "Nazwisko rodowe",
   "birthDate" : "Data urodzenia",
-  "birthPlace" : "Miejsce urodzenia"
+  "birthPlace" : "Miejsce urodzenia",
+  "children" : "Potomstwo:",
+  "siblings" : "Rodzeństwo:"
 }

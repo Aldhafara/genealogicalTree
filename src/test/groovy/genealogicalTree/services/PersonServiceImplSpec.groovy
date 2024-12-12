@@ -12,17 +12,18 @@ import spock.lang.Subject
 
 import java.time.Clock
 import java.time.Instant
-import java.time.ZoneId
 
 import static com.aldhafara.genealogicalTree.models.SexEnum.FEMALE
 import static com.aldhafara.genealogicalTree.models.SexEnum.MALE
+import static java.time.Clock.fixed
+import static java.time.ZoneOffset.UTC
 
 class PersonServiceImplSpec extends Specification {
 
     PersonRepository personRepository = Mock()
     PersonMapper personMapper = Mock()
     SecurityContextFacade securityContextFacade = Mock()
-    Clock clock = Clock.fixed(Instant.parse("2024-01-01T12:34:56Z"), ZoneId.of("UTC"))
+    Clock clock = fixed(Instant.parse("2024-01-01T12:34:56Z"), UTC)
 
     @Subject
     PersonServiceImpl personService = new PersonServiceImpl(personRepository, personMapper, securityContextFacade)
@@ -81,12 +82,12 @@ class PersonServiceImplSpec extends Specification {
             def currentUserId = UUID.randomUUID()
             def savedPerson = new Person(id: UUID.randomUUID())
         and:
-            personMapper.mapPersonModelToPerson(personModel) >> mappedPerson
+            personMapper.mapPersonModelWithFamilyToPerson(personModel,null) >> mappedPerson
             securityContextFacade.getCurrentUserId() >> currentUserId
             personRepository.save(mappedPerson) >> savedPerson
 
         when:
-            def result = personService.saveAndReturnId(personModel)
+            def result = personService.saveAndReturnId(personModel, null)
 
         then:
             mappedPerson.addBy == currentUserId

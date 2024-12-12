@@ -30,5 +30,7 @@
   "updateDate" : "Updated at",
   "familyName" : "Family name",
   "birthDate" : "Birth date",
-  "birthPlace" : "Birth place"
+  "birthPlace" : "Birth place",
+  "children" : "Children:",
+  "siblings" : "Siblings:"
 }
