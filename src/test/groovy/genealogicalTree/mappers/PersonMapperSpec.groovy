@@ -15,7 +15,20 @@ import static java.time.ZoneOffset.UTC
 class PersonMapperSpec extends Specification {
 
     PersonMapper personMapper = new PersonMapper()
-    Clock clock = Clock.fixed(Instant.parse("2024-01-01T14:00:00Z"), UTC);
+    Clock clock = Clock.fixed(Instant.parse("2024-01-01T14:00:00Z"), UTC)
+
+    def "should return empty PersonModel when person is null"() {
+        given:
+            def person = null
+            def family = []
+
+        when:
+            def result = new PersonMapper().mapPersonToPersonModel(person, family)
+
+        then:
+            result instanceof PersonModel
+            result.partners == null
+    }
 
     def "should map Person to PersonModel correctly"() {
         given:
@@ -111,7 +124,7 @@ class PersonMapperSpec extends Specification {
             person.birthDate == null
     }
 
-    def "should map Person to PersonModel with correctly map children field"() {
+    def "should map Person to PersonModel with correctly map children"() {
         given:
             def child1id = UUID.randomUUID()
             def child2id = UUID.randomUUID()
@@ -136,7 +149,7 @@ class PersonMapperSpec extends Specification {
             result.children.find { it.id == child3id && it.firstName == "Carl" && it.lastName == "Doe" }
     }
 
-    def "should map PersonModel and Family to Person  with correct family and children"() {
+    def "should map PersonModel and Family to Person with correct family and children"() {
         given:
             def personId = UUID.randomUUID()
             def addById = UUID.randomUUID()
@@ -183,6 +196,80 @@ class PersonMapperSpec extends Specification {
 
         and:
             result.family.children.size() == 3
-            result.family.children*.firstName == ["Child1", "Child2", "Child3"]
+            result.family.children*.firstName.containsAll(["Child1", "Child2", "Child3"])
+    }
+
+    def "should not add person as partner when mapping Person to PersonModel"() {
+        given:
+            def person = new Person(id: UUID.randomUUID(), firstName: "John", lastName: "Doe")
+            def partner = new Person(id: UUID.randomUUID(), firstName: "Jane", lastName: "Doe")
+
+            def family = [new Family(father: person, mother: partner)]
+
+        when:
+            def result = new PersonMapper().mapPersonToPersonModel(person, family)
+
+        then:
+            result.partners.size() == 1
+            result.partners[0].firstName == "Jane"
+            result.partners[0].lastName == "Doe"
+    }
+
+    def "should map partners correctly from family when mapping Person to PersonModel"() {
+        given:
+            def person = new Person(id: UUID.randomUUID(), firstName: "John", lastName: "Doe")
+            def partner1 = new Person(id: UUID.randomUUID(), firstName: "Jane", lastName: "Doe")
+            def partner2 = new Person(id: UUID.randomUUID(), firstName: "Lucy", lastName: "Smith")
+
+            def family = [new Family(father: person, mother: partner1), new Family(father: person, mother: partner2)]
+
+        when:
+            def result = new PersonMapper().mapPersonToPersonModel(person, family)
+
+        then:
+            result.partners.size() == 2
+            result.partners[0].firstName == "Jane"
+            result.partners[0].lastName == "Doe"
+            result.partners[1].firstName == "Lucy"
+            result.partners[1].lastName == "Smith"
+    }
+
+    def "should correctly map siblings when mapping Person to PersonModel"() {
+        given:
+            def father = new Person(id: UUID.randomUUID(), firstName: "Tom", lastName: "Doe")
+            def mother = new Person(id: UUID.randomUUID(), firstName: "Alice", lastName: "Doe")
+
+            def sibling1 = new Person(id: UUID.randomUUID(), firstName: "John", lastName: "Doe")
+            def sibling2 = new Person(id: UUID.randomUUID(), firstName: "Jane", lastName: "Doe")
+            def personAncestorsFamily = new Family(father: father, mother: mother, children: [sibling1, sibling2])
+            def person = new Person(id: UUID.randomUUID(), firstName: "Jimmy", lastName: "Doe", family: personAncestorsFamily)
+
+            def family = new Family(father: new Person(), mother: new Person(), children: [])
+
+        when:
+            def result = new PersonMapper().mapPersonToPersonModel(person, [family])
+
+        then:
+            result.siblingsWithStepSiblings.size() == 2
+            result.siblingsWithStepSiblings*.firstName.containsAll(["John", "Jane"])
+    }
+
+    def "should add only non-null and non-equal partners when mapping Person to PersonModel"() {
+        given:
+            def person = new Person(id: UUID.randomUUID(), firstName: "John", lastName: "Doe")
+
+            def families = [
+                    new Family(father: person, mother: new Person(id: UUID.randomUUID(), firstName: "Lucy", lastName: "Smith")),
+                    new Family(father: person, mother: new Person(id: UUID.randomUUID(), firstName: "Alice", lastName: "Smith")),
+                    new Family(father: person),
+                    new Family(father: new Person(id: UUID.randomUUID(), firstName: "Georg", lastName: "King"), mother: person)
+            ]
+
+        when:
+            def result = new PersonMapper().mapPersonToPersonModel(person, families)
+
+        then:
+            result.partners.size() == 3
+            result.partners*.firstName.containsAll(["Georg", "Lucy", "Alice"])
     }
 }

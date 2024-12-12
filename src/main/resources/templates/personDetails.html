@@ -78,12 +78,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row children">
+                    <div class="row siblings">
                         <div class="col">
-                            <div class="row d-flex justify-content-center" th:if="${siblings != null and !siblings.isEmpty()}">
+                            <div class="row d-flex justify-content-center" th:if="${siblingsWithStepSiblings != null and !siblingsWithStepSiblings.isEmpty()}">
                                 <label for="sibling" data-i18n="siblings">Siblings:</label>
                             </div>
-                                <div class="row siblings-list list-group p-2" th:each="sibling : ${siblings}">
+                                <div class="row siblingsWithStepSiblings-list list-group p-2" th:each="sibling : ${siblingsWithStepSiblings}">
                                     <a th:href="@{/person/{id}(id=${sibling.id})}" class="list-group-item list-group-item-action list-group-item-secondary" th:text="*{sibling.firstName + ' ' + sibling.lastName}">...</a>
                                 </div>
                         </div>
@@ -197,6 +197,19 @@
                     </form>
                 </div>
                 <div class="col-3 text-center p-3 partner">
+                    <div class="row addButtons"></div>
+                    <div class="row partners">
+                        <div class="col">
+                            <div class="row d-flex justify-content-center" th:if="${partners != null and !partners.isEmpty()}">
+                                <label for="partner" data-i18n="partners">Partners:</label>
+                            </div>
+                            <div class="row">
+                                <div class="col partners-list list-group p-2" th:each="partner : ${partners}">
+                                    <a th:href="@{/person/{id}(id=${partner.id})}" class="list-group-item list-group-item-action list-group-item-secondary" th:text="*{partner.firstName + ' ' + partner.lastName}">...</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="row add-children">

@@ -53,10 +53,11 @@ public class PersonController {
                     "Person not found", HttpStatus.NOT_FOUND);
         }
         model.addAttribute("person", personModel);
-        model.addAttribute("siblings", personModel.getSiblings());
+        model.addAttribute("siblingsWithStepSiblings", personModel.getSiblingsWithStepSiblings());
         model.addAttribute("children", personModel.getChildren());
         model.addAttribute("mother", personModel.getMother());
         model.addAttribute("father", personModel.getFather());
+        model.addAttribute("partners", personModel.getPartners());
         model.addAttribute("sexOptions", SexEnum.values());
         return "personDetails";
     }

@@ -23,8 +23,10 @@ public class PersonModel {
     private String birthPlace;
     private List<PersonBasicData> children;
     private List<PersonBasicData> siblings;
+    private List<PersonBasicData> siblingsWithStepSiblings;
     private PersonBasicData mother;
     private PersonBasicData father;
+    private List<PersonBasicData> partners;
     private UUID familyId;
 
     public PersonModel() {
@@ -47,9 +49,10 @@ public class PersonModel {
         this.birthDate = builder.birthDate;
         this.birthPlace = builder.birthPlace;
         this.children = builder.children;
-        this.siblings = builder.siblings;
+        this.siblingsWithStepSiblings = builder.siblingsWithStepSiblings;
         this.mother = builder.mother;
         this.father = builder.father;
+        this.partners = builder.partners;
     }
 
     public static Builder builder() {
@@ -153,6 +156,14 @@ public class PersonModel {
         this.siblings = siblings;
     }
 
+    public List<PersonBasicData> getSiblingsWithStepSiblings() {
+        return siblingsWithStepSiblings;
+    }
+
+    public void setSiblingsWithStepSiblings(List<PersonBasicData> siblingsWithStepSiblings) {
+        this.siblingsWithStepSiblings = siblingsWithStepSiblings;
+    }
+
     public PersonBasicData getMother() {
         return mother;
     }
@@ -167,6 +178,14 @@ public class PersonModel {
 
     public void setFather(PersonBasicData father) {
         this.father = father;
+    }
+
+    public List<PersonBasicData> getPartners() {
+        return partners;
+    }
+
+    public void setPartners(List<PersonBasicData> partners) {
+        this.partners = partners;
     }
 
     public UUID getFamilyId() {
@@ -188,9 +207,10 @@ public class PersonModel {
         private LocalDate birthDate;
         private String birthPlace;
         private List<PersonBasicData> children;
-        private List<PersonBasicData> siblings;
+        private List<PersonBasicData> siblingsWithStepSiblings;
         private PersonBasicData mother;
         private PersonBasicData father;
+        private List<PersonBasicData> partners;
 
         public Builder id(UUID id) {
             this.id = id;
@@ -248,8 +268,8 @@ public class PersonModel {
             return this;
         }
 
-        public Builder siblings(List<PersonBasicData> siblings) {
-            this.siblings = siblings;
+        public Builder siblingsWithStepSiblings(List<PersonBasicData> siblings) {
+            this.siblingsWithStepSiblings = siblings;
             return this;
         }
 
@@ -260,6 +280,11 @@ public class PersonModel {
 
         public Builder father(PersonBasicData father) {
             this.father = father;
+            return this;
+        }
+
+        public Builder partners(List<PersonBasicData> partners) {
+            this.partners = partners;
             return this;
         }
 

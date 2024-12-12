@@ -32,5 +32,6 @@
   "birthDate" : "Birth date",
   "birthPlace" : "Birth place",
   "children" : "Children:",
-  "siblings" : "Siblings:"
+  "siblings" : "Siblings:",
+  "partners" : "Partners:"
 }
