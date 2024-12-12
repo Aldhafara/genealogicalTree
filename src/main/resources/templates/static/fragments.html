@@ -22,7 +22,10 @@
                             <a href="/home" sec:authorize="!isAnonymous()" class="btn btn-nav" role="button" data-i18n="mainPage">Main page</a>
                             <a href="/login" sec:authorize="isAnonymous()" class="btn btn-nav" role="button" data-i18n="login">Log in</a>
                             <a href="/register" sec:authorize="isAnonymous()" class="btn btn-nav" role="button" data-i18n="register">Register</a>
-                            <a href="/logout" sec:authorize="!isAnonymous()" class="btn btn-nav" role="button" data-i18n="logout">Log out</a>
+                            <form action="/logout" method="post" sec:authorize="!isAnonymous()" style="display: inline;">
+                                <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                                <button type="submit" class="btn btn-nav" data-i18n="logout">Log out</button>
+                            </form>
                         </nav>
                     </div>
                     <div class="d-flex justify-content-end align-items-center">
