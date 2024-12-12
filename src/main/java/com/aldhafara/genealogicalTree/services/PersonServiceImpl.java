@@ -89,14 +89,18 @@ public class PersonServiceImpl implements PersonService {
         return saveAndReturn(sibling);
     }
 
-    @Transactional
     public UUID saveAndReturnId(PersonModel personModel, Family family) {
+        Person savedPerson = saveAndReturnPerson(personModel, family);
+        return savedPerson.getId();
+    }
+
+    @Transactional
+    public Person saveAndReturnPerson(PersonModel personModel, Family family) {
         Person person = getPerson(personMapper.mapPersonModelWithFamilyToPerson(personModel, family));
         if (person == null) {
             return null;
         }
 
-        Person savedPerson = save(person);
-        return savedPerson.getId();
+        return save(person);
     }
 }

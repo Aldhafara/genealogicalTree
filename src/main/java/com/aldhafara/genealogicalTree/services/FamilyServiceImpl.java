@@ -33,34 +33,30 @@ public class FamilyServiceImpl implements FamilyService{
     }
 
     @Override
-    public UUID save(Family family) {
+    public Family save(Family family) {
         family.setUpdateDate(clock.instant());
-        Family savedFamily = familyRepository.save(family);
-        return savedFamily.getId();
-    }
-
-
-    @Transactional
-    public UUID save(FamilyModel familyModel) {
-        Family family = familyMapper.mapFamilyModelToFamily(familyModel);
-
         UUID registerUserId = securityContextFacade.getCurrentUserId();
         if (family.getAddBy() == null) {
             family.setAddBy(registerUserId);
         }
-
-        return save(family);
+        return familyRepository.save(family);
     }
 
-    public FamilyModel getFamilyModel(Family family) {
-        return familyMapper.mapFamilyToFamilyModel(family);
+    public UUID saveAndReturnId(Family family) {
+        return save(family).getId();
     }
 
-    public UUID save(Family family, Person child) {
+    @Transactional
+    public UUID save(FamilyModel familyModel) {
+        Family family = familyMapper.mapFamilyModelToFamily(familyModel);
+        return saveAndReturnId(family);
+    }
+
+    public UUID saveChild(Family family, Person child) {
         if (child != null) {
             family.addChild(child);
         }
-        return save(family);
+        return saveAndReturnId(family);
     }
 
     @Override
@@ -71,13 +67,11 @@ public class FamilyServiceImpl implements FamilyService{
         return familyRepository.findByParent(parentId);
     }
 
-    @Override
-    public Family getFamilyById(UUID familyId) {
+    public Family getFamilyByIdOrReturnNew(UUID familyId) {
         if (familyId == null) {
             return null;
         }
         Optional<Family> familyOptional = familyRepository.findById(familyId);
         return familyOptional.orElse(null);
-
     }
 }

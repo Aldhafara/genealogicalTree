@@ -262,6 +262,7 @@ class PersonMapperSpec extends Specification {
                     new Family(father: person, mother: new Person(id: UUID.randomUUID(), firstName: "Lucy", lastName: "Smith")),
                     new Family(father: person, mother: new Person(id: UUID.randomUUID(), firstName: "Alice", lastName: "Smith")),
                     new Family(father: person),
+                    new Family(father: person, mother: new Person(id: UUID.randomUUID())),
                     new Family(father: new Person(id: UUID.randomUUID(), firstName: "Georg", lastName: "King"), mother: person)
             ]
 
@@ -269,7 +270,7 @@ class PersonMapperSpec extends Specification {
             def result = new PersonMapper().mapPersonToPersonModel(person, families)
 
         then:
-            result.partners.size() == 3
-            result.partners*.firstName.containsAll(["Georg", "Lucy", "Alice"])
+            result.partners.size() == 4
+            result.partners*.firstName.containsAll(["Georg", "Lucy", "Alice", null])
     }
 }

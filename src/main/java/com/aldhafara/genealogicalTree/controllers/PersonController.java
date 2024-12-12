@@ -1,9 +1,9 @@
 package com.aldhafara.genealogicalTree.controllers;
 
+import com.aldhafara.genealogicalTree.entities.Family;
 import com.aldhafara.genealogicalTree.entities.Person;
 import com.aldhafara.genealogicalTree.exceptions.PersonNotFoundException;
 import com.aldhafara.genealogicalTree.mappers.PersonMapper;
-import com.aldhafara.genealogicalTree.models.FamilyModel;
 import com.aldhafara.genealogicalTree.models.PersonModel;
 import com.aldhafara.genealogicalTree.models.SexEnum;
 import com.aldhafara.genealogicalTree.models.UserModel;
@@ -64,7 +64,7 @@ public class PersonController {
 
     @PostMapping("/edit")
     public String editPerson(@ModelAttribute PersonModel personModel) {
-        personService.saveAndReturnId(personModel, familyService.getFamilyById(personModel.getFamilyId()));
+        personService.saveAndReturnId(personModel, familyService.getFamilyByIdOrReturnNew(personModel.getFamilyId()));
 
         return "redirect:/person/" + personModel.getId();
     }
@@ -72,97 +72,91 @@ public class PersonController {
     @GetMapping("/add")
     public String addPerson() {
         PersonModel personModel = new PersonModel();
-        UUID newPersonId = personService.saveAndReturnId(personModel, familyService.getFamilyById(personModel.getFamilyId()));
-
+        UUID newPersonId = personService.saveAndReturnId(personModel, familyService.getFamilyByIdOrReturnNew(personModel.getFamilyId()));
         return "redirect:/person/" + newPersonId;
     }
 
-    @GetMapping("/add/for/{id}/mother")
-    public Object addMother(@PathVariable UUID id) {
-        Person child;
+    @GetMapping("/add/for/{personId}/{parentType}")
+    public Object addParent(@PathVariable UUID personId, @PathVariable String parentType) {
+        SexEnum parentSex;
         try {
-            child = personService.getById(id);
-        } catch (PersonNotFoundException e) {
-            return new ResponseEntity<>(
-                    "Person not found", HttpStatus.NOT_FOUND);
+            parentSex = determineParentSex(parentType);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>("Invalid parent type", HttpStatus.BAD_REQUEST);
         }
-        PersonModel parentModel = new PersonModel();
-        parentModel.setSex(SexEnum.FEMALE);
-        Person parent = personService.saveParent(parentModel, child);
 
-        familyService.save(getFamilyModel(child, parent));
+        UUID parentId;
+        try {
+            Person person = personService.getById(personId);
+            parentId = getParentUuid(person, parentSex);
+        } catch (PersonNotFoundException e) {
+            return new ResponseEntity<>("Person not found", HttpStatus.NOT_FOUND);
+        }
 
-        return "redirect:/person/" + parent.getId();
+        return "redirect:/person/" + parentId;
     }
 
-    @GetMapping("/add/for/{id}/father")
-    public Object addFather(@PathVariable UUID id) {
-        Person child;
-        try {
-            child = personService.getById(id);
-        } catch (PersonNotFoundException e) {
-            return new ResponseEntity<>(
-                    "Person not found", HttpStatus.NOT_FOUND);
-        }
-        PersonModel parentModel = new PersonModel();
-        parentModel.setSex(SexEnum.MALE);
-        Person parent = personService.saveParent(parentModel, child);
-
-        familyService.save(getFamilyModel(child, parent));
-
-        return "redirect:/person/" + parent.getId();
+    private SexEnum determineParentSex(String parentType) {
+        return switch (parentType.toLowerCase()) {
+            case "mother" -> SexEnum.FEMALE;
+            case "father" -> SexEnum.MALE;
+            default -> throw new IllegalArgumentException("Invalid parent type");
+        };
     }
 
-    @GetMapping("/add/for/{id}/sister")
-    public Object addSister(@PathVariable UUID id) {
+    private UUID getParentUuid(Person personId, SexEnum parentSex) {
+        Person mother = createAndSaveParent(SexEnum.FEMALE, personId);
+        Person father = createAndSaveParent(SexEnum.MALE, personId);
+
+        if (personId.getFamily() == null || personId.getFamily().getId() == null) {
+            familyService.save(new Family(father, mother, personId));
+        }
+
+        return parentSex == SexEnum.MALE ? father.getId() : mother.getId();
+    }
+
+    private Person createAndSaveParent(SexEnum parentSex, Person child) {
+        PersonModel parentModel = new PersonModel();
+        parentModel.setSex(parentSex);
+        return personService.saveParent(parentModel, child);
+    }
+
+    @GetMapping("/add/for/{personId}/{siblingType}")
+    public Object addSibling(@PathVariable UUID personId, @PathVariable String siblingType) {
+        SexEnum siblingSex;
+        try {
+            siblingSex = determineSiblingSex(siblingType);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>("Invalid sibling type", HttpStatus.BAD_REQUEST);
+        }
+
         Person savedSibling;
         try {
-            savedSibling = addSibling(id, SexEnum.FEMALE);
+            savedSibling = createSibling(personId, siblingSex);
         } catch (PersonNotFoundException e) {
-            return new ResponseEntity<>(
-                    "Person not found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Person not found", HttpStatus.NOT_FOUND);
         }
 
         return "redirect:/person/" + savedSibling.getId();
     }
 
-    @GetMapping("/add/for/{id}/brother")
-    public Object addBrother(@PathVariable UUID id) {
-        Person savedSibling;
-        try {
-            savedSibling = addSibling(id, SexEnum.MALE);
-        } catch (PersonNotFoundException e) {
-            return new ResponseEntity<>(
-                    "Person not found", HttpStatus.NOT_FOUND);
-        }
-        return "redirect:/person/" + savedSibling.getId();
+    private SexEnum determineSiblingSex(String siblingType) {
+        return switch (siblingType.toLowerCase()) {
+            case "sister" -> SexEnum.FEMALE;
+            case "brother" -> SexEnum.MALE;
+            default -> throw new IllegalArgumentException("Invalid sibling type");
+        };
     }
 
-    private Person addSibling(UUID id, SexEnum female) throws PersonNotFoundException {
-        Person person = personService.getById(id);
+    private Person createSibling(UUID personId, SexEnum siblingSex) throws PersonNotFoundException {
+        Person person = personService.getById(personId);
 
         PersonModel sibling = new PersonModel();
-        sibling.setSex(female);
+        sibling.setSex(siblingSex);
+
         Person savedSibling = personService.saveSibling(sibling, person);
-        familyService.save(person.getFamily(), savedSibling);
+        familyService.saveChild(person.getFamily(), savedSibling);
+
         return savedSibling;
-    }
-
-    private FamilyModel getFamilyModel(Person child, Person parent) {
-        FamilyModel familyModel;
-        if (child.getFamily() != null) {
-            familyModel = familyService.getFamilyModel(child.getFamily());
-        } else {
-            familyModel = new FamilyModel();
-        }
-
-        if (!familyModel.hasChild(child.getId())) {
-            familyModel.addChild(child);
-        }
-        switch (parent.getSex()) {
-            case FEMALE -> familyModel.setMother(parent);
-            case MALE -> familyModel.setFather(parent);
-        }
-        return familyModel;
     }
 }

@@ -8,7 +8,8 @@ import java.util.UUID;
 
 @Service
 public interface FamilyService {
-    UUID save(Family family);
+
+    Family save(Family family);
     List<Family> getFamiliesWithParent(UUID id);
-    Family getFamilyById(UUID familyId);
+    Family getFamilyByIdOrReturnNew(UUID familyId);
 }

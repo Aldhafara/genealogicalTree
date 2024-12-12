@@ -5,6 +5,7 @@
   "register" : "Register",
   "sex" : "Sex",
   "choose" : "Choose...",
+  "unknown" : "unknown",
 
   "mainPage" : "Main page",
   "logout" : "Logout",

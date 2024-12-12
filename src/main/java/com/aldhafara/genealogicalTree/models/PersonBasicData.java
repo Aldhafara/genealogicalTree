@@ -37,7 +37,7 @@ public class PersonBasicData {
     }
 
     public String getFirstName() {
-        return firstName != null ? firstName : "nieznane";
+        return firstName;
     }
 
     public void setFirstName(String firstName) {
@@ -45,7 +45,7 @@ public class PersonBasicData {
     }
 
     public String getLastName() {
-        return lastName != null ? lastName : "nieznane";
+        return lastName;
     }
 
     public void setLastName(String lastName) {

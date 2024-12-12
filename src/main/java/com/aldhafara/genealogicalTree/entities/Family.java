@@ -39,6 +39,12 @@ public class Family {
     public Family() {
     }
 
+    public Family(Person father, Person mother, Person child) {
+        this.father = father;
+        this.mother = mother;
+        this.children = List.of(child);
+    }
+
     public Family(Family.Builder builder) {
         this.id = builder.id;
         this.addBy = builder.addBy;

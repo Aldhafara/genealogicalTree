@@ -42,7 +42,7 @@ class FamilyServiceImplSpec extends Specification {
                     .build()
 
         when:
-            def result = familyService.save(family)
+            def result = familyService.saveAndReturnId(family)
 
         then:
             1 * familyRepository.save(_ as Family) >> { args ->
@@ -99,7 +99,7 @@ class FamilyServiceImplSpec extends Specification {
             }
 
         when:
-            familyService.save(family, child)
+            familyService.saveChild(family, child)
 
         then:
             family.children.size() == expectedChildrenCount
@@ -113,7 +113,7 @@ class FamilyServiceImplSpec extends Specification {
 
     def "should throw exception when family is null"() {
         when:
-            familyService.save(null, new Person())
+            familyService.saveChild(null, new Person())
 
         then:
             thrown(NullPointerException)
@@ -127,7 +127,7 @@ class FamilyServiceImplSpec extends Specification {
             familyRepository.save(_) >> savedFamily
 
         when:
-            def result = familyService.save(family, null)
+            def result = familyService.saveChild(family, null)
 
         then:
             family.children.isEmpty()
