@@ -76,7 +76,7 @@ public class PersonController {
         return "redirect:/person/" + newPersonId;
     }
 
-    @GetMapping("/add/for/{personId}/{parentType}")
+    @GetMapping("/add/parent/{parentType}/for/{personId}")
     public Object addParent(@PathVariable UUID personId, @PathVariable String parentType) {
         SexEnum parentSex;
         try {
@@ -121,7 +121,7 @@ public class PersonController {
         return personService.saveParent(parentModel, child);
     }
 
-    @GetMapping("/add/for/{personId}/{siblingType}")
+    @GetMapping("/add/sibling/{siblingType}/for/{personId}")
     public Object addSibling(@PathVariable UUID personId, @PathVariable String siblingType) {
         SexEnum siblingSex;
         try {
