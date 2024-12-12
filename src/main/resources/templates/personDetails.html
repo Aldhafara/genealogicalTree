@@ -83,9 +83,9 @@
                             <div class="row d-flex justify-content-center" th:if="${siblingsWithStepSiblings != null and !siblingsWithStepSiblings.isEmpty()}">
                                 <label for="sibling" data-i18n="siblings">Siblings:</label>
                             </div>
-                                <div class="row siblingsWithStepSiblings-list list-group p-2" th:each="sibling : ${siblingsWithStepSiblings}">
-                                    <a th:href="@{/person/{id}(id=${sibling.id})}" class="list-group-item list-group-item-action list-group-item-secondary" th:data-first-name="${sibling.firstName}" th:data-last-name="${sibling.lastName}" data-i18n-format="formatName">...</a>
-                                </div>
+                            <div class="row siblingsWithStepSiblings-list list-group p-2" th:each="sibling : ${siblingsWithStepSiblings}">
+                                <a th:href="@{/person/{id}(id=${sibling.id})}" class="list-group-item list-group-item-action list-group-item-secondary" th:data-first-name="${sibling.firstName}" th:data-last-name="${sibling.lastName}" data-i18n-format="formatName">...</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -197,16 +197,24 @@
                     </form>
                 </div>
                 <div class="col-3 text-center p-3 partner">
-                    <div class="row addButtons"></div>
+                    <div class="row addButtons">
+                        <div class="col d-flex justify-content-center p-2">
+                            <div class="rounded-3 text-center mh-100 d-flex justify-content-center align-items-center">
+                                <div class="align-self-center">
+                                    <a th:href="@{/person/add/partner/for/{id}(id=${person.id})}"
+                                       role="button" class="btn btn-primary btn-sm"
+                                       data-i18n="addPartner">Add partner</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row partners">
                         <div class="col">
                             <div class="row d-flex justify-content-center" th:if="${partners != null and !partners.isEmpty()}">
                                 <label for="partner" data-i18n="partners">Partners:</label>
                             </div>
-                            <div class="row">
-                                <div class="col partners-list list-group p-2" th:each="partner : ${partners}">
-                                    <a th:href="@{/person/{id}(id=${partner.id})}" class="list-group-item list-group-item-action list-group-item-secondary" th:data-first-name="${partner.firstName}" th:data-last-name="${partner.lastName}" data-i18n-format="formatName">...</a>
-                                </div>
+                            <div class="row partners-list list-group p-2" th:each="partner : ${partners}">
+                                <a th:href="@{/person/{id}(id=${partner.id})}" class="list-group-item list-group-item-action list-group-item-secondary" th:data-first-name="${partner.firstName}" th:data-last-name="${partner.lastName}" data-i18n-format="formatName">...</a>
                             </div>
                         </div>
                     </div>

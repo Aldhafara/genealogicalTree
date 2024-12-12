@@ -96,6 +96,26 @@ public class PersonController {
         return "redirect:/person/" + parentId;
     }
 
+    @GetMapping("/add/partner/for/{personId}")
+    public Object addPartner(@PathVariable UUID personId) {
+
+        Person savedPerson;
+        try {
+            Person person = personService.getById(personId);
+            Person partner = new Person();
+            savedPerson = personService.save(partner);
+            if (person.getSex() == SexEnum.MALE) {
+                familyService.save(new Family(person, savedPerson, null));
+            } else {
+                familyService.save(new Family(savedPerson, person, null));
+            }
+        } catch (PersonNotFoundException e) {
+            return new ResponseEntity<>("Person not found", HttpStatus.NOT_FOUND);
+        }
+
+        return "redirect:/person/" + savedPerson.getId();
+    }
+
     private SexEnum determineParentSex(String parentType) {
         return switch (parentType.toLowerCase()) {
             case "mother" -> SexEnum.FEMALE;
@@ -104,12 +124,12 @@ public class PersonController {
         };
     }
 
-    private UUID getParentUuid(Person personId, SexEnum parentSex) {
-        Person mother = createAndSaveParent(SexEnum.FEMALE, personId);
-        Person father = createAndSaveParent(SexEnum.MALE, personId);
+    private UUID getParentUuid(Person person, SexEnum parentSex) {
+        Person mother = createAndSaveParent(SexEnum.FEMALE, person);
+        Person father = createAndSaveParent(SexEnum.MALE, person);
 
-        if (personId.getFamily() == null || personId.getFamily().getId() == null) {
-            familyService.save(new Family(father, mother, personId));
+        if (person.getFamily() == null || person.getFamily().getId() == null) {
+            familyService.save(new Family(father, mother, person));
         }
 
         return parentSex == SexEnum.MALE ? father.getId() : mother.getId();

@@ -6,7 +6,9 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
@@ -18,18 +20,21 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "families")
+@Table(name = "families", indexes = {
+        @Index(name = "idx_father_id", columnList = "father_id"),
+        @Index(name = "idx_mother_id", columnList = "mother_id")
+})
 public class Family {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     private UUID addBy;
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "father_id")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "father_id", unique = false)
     private Person father;
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "mother_id")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "mother_id", unique = false)
     private Person mother;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "family_id")
@@ -42,7 +47,9 @@ public class Family {
     public Family(Person father, Person mother, Person child) {
         this.father = father;
         this.mother = mother;
-        this.children = List.of(child);
+        if (child != null) {
+            this.children = List.of(child);
+        }
     }
 
     public Family(Family.Builder builder) {
