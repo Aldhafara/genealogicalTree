@@ -5,12 +5,14 @@ import com.aldhafara.genealogicalTree.entities.Family;
 import com.aldhafara.genealogicalTree.entities.Person;
 import com.aldhafara.genealogicalTree.exceptions.PersonNotFoundException;
 import com.aldhafara.genealogicalTree.mappers.PersonMapper;
+import com.aldhafara.genealogicalTree.models.PersonBasicData;
 import com.aldhafara.genealogicalTree.models.PersonModel;
 import com.aldhafara.genealogicalTree.repositories.PersonRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.Clock;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -32,6 +34,7 @@ public class PersonServiceImpl implements PersonService {
         this.clock = clock;
     }
 
+    @Transactional
     @Override
     public Person save(Person person) {
         person.setUpdateDate(clock.instant());
@@ -48,14 +51,13 @@ public class PersonServiceImpl implements PersonService {
         return optionalPerson.get();
     }
 
-    @Transactional
     public Person saveAndReturn(PersonModel personModel) {
-        Person person = getPerson(personMapper.mapPersonModelToPerson(personModel));
+        Person person = setAddByLoggedUserId(personMapper.mapPersonModelToPerson(personModel));
 
         return save(person);
     }
 
-    private Person getPerson(Person person) {
+    private Person setAddByLoggedUserId(Person person) {
         if (person != null && person.getAddBy() == null) {
             UUID registerUserId = securityContextFacade.getCurrentUserId();
             person.setAddBy(registerUserId);
@@ -94,13 +96,20 @@ public class PersonServiceImpl implements PersonService {
         return savedPerson.getId();
     }
 
-    @Transactional
     public Person saveAndReturnPerson(PersonModel personModel, Family family) {
-        Person person = getPerson(personMapper.mapPersonModelWithFamilyToPerson(personModel, family));
+        Person person = setAddByLoggedUserId(personMapper.mapPersonModelWithFamilyToPerson(personModel, family));
         if (person == null) {
             return null;
         }
 
         return save(person);
+    }
+
+    public List<PersonBasicData> getAll() {
+        return personRepository
+                .findByAddBy(securityContextFacade.getCurrentUserId())
+                .stream()
+                .map(PersonBasicData::new)
+                .toList();
     }
 }

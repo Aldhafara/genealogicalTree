@@ -35,5 +35,7 @@
   "birthPlace" : "Birth place",
   "children" : "Children:",
   "siblings" : "Siblings:",
-  "partners" : "Partners:"
+  "partners" : "Partners:",
+
+  "familyMembers" : "Members"
 }

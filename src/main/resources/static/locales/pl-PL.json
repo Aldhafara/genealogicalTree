@@ -35,5 +35,7 @@
   "birthPlace" : "Miejsce urodzenia",
   "children" : "Potomstwo:",
   "siblings" : "Rodzeństwo:",
-  "partners" : "Partnerzy:"
+  "partners" : "Partnerzy:",
+
+  "familyMembers" : "Członkowie rodziny"
 }

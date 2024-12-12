@@ -7,6 +7,8 @@ import com.aldhafara.genealogicalTree.mappers.PersonMapper
 import com.aldhafara.genealogicalTree.models.PersonModel
 import com.aldhafara.genealogicalTree.repositories.PersonRepository
 import com.aldhafara.genealogicalTree.services.PersonServiceImpl
+import jakarta.transaction.Transactional
+import org.springframework.test.annotation.Rollback
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -18,6 +20,8 @@ import static com.aldhafara.genealogicalTree.models.SexEnum.MALE
 import static java.time.Clock.fixed
 import static java.time.ZoneOffset.UTC
 
+@Rollback
+@Transactional
 class PersonServiceImplSpec extends Specification {
 
     PersonRepository personRepository = Mock()
@@ -46,6 +50,20 @@ class PersonServiceImplSpec extends Specification {
                 return savedPerson
             }
             result != null
+    }
+
+    def "should rollback transaction if savePerson fails"() {
+        given:
+            def personModel = new PersonModel(firstName: "John", lastName: "Doe")
+            def mappedPerson = new Person(firstName: "John", lastName: "Doe")
+            personMapper.mapPersonModelWithFamilyToPerson(personModel, null) >> mappedPerson
+            personRepository.save(_) >> { throw new RuntimeException("Database error") }
+
+        when:
+            personService.saveAndReturnPerson(personModel, null)
+
+        then:
+            thrown(RuntimeException)
     }
 
     def "should throw exception when person not found by ID"() {

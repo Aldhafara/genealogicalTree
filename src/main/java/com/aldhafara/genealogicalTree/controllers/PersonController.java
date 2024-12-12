@@ -4,6 +4,7 @@ import com.aldhafara.genealogicalTree.entities.Family;
 import com.aldhafara.genealogicalTree.entities.Person;
 import com.aldhafara.genealogicalTree.exceptions.PersonNotFoundException;
 import com.aldhafara.genealogicalTree.mappers.PersonMapper;
+import com.aldhafara.genealogicalTree.models.PersonBasicData;
 import com.aldhafara.genealogicalTree.models.PersonModel;
 import com.aldhafara.genealogicalTree.models.SexEnum;
 import com.aldhafara.genealogicalTree.models.UserModel;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -74,6 +76,14 @@ public class PersonController {
         PersonModel personModel = new PersonModel();
         UUID newPersonId = personService.saveAndReturnId(personModel, familyService.getFamilyByIdOrReturnNew(personModel.getFamilyId()));
         return "redirect:/person/" + newPersonId;
+    }
+
+
+    @GetMapping("/all")
+    public String getAllPersons(Model model) {
+        List<PersonBasicData> allPersons = personService.getAll();
+        model.addAttribute("allPersons", allPersons);
+        return "allPersons";
     }
 
     @GetMapping("/add/parent/{parentType}/for/{personId}")

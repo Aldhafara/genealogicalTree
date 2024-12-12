@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html lang="en-EN" xmlns:th="http://www.thymeleaf.org">
+    <div th:insert="~{static/fragments :: bootstrapStylesheet}"></div>
+    <head>
+        <div th:insert="~{static/fragments :: languageScript}"></div>
+        <title data-i18n="familyMembers">Members</title>
+        <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    </head>
+    <body th:style="'background: #f7f2e9'">
+        <div th:insert="~{static/fragments :: header}"></div>
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col" data-i18n="firstName">First name</th>
+                    <th scope="col" data-i18n="lastName">Last name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="person : ${allPersons}"
+                    th:data-url="@{/person/{id}(id=${person.id})}"
+                    onclick="window.location.href = this.getAttribute('data-url')">
+                    <th scope="row" th:text="${personStat.index + 1}"></th>
+                    <td th:text="${person.firstName}">...</td>
+                    <td th:text="${person.lastName}">...</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div th:insert="~{static/fragments :: footer}"></div>
+    </body>
+</html>
