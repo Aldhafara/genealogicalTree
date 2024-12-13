@@ -1,6 +1,5 @@
 package com.aldhafara.genealogicalTree.controllers;
 
-import com.aldhafara.genealogicalTree.entities.Family;
 import com.aldhafara.genealogicalTree.entities.Person;
 import com.aldhafara.genealogicalTree.exceptions.PersonNotFoundException;
 import com.aldhafara.genealogicalTree.mappers.PersonMapper;
@@ -56,10 +55,12 @@ public class PersonController {
         }
         model.addAttribute("person", personModel);
         model.addAttribute("siblingsWithStepSiblings", personModel.getSiblingsWithStepSiblings());
+        model.addAttribute("siblings", personModel.getSiblings());
         model.addAttribute("children", personModel.getChildren());
         model.addAttribute("mother", personModel.getMother());
         model.addAttribute("father", personModel.getFather());
         model.addAttribute("partners", personModel.getPartners());
+        model.addAttribute("families", personModel.getFamiliesAsParent());
         model.addAttribute("sexOptions", SexEnum.values());
         return "personDetails";
     }
@@ -112,12 +113,11 @@ public class PersonController {
         Person savedPerson;
         try {
             Person person = personService.getById(personId);
-            Person partner = new Person();
-            savedPerson = personService.save(partner);
+            savedPerson = personService.save(null);
             if (person.getSex() == SexEnum.MALE) {
-                familyService.save(new Family(person, savedPerson, null));
+                familyService.saveFamilyWithoutChildren(person, savedPerson);
             } else {
-                familyService.save(new Family(savedPerson, person, null));
+                familyService.saveFamilyWithoutChildren(savedPerson, person);
             }
         } catch (PersonNotFoundException e) {
             return new ResponseEntity<>("Person not found", HttpStatus.NOT_FOUND);
@@ -139,7 +139,7 @@ public class PersonController {
         Person father = createAndSaveParent(SexEnum.MALE, person);
 
         if (person.getFamily() == null || person.getFamily().getId() == null) {
-            familyService.save(new Family(father, mother, person));
+            familyService.saveFamilyWithChild(father, mother, person);
         }
 
         return parentSex == SexEnum.MALE ? father.getId() : mother.getId();
@@ -188,5 +188,52 @@ public class PersonController {
         familyService.saveChild(person.getFamily(), savedSibling);
 
         return savedSibling;
+    }
+
+    @GetMapping("/add/child/{childType}/for/{firstParentId}/{secondParentId}")
+    public Object addChild(@PathVariable UUID firstParentId, @PathVariable UUID secondParentId, @PathVariable String childType) {
+        SexEnum childSex;
+        try {
+            childSex = determineChildSex(childType);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>("Invalid child type", HttpStatus.BAD_REQUEST);
+        }
+        Person firstPerson;
+        Person secondPerson;
+        try {
+            firstPerson = personService.getById(firstParentId);
+            secondPerson = personService.getById(secondParentId);
+        } catch (PersonNotFoundException e) {
+            return new ResponseEntity<>("Person not found", HttpStatus.NOT_FOUND);
+        }
+        Person savedChild;
+        try {
+            savedChild = createChild(firstPerson, secondPerson, childSex);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>("Invalid parents", HttpStatus.BAD_REQUEST);
+        }
+        return "redirect:/person/" + savedChild.getId();
+    }
+
+    private SexEnum determineChildSex(String childType) {
+        return switch (childType.toLowerCase()) {
+            case "daughter" -> SexEnum.FEMALE;
+            case "son" -> SexEnum.MALE;
+            default -> throw new IllegalArgumentException("Invalid sibling type");
+        };
+    }
+
+    private Person createChild(Person firstParent, Person secondParent, SexEnum childSex) {
+        if (firstParent == null || secondParent == null) {
+            throw new IllegalArgumentException("A child cannot exist without parents");
+        }
+
+        PersonModel child = new PersonModel();
+        child.setSex(childSex);
+
+        Person savedChild = personService.createChildAndSave(child, firstParent, secondParent);
+        familyService.saveChild(firstParent, secondParent, savedChild);
+
+        return savedChild;
     }
 }

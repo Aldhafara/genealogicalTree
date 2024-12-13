@@ -2,6 +2,7 @@ package genealogicalTree.mappers
 
 import com.aldhafara.genealogicalTree.entities.Family
 import com.aldhafara.genealogicalTree.entities.Person
+import com.aldhafara.genealogicalTree.mappers.FamilyMapper
 import com.aldhafara.genealogicalTree.mappers.PersonMapper
 import com.aldhafara.genealogicalTree.models.PersonModel
 import com.aldhafara.genealogicalTree.models.SexEnum
@@ -14,7 +15,8 @@ import static java.time.ZoneOffset.UTC
 
 class PersonMapperSpec extends Specification {
 
-    PersonMapper personMapper = new PersonMapper()
+    FamilyMapper familyMapper = Mock()
+    PersonMapper personMapper = new PersonMapper(familyMapper)
     Clock clock = Clock.fixed(Instant.parse("2024-01-01T14:00:00Z"), UTC)
 
     def "should return empty PersonModel when person is null"() {
@@ -23,7 +25,7 @@ class PersonMapperSpec extends Specification {
             def family = []
 
         when:
-            def result = new PersonMapper().mapPersonToPersonModel(person, family)
+            def result = new PersonMapper(familyMapper).mapPersonToPersonModel(person, family)
 
         then:
             result instanceof PersonModel
@@ -140,7 +142,7 @@ class PersonMapperSpec extends Specification {
             def families = [firstFamily, secondFamily]
 
         when:
-            def result = new PersonMapper().mapPersonToPersonModel(person, families)
+            def result = new PersonMapper(familyMapper).mapPersonToPersonModel(person, families)
 
         then:
             result.children.size() == 3
@@ -207,7 +209,7 @@ class PersonMapperSpec extends Specification {
             def family = [new Family(father: person, mother: partner)]
 
         when:
-            def result = new PersonMapper().mapPersonToPersonModel(person, family)
+            def result = new PersonMapper(familyMapper).mapPersonToPersonModel(person, family)
 
         then:
             result.partners.size() == 1
@@ -224,7 +226,7 @@ class PersonMapperSpec extends Specification {
             def family = [new Family(father: person, mother: partner1), new Family(father: person, mother: partner2)]
 
         when:
-            def result = new PersonMapper().mapPersonToPersonModel(person, family)
+            def result = new PersonMapper(familyMapper).mapPersonToPersonModel(person, family)
 
         then:
             result.partners.size() == 2
@@ -247,11 +249,11 @@ class PersonMapperSpec extends Specification {
             def family = new Family(father: new Person(), mother: new Person(), children: [])
 
         when:
-            def result = new PersonMapper().mapPersonToPersonModel(person, [family])
+            def result = new PersonMapper(familyMapper).mapPersonToPersonModel(person, [family])
 
         then:
-            result.siblingsWithStepSiblings.size() == 2
-            result.siblingsWithStepSiblings*.firstName.containsAll(["John", "Jane"])
+            result.siblings.size() == 2
+            result.siblings*.firstName.containsAll(["John", "Jane"])
     }
 
     def "should add only non-null and non-equal partners when mapping Person to PersonModel"() {
@@ -267,7 +269,7 @@ class PersonMapperSpec extends Specification {
             ]
 
         when:
-            def result = new PersonMapper().mapPersonToPersonModel(person, families)
+            def result = new PersonMapper(familyMapper).mapPersonToPersonModel(person, families)
 
         then:
             result.partners.size() == 4

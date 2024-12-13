@@ -18,8 +18,12 @@ async function loadTranslations(language) {
     }
 }
 
-function formatName(firstName, lastName, unknown) {
+function formatFullName(firstName, lastName, unknown) {
     return `${firstName || unknown} ${lastName || unknown}`;
+}
+
+function formatName(name, unknown) {
+    return `${name || unknown}`;
 }
 
 async function changeLanguage(language) {
@@ -36,10 +40,20 @@ async function changeLanguage(language) {
             }
         });
 
-        document.querySelectorAll("[data-i18n-format]").forEach(element => {
+        document.querySelectorAll("[data-i18n-format-fullName]").forEach(element => {
             const firstName = element.getAttribute("data-first-name");
             const lastName = element.getAttribute("data-last-name");
-            element.textContent = formatName(firstName, lastName, translations["unknown"]);
+            element.textContent = formatFullName(firstName, lastName, translations["unknown"]);
+        });
+
+        document.querySelectorAll("[data-i18n-format-firstName]").forEach(element => {
+            const firstName = element.getAttribute("data-first-name");
+            element.textContent = formatName(firstName, translations["unknown"]);
+        });
+
+        document.querySelectorAll("[data-i18n-format-lastName]").forEach(element => {
+            const lastName = element.getAttribute("data-last-name");
+            element.textContent = formatName(lastName, translations["unknown"]);
         });
     }
 }

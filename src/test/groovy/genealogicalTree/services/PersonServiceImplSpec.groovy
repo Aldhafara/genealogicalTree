@@ -3,6 +3,7 @@ package genealogicalTree.services
 import com.aldhafara.genealogicalTree.configuration.SecurityContextFacade
 import com.aldhafara.genealogicalTree.entities.Person
 import com.aldhafara.genealogicalTree.exceptions.PersonNotFoundException
+import com.aldhafara.genealogicalTree.mappers.FamilyMapper
 import com.aldhafara.genealogicalTree.mappers.PersonMapper
 import com.aldhafara.genealogicalTree.models.PersonModel
 import com.aldhafara.genealogicalTree.repositories.PersonRepository
@@ -26,6 +27,7 @@ class PersonServiceImplSpec extends Specification {
 
     PersonRepository personRepository = Mock()
     PersonMapper personMapper = Mock()
+    FamilyMapper familyMapper = Mock()
     SecurityContextFacade securityContextFacade = Mock()
     Clock clock = fixed(Instant.parse("2024-01-01T12:34:56Z"), UTC)
 
@@ -120,7 +122,7 @@ class PersonServiceImplSpec extends Specification {
             def parentBrownModel = new PersonModel(lastName: "Brown")
             def parentBrown = new Person(lastName: "Brown")
         and:
-            PersonMapper personMapper = new PersonMapper()
+            PersonMapper personMapper = new PersonMapper(familyMapper)
             personService = new PersonServiceImpl(personRepository, personMapper, securityContextFacade)
         and:
             personMapper.mapPersonModelToPerson(parentSmithModel) >> parentSmith
@@ -150,7 +152,7 @@ class PersonServiceImplSpec extends Specification {
             def siblingBrownModel = new PersonModel(lastName: "Brown")
             def siblingBrown = new Person(lastName: "Brown")
         and:
-            PersonMapper personMapper = new PersonMapper()
+            PersonMapper personMapper = new PersonMapper(familyMapper)
             PersonServiceImpl personService = new PersonServiceImpl(personRepository, personMapper, securityContextFacade)
         and:
             personMapper.mapPersonModelToPerson(siblingSmithModel) >> siblingSmith
@@ -174,5 +176,26 @@ class PersonServiceImplSpec extends Specification {
             MALE       | FEMALE     || "Brown"          | null
             FEMALE     | MALE       || null             | "Smith"
             FEMALE     | FEMALE     || null             | "Brown"
+    }
+
+    def "createChildAndSave should assign proper last name to child"() {
+        given:
+            def childModel = new PersonModel()
+
+        when:
+            personService.createChildAndSave(childModel, father, mother)
+
+        then:
+            childModel.lastName == expectedLastName
+
+        where:
+            father                                   | mother                                                              || expectedLastName
+            new Person(sex: MALE, lastName: "Smith") | new Person(sex: FEMALE, lastName: "Brown", familyName: "Forrester") || "Smith"
+            new Person(sex: MALE, lastName: "")      | new Person(sex: FEMALE, lastName: "Brown", familyName: "Forrester") || "Brown"
+            new Person(sex: MALE)                    | new Person(sex: FEMALE, lastName: "Brown", familyName: "Forrester") || "Brown"
+            new Person(sex: MALE)                    | new Person(sex: FEMALE, lastName: "", familyName: "Forrester")      || "Forrester"
+            new Person(sex: MALE)                    | new Person(sex: FEMALE, familyName: "Forrester")                    || "Forrester"
+            new Person(sex: MALE)                    | new Person(sex: FEMALE, familyName: "")                             || null
+            new Person(sex: MALE)                    | new Person(sex: FEMALE)                                             || null
     }
 }

@@ -28,6 +28,7 @@ public class PersonModel {
     private PersonBasicData father;
     private List<PersonBasicData> partners;
     private UUID familyId;
+    private List<FamilyModel> familiesAsParent;
 
     public PersonModel() {
     }
@@ -49,10 +50,11 @@ public class PersonModel {
         this.birthDate = builder.birthDate;
         this.birthPlace = builder.birthPlace;
         this.children = builder.children;
-        this.siblingsWithStepSiblings = builder.siblingsWithStepSiblings;
+        this.siblings = builder.siblings;
         this.mother = builder.mother;
         this.father = builder.father;
         this.partners = builder.partners;
+        this.familiesAsParent = builder.familiesAsParent;
     }
 
     public static Builder builder() {
@@ -196,6 +198,14 @@ public class PersonModel {
         this.familyId = familyId;
     }
 
+    public List<FamilyModel> getFamiliesAsParent() {
+        return familiesAsParent;
+    }
+
+    public void setFamiliesAsParent(List<FamilyModel> familiesAsParent) {
+        this.familiesAsParent = familiesAsParent;
+    }
+
     public static final class Builder {
         private UUID id;
         private UUID addBy;
@@ -207,10 +217,11 @@ public class PersonModel {
         private LocalDate birthDate;
         private String birthPlace;
         private List<PersonBasicData> children;
-        private List<PersonBasicData> siblingsWithStepSiblings;
+        private List<PersonBasicData> siblings;
         private PersonBasicData mother;
         private PersonBasicData father;
         private List<PersonBasicData> partners;
+        private List<FamilyModel> familiesAsParent;
 
         public Builder id(UUID id) {
             this.id = id;
@@ -268,8 +279,8 @@ public class PersonModel {
             return this;
         }
 
-        public Builder siblingsWithStepSiblings(List<PersonBasicData> siblings) {
-            this.siblingsWithStepSiblings = siblings;
+        public Builder siblings(List<PersonBasicData> siblings) {
+            this.siblings = siblings;
             return this;
         }
 
@@ -285,6 +296,11 @@ public class PersonModel {
 
         public Builder partners(List<PersonBasicData> partners) {
             this.partners = partners;
+            return this;
+        }
+
+        public Builder familiesAsParent(List<FamilyModel> familyIdsAsParent) {
+            this.familiesAsParent = familyIdsAsParent;
             return this;
         }
 

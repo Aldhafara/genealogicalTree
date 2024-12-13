@@ -2,6 +2,7 @@ package com.aldhafara.genealogicalTree.mappers;
 
 import com.aldhafara.genealogicalTree.entities.Family;
 import com.aldhafara.genealogicalTree.entities.Person;
+import com.aldhafara.genealogicalTree.models.FamilyModel;
 import com.aldhafara.genealogicalTree.models.PersonBasicData;
 import com.aldhafara.genealogicalTree.models.PersonModel;
 import org.springframework.stereotype.Component;
@@ -15,20 +16,27 @@ import java.util.stream.Collectors;
 @Component
 public class PersonMapper {
 
+    private final FamilyMapper familyMapper;
+
+    public PersonMapper(FamilyMapper familyMapper) {
+        this.familyMapper = familyMapper;
+    }
+
     public PersonModel mapPersonToPersonModel(Person person, List<Family> familiesWithPersonAsParent) {
         if (person == null) {
             return new PersonModel();
         }
 
-        List<PersonBasicData> siblingsWithStepSiblingsList = new ArrayList<>();
+        List<PersonBasicData> siblingsList = new ArrayList<>();
         List<PersonBasicData> children = new ArrayList<>();
         List<PersonBasicData> partners = new ArrayList<>();
+        List<FamilyModel> familiesAsParent = new ArrayList<>();
         PersonBasicData mother = null;
         PersonBasicData father = null;
 
         if (person.getFamily() != null) {
             List<Person> siblings = person.getFamily().getChildren();
-            siblingsWithStepSiblingsList = Optional.ofNullable(siblings)
+            siblingsList = Optional.ofNullable(siblings)
                     .orElse(Collections.emptyList())
                     .stream()
                     .filter(child -> !child.equals(person))
@@ -48,6 +56,7 @@ public class PersonMapper {
                     .forEach(children::add);
 
             familiesWithPersonAsParent.forEach(family -> {
+                familiesAsParent.add(familyMapper.mapFamilyToFamilyModel(family));
                 addPartnerIfNotPerson(partners, family.getFather(), person);
                 addPartnerIfNotPerson(partners, family.getMother(), person);
             });
@@ -63,11 +72,12 @@ public class PersonMapper {
                 .sex(person.getSex())
                 .setBirthDateFromInstant(person.getBirthDate())
                 .birthPlace(person.getBirthPlace())
-                .siblingsWithStepSiblings(siblingsWithStepSiblingsList)
+                .siblings(siblingsList)
                 .children(children)
                 .father(father)
                 .mother(mother)
                 .partners(partners)
+                .familiesAsParent(familiesAsParent)
                 .build();
     }
 

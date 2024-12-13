@@ -10,12 +10,12 @@ import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,7 +38,7 @@ public class Family {
     private Person mother;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "family_id")
-    private List<Person> children;
+    private List<Person> children = new ArrayList<>();
     private Instant updateDate;
 
     public Family() {
@@ -124,11 +124,10 @@ public class Family {
     }
 
     public void addChild(Person child) {
-        if (children == null || children.isEmpty()) {
-            this.children = List.of(child);
-        } else {
-            this.children.add(child);
+        if (children == null) {
+            children = new ArrayList<>();
         }
+        children.add(child);
     }
 
     public static final class Builder {

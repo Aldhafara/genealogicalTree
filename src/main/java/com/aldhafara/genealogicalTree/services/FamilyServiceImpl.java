@@ -59,6 +59,11 @@ public class FamilyServiceImpl implements FamilyService{
         return saveAndReturnId(family);
     }
 
+    public UUID saveChild(Person firstParent, Person secondParent, Person child) {
+        Family family = getFamilyByParentsOrReturnNew(firstParent, secondParent);
+        return saveChild(family, child);
+    }
+
     @Override
     public List<Family> getFamiliesWithParent(UUID parentId) {
         if (parentId == null) {
@@ -73,5 +78,25 @@ public class FamilyServiceImpl implements FamilyService{
         }
         Optional<Family> familyOptional = familyRepository.findById(familyId);
         return familyOptional.orElse(null);
+    }
+
+    private Family getFamilyByParentsOrReturnNew(Person firstParent, Person secondParent) {
+        if (firstParent == null || firstParent.getId() == null || secondParent == null || secondParent.getId() == null) {
+            return null;
+        }
+        Optional<Family> familyOptional = familyRepository.findByParents(firstParent.getId(), secondParent.getId());
+        return familyOptional.orElse(null);
+    }
+
+    public Family saveFamilyWithoutChildren(Person father, Person mother) {
+        return saveFamilyWithChild(father, mother, null);
+    }
+
+    public Family saveFamilyWithChild(Person father, Person mother, Person child) {
+        if (father == null || mother == null) {
+            return null;
+        }
+        Family family = new Family(father, mother, child);
+        return save(family);
     }
 }

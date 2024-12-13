@@ -22,7 +22,7 @@
 
   "addMother" :  "Dodaj matkę",
   "addFather" : "Dodaj ojca",
-  "addDaughter" :  "Dodaj córkę",
+  "addDaughter" : "Dodaj córkę",
   "addSon" : "Dodaj syna",
   "addSister" : "Dodaj siostrę",
   "addBrother" : "Dodaj brata",
@@ -36,6 +36,11 @@
   "children" : "Potomstwo:",
   "siblings" : "Rodzeństwo:",
   "partners" : "Partnerzy:",
+
+  "chooseSecondParentModalTitle" : "Wybierz drugiego rodzica",
+  "chooseSecondParentModalContent" : "Dodajesz dziecko w kontekście rodzica:",
+  "chooseSecondParent" : "Wybierz drugiego rodzica",
+  "close" : "Zamknij",
 
   "familyMembers" : "Członkowie rodziny"
 }

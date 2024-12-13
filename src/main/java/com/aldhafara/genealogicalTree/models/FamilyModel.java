@@ -5,7 +5,6 @@ import com.aldhafara.genealogicalTree.entities.Person;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class FamilyModel {
 

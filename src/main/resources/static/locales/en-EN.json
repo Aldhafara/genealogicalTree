@@ -37,5 +37,10 @@
   "siblings" : "Siblings:",
   "partners" : "Partners:",
 
+  "chooseSecondParentModalTitle" : "Choose second parent",
+  "chooseSecondParentModalContent" : "You add a child in the context of a parent",
+  "chooseSecondParent" : "Choose second parent",
+  "close" : "Close",
+
   "familyMembers" : "Members"
 }

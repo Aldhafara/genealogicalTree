@@ -22,8 +22,8 @@
                     th:data-url="@{/person/{id}(id=${person.id})}"
                     onclick="window.location.href = this.getAttribute('data-url')">
                     <th scope="row" th:text="${personStat.index + 1}"></th>
-                    <td th:text="${person.firstName}">...</td>
-                    <td th:text="${person.lastName}">...</td>
+                    <td th:data-first-name="${person.firstName}" data-i18n-format-firstName="formatName">...</td>
+                    <td th:data-last-name="${person.lastName}" data-i18n-format-lastName="formatName">...</td>
                 </tr>
             </tbody>
         </table>

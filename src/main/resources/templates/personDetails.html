@@ -3,7 +3,7 @@
     <div th:insert="~{static/fragments :: bootstrapStylesheet}"></div>
     <head>
         <div th:insert="~{static/fragments :: languageScript}"></div>
-        <title th:data-first-name="${person.firstName}" th:data-last-name="${person.lastName}" data-i18n-format="formatName"></title>
+        <title th:data-first-name="${person.firstName}" th:data-last-name="${person.lastName}" data-i18n-format-fullName="formatName"></title>
         <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     </head>
     <body th:style="'background: #f7f2e9'">
@@ -17,7 +17,7 @@
                              th:data="*{mother.id}"
                              onclick="redirectToDetails(this)">
                             <div class="align-self-center">
-                                <h1 class="person-details-font p-3" th:data-first-name="${mother.firstName}" th:data-last-name="${mother.lastName}" data-i18n-format="formatName"></h1>
+                                <h1 class="person-details-font p-3" th:data-first-name="${mother.firstName}" th:data-last-name="${mother.lastName}" data-i18n-format-fullName="formatName"></h1>
                             </div>
                         </div>
                     </div>
@@ -37,7 +37,7 @@
                              th:data="*{father.id}"
                              onclick="redirectToDetails(this)">
                             <div class="align-self-center">
-                                <h1 class="person-details-font p-3" th:data-first-name="${father.firstName}" th:data-last-name="${father.lastName}" data-i18n-format="formatName"></h1>
+                                <h1 class="person-details-font p-3" th:data-first-name="${father.firstName}" th:data-last-name="${father.lastName}" data-i18n-format-fullName="formatName"></h1>
                             </div>
                         </div>
                     </div>
@@ -80,11 +80,11 @@
                     </div>
                     <div class="row siblings">
                         <div class="col">
-                            <div class="row d-flex justify-content-center" th:if="${siblingsWithStepSiblings != null and !siblingsWithStepSiblings.isEmpty()}">
+                            <div class="row d-flex justify-content-center" th:if="${siblings != null and !siblings.isEmpty()}">
                                 <label for="sibling" data-i18n="siblings">Siblings:</label>
                             </div>
-                            <div class="row siblingsWithStepSiblings-list list-group p-2" th:each="sibling : ${siblingsWithStepSiblings}">
-                                <a th:href="@{/person/{id}(id=${sibling.id})}" class="list-group-item list-group-item-action list-group-item-secondary" th:data-first-name="${sibling.firstName}" th:data-last-name="${sibling.lastName}" data-i18n-format="formatName">...</a>
+                            <div class="row siblings-list list-group p-2" th:each="sibling : ${siblings}">
+                                <a th:href="@{/person/{id}(id=${sibling.id})}" class="list-group-item list-group-item-action list-group-item-secondary" th:data-first-name="${sibling.firstName}" th:data-last-name="${sibling.lastName}" data-i18n-format-fullName="formatName">...</a>
                             </div>
                         </div>
                     </div>
@@ -214,18 +214,128 @@
                                 <label for="partner" data-i18n="partners">Partners:</label>
                             </div>
                             <div class="row partners-list list-group p-2" th:each="partner : ${partners}">
-                                <a th:href="@{/person/{id}(id=${partner.id})}" class="list-group-item list-group-item-action list-group-item-secondary" th:data-first-name="${partner.firstName}" th:data-last-name="${partner.lastName}" data-i18n-format="formatName">...</a>
+                                <a th:href="@{/person/{id}(id=${partner.id})}" class="list-group-item list-group-item-action list-group-item-secondary" th:data-first-name="${partner.firstName}" th:data-last-name="${partner.lastName}" data-i18n-format-fullName="formatName">...</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row add-children">
+            <div th:if="${partners == null or partners.size() == 1 }" class="row add-children">
+                <div class="col">
+                    <div th:if="${partners == null}" class="row add-children-disable">
+                        <div class="col text-center daughter">
+                            <button type="button" class="btn btn-lg btn-primary" disabled data-i18n="addDaughter">Add daughter</button>
+                        </div>
+                        <div class="col text-center son">
+                            <button type="button" class="btn btn-lg btn-primary" disabled data-i18n="addSon">Add son</button>
+                        </div>
+                    </div>
+                    <div th:if="${partners.size() == 1}" class="row add-children">
+                        <div class="col-6 text-center daughter">
+                            <div class="d-flex justify-content-center p-2">
+                                <div class="rounded-3 text-center mh-100 d-flex justify-content-center align-items-center">
+                                    <div class="align-self-center">
+                                        <a th:href="@{/person/add/child/daughter/for/{firstParentId}/{secondParentId}(firstParentId=${person.id}, secondParentId=${partners[0].id})}"
+                                           role="button" class="btn btn-primary btn-lg"
+                                           data-i18n="addDaughter">Add daughter</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 text-center son">
+                            <div class="d-flex justify-content-center p-2">
+                                <div class="rounded-3 text-center mh-100 d-flex justify-content-center align-items-center">
+                                    <div class="align-self-center">
+                                        <a th:href="@{/person/add/child/son/for/{firstParentId}/{secondParentId}(firstParentId=${person.id},secondParentId=${partners[0].id})}"
+                                           role="button" class="btn btn-primary btn-lg"
+                                           data-i18n="addSon">Add son</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:if="${partners.size() > 1 }" class="row add-children">
                 <div class="col text-center daughter">
-                    <button type="button" class="btn btn-lg btn-primary" disabled data-i18n="addDaughter">Add daughter</button>
+                    <button type="button" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#chooseSecondParentForDaughterModal" data-i18n="addDaughter">
+                        Add daughter
+                    </button>
+                    <div class="modal fade" id="chooseSecondParentForDaughterModal" tabindex="-1" role="dialog" aria-labelledby="chooseSecondParentModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="chooseSecondParentModalLabel" data-i18n="chooseSecondParentModalTitle">Choose second parent</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p data-i18n="chooseSecondParentModalContent"></p>
+                                    <h1 th:data-first-name="${person.firstName}" th:data-last-name="${person.lastName}" data-i18n-format-fullName="formatName"></h1>
+                                    <div class="col-sm-12 form-group mb-3">
+                                        <label for="secondParent" data-i18n="chooseSecondParent">Choose second parent</label>
+                                        <select class="form-control form-control-lg" id="secondParent">
+                                            <option disabled selected data-i18n="chooseSecondParent">Choose second parent</option>
+                                            <option th:each="secondParent : ${partners}"
+                                                    th:data-first-name="${secondParent.firstName}"
+                                                    th:data-last-name="${secondParent.lastName}"
+                                                    data-i18n-format-fullName="formatName"
+                                                    th:value="${person.id}+'/'+${secondParent.id}">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" data-i18n="close">Close</button>
+                                    <a id="addDaughterButton" href="#"
+                                       role="button" class="btn btn-primary"
+                                       data-i18n="addDaughter" disabled>
+                                        Add daughter
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="col text-center son">
-                    <button type="button" class="btn btn-lg btn-primary" disabled data-i18n="addSon">Add son</button>
+                    <button type="button" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#chooseSecondParentForSonModal" data-i18n="addSon">
+                        Add son
+                    </button>
+                    <div class="modal fade" id="chooseSecondParentForSonModal" tabindex="-1" role="dialog" aria-labelledby="chooseSecondParentModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="chooseSecondParentModalLabel" data-i18n="chooseSecondParentModalTitle">Choose second parent</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p data-i18n="chooseSecondParentModalContent"></p>
+                                    <h1 th:data-first-name="${person.firstName}" th:data-last-name="${person.lastName}" data-i18n-format-fullName="formatName"></h1>
+                                    <div class="col-sm-12 form-group mb-3">
+                                        <label for="secondParent" data-i18n="chooseSecondParent">Choose second parent</label>
+                                        <select class="form-control form-control-lg" id="secondParent">
+                                            <option disabled selected data-i18n="chooseSecondParent">Choose second parent</option>
+                                            <option th:each="secondParent : ${partners}"
+                                                    th:data-first-name="${secondParent.firstName}"
+                                                    th:data-last-name="${secondParent.lastName}"
+                                                    data-i18n-format-fullName="formatName"
+                                                    th:value="${person.id}+'/'+${secondParent.id}">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" data-i18n="close">Close</button>
+                                    <a id="addDaughterButton" href="#"
+                                       role="button" class="btn btn-primary"
+                                       data-i18n="addSon" disabled>
+                                        Add son
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="row children">
@@ -235,7 +345,7 @@
                     </div>
                     <div class="row">
                         <div class="col children-list list-group p-2" th:each="child : ${children}">
-                            <a th:href="@{/person/{id}(id=${child.id})}" class="list-group-item list-group-item-action list-group-item-secondary" th:data-first-name="${child.firstName}" th:data-last-name="${child.lastName}" data-i18n-format="formatName">...</a>
+                            <a th:href="@{/person/{id}(id=${child.id})}" class="list-group-item list-group-item-action list-group-item-secondary" th:data-first-name="${child.firstName}" th:data-last-name="${child.lastName}" data-i18n-format-fullName="formatName">...</a>
                         </div>
                     </div>
                 </div>
@@ -262,6 +372,29 @@
                 const id = element.getAttribute('data');
                 window.location.href = `/person/${id}`;
             }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                const dropdown = document.getElementById('secondParent');
+                const daughterButton = document.getElementById('addDaughterButton');
+                const sonButton = document.getElementById('addSonButton');
+
+                dropdown.addEventListener('change', (event) => {
+                    const parentsIds = event.target.value;
+                    if (parentsIds) {
+                        const daughterUrl = `/person/add/child/daughter/for/${parentsIds}`;
+                        const sonUrl = `/person/add/child/son/for/${parentsIds}`;
+                        daughterButton.href = daughterUrl;
+                        daughterButton.disabled = false;
+                        sonButton.href = sonUrl;
+                        sonButton.disabled = false;
+                    } else {
+                        daughterButton.href = '#';
+                        daughterButton.disabled = true;
+                        sonButton.href = '#';
+                        sonButton.disabled = true;
+                    }
+                });
+            });
         </script>
         <div th:insert="~{static/fragments :: footer}"></div>
     </body>

@@ -37,6 +37,9 @@ public class PersonServiceImpl implements PersonService {
     @Transactional
     @Override
     public Person save(Person person) {
+        if (person == null) {
+            person = new Person();
+        }
         person.setUpdateDate(clock.instant());
         return personRepository.save(person);
     }
@@ -66,14 +69,22 @@ public class PersonServiceImpl implements PersonService {
     }
 
     public Person saveParent(PersonModel parent, Person person) {
+        return saveAndReturn(determinateParentLastName(parent, person));
+    }
+
+    private PersonModel determinateParentLastName(PersonModel parent, Person person) {
         switch (person.getSex()) {
             case MALE -> parent.setLastName(person.getLastName());
             case FEMALE -> parent.setLastName(person.getFamilyName() == null || person.getFamilyName().isBlank() ? person.getLastName() : person.getFamilyName());
         }
-        return saveAndReturn(parent);
+        return parent;
     }
 
     public Person saveSibling(PersonModel sibling, Person person) {
+        return saveAndReturn(determinateSiblingLastName(sibling, person));
+    }
+
+    private PersonModel determinateSiblingLastName(PersonModel sibling, Person person) {
         switch (sibling.getSex()) {
             case MALE -> {
                 switch (person.getSex()) {
@@ -88,7 +99,7 @@ public class PersonServiceImpl implements PersonService {
                 }
             }
         }
-        return saveAndReturn(sibling);
+        return sibling;
     }
 
     public UUID saveAndReturnId(PersonModel personModel, Family family) {
@@ -111,5 +122,33 @@ public class PersonServiceImpl implements PersonService {
                 .stream()
                 .map(PersonBasicData::new)
                 .toList();
+    }
+
+    public Person createChildAndSave(PersonModel child, Person firstParent, Person secondParent) {
+        switch (firstParent.getSex()) {
+            case MALE -> {
+                return saveAndReturn(determinateChildLastName(child, firstParent, secondParent));
+            }
+            case FEMALE -> {
+                return saveAndReturn(determinateChildLastName(child, secondParent, firstParent));
+            }
+        }
+        return saveAndReturn(determinateChildLastName(child, firstParent, secondParent));
+    }
+
+    private PersonModel determinateChildLastName(PersonModel child, Person father, Person mother) {
+        String fatherLastName = father.getLastName();
+        String motherLastName = mother.getLastName();
+        String motherFamilyName = mother.getFamilyName();
+        if (motherFamilyName != null && !motherFamilyName.isBlank()) {
+            child.setLastName(motherFamilyName);
+        }
+        if (motherLastName != null && !motherLastName.isBlank()) {
+            child.setLastName(motherLastName);
+        }
+        if (fatherLastName != null && !fatherLastName.isBlank()) {
+            child.setLastName(fatherLastName);
+        }
+        return child;
     }
 }
