@@ -24,7 +24,7 @@
                     <div th:if="*{mother == null}" class="d-flex justify-content-center p-3">
                         <div class="rounded-3 text-center mh-100 d-flex justify-content-center align-items-center">
                             <div class="align-self-center">
-                                <a th:href="@{/person/add/parent/mother/for/{id}(id=${person.id})}"
+                                <a th:href="@{/api/person/add/parent/mother/for/{id}(id=${person.id})}"
                                    role="button" class="btn btn-lg btn-primary"
                                    data-i18n="addMother">Add mother</a>
                             </div>
@@ -44,7 +44,7 @@
                     <div th:if="*{father == null}" class="d-flex justify-content-center p-3">
                         <div class="rounded-3 text-center mh-100 d-flex justify-content-center align-items-center">
                             <div class="align-self-center">
-                                <a th:href="@{/person/add/parent/father/for/{id}(id=${person.id})}"
+                                <a th:href="@{/api/person/add/parent/father/for/{id}(id=${person.id})}"
                                    role="button" class="btn btn-lg btn-primary"
                                    data-i18n="addFather">Add father</a>
                             </div>
@@ -59,7 +59,7 @@
                             <div class="d-flex justify-content-center p-2">
                                 <div class="rounded-3 text-center mh-100 d-flex justify-content-center align-items-center">
                                     <div class="align-self-center">
-                                        <a th:href="@{/person/add/sibling/sister/for/{id}(id=${person.id})}"
+                                        <a th:href="@{/api/person/add/sibling/sister/for/{id}(id=${person.id})}"
                                            role="button" class="btn btn-primary btn-sm"
                                            data-i18n="addSister">Add sister</a>
                                     </div>
@@ -70,7 +70,7 @@
                             <div class="d-flex justify-content-center p-2">
                                 <div class="rounded-3 text-center mh-100 d-flex justify-content-center align-items-center">
                                     <div class="align-self-center">
-                                        <a th:href="@{/person/add/sibling/brother/for/{id}(id=${person.id})}"
+                                        <a th:href="@{/api/person/add/sibling/brother/for/{id}(id=${person.id})}"
                                            role="button" class="btn btn-primary btn-sm"
                                            data-i18n="addBrother">Add brother</a>
                                     </div>
@@ -201,7 +201,7 @@
                         <div class="col d-flex justify-content-center p-2">
                             <div class="rounded-3 text-center mh-100 d-flex justify-content-center align-items-center">
                                 <div class="align-self-center">
-                                    <a th:href="@{/person/add/partner/for/{id}(id=${person.id})}"
+                                    <a th:href="@{/api/person/add/partner/for/{id}(id=${person.id})}"
                                        role="button" class="btn btn-primary btn-sm"
                                        data-i18n="addPartner">Add partner</a>
                                 </div>
@@ -235,7 +235,7 @@
                             <div class="d-flex justify-content-center p-2">
                                 <div class="rounded-3 text-center mh-100 d-flex justify-content-center align-items-center">
                                     <div class="align-self-center">
-                                        <a th:href="@{/person/add/child/daughter/for/{firstParentId}/{secondParentId}(firstParentId=${person.id}, secondParentId=${partners[0].id})}"
+                                        <a th:href="@{/api/person/add/child/daughter/for/{firstParentId}/{secondParentId}(firstParentId=${person.id}, secondParentId=${partners[0].id})}"
                                            role="button" class="btn btn-primary btn-lg"
                                            data-i18n="addDaughter">Add daughter</a>
                                     </div>
@@ -246,7 +246,7 @@
                             <div class="d-flex justify-content-center p-2">
                                 <div class="rounded-3 text-center mh-100 d-flex justify-content-center align-items-center">
                                     <div class="align-self-center">
-                                        <a th:href="@{/person/add/child/son/for/{firstParentId}/{secondParentId}(firstParentId=${person.id},secondParentId=${partners[0].id})}"
+                                        <a th:href="@{/api/person/add/child/son/for/{firstParentId}/{secondParentId}(firstParentId=${person.id},secondParentId=${partners[0].id})}"
                                            role="button" class="btn btn-primary btn-lg"
                                            data-i18n="addSon">Add son</a>
                                     </div>
@@ -381,8 +381,8 @@
                 dropdown.addEventListener('change', (event) => {
                     const parentsIds = event.target.value;
                     if (parentsIds) {
-                        const daughterUrl = `/person/add/child/daughter/for/${parentsIds}`;
-                        const sonUrl = `/person/add/child/son/for/${parentsIds}`;
+                        const daughterUrl = `/api/person/add/child/daughter/for/${parentsIds}`;
+                        const sonUrl = `/api/person/add/child/son/for/${parentsIds}`;
                         daughterButton.href = daughterUrl;
                         daughterButton.disabled = false;
                         sonButton.href = sonUrl;
