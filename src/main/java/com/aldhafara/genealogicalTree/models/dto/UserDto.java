@@ -1,4 +1,4 @@
-package com.aldhafara.genealogicalTree.models;
+package com.aldhafara.genealogicalTree.models.dto;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -6,14 +6,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.UUID;
 
-public class UserModel implements UserDetails {
+public class UserDto implements UserDetails {
     private UUID id;
     private String login;
     private String password;
     private String roles;
     private UUID detailsId;
 
-    public UserModel(Builder builder) {
+    public UserDto(Builder builder) {
         this.id = builder.id;
         this.login = builder.login;
         this.password = builder.password;
@@ -21,11 +21,11 @@ public class UserModel implements UserDetails {
         this.detailsId = builder.detailsId;
     }
 
-    public UserModel() {
+    public UserDto() {
     }
 
     public static Builder builder() {
-        return new UserModel.Builder();
+        return new UserDto.Builder();
     }
 
     public UUID getId() {
@@ -126,8 +126,8 @@ public class UserModel implements UserDetails {
             return this;
         }
 
-        public UserModel build() {
-            return new UserModel(this);
+        public UserDto build() {
+            return new UserDto(this);
         }
     }
 }

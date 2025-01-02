@@ -6,7 +6,7 @@ import com.aldhafara.genealogicalTree.entities.Person;
 import com.aldhafara.genealogicalTree.exceptions.PersonNotFoundException;
 import com.aldhafara.genealogicalTree.mappers.PersonMapper;
 import com.aldhafara.genealogicalTree.models.PersonBasicData;
-import com.aldhafara.genealogicalTree.models.PersonModel;
+import com.aldhafara.genealogicalTree.models.dto.PersonDto;
 import com.aldhafara.genealogicalTree.repositories.PersonRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -54,8 +54,8 @@ public class PersonServiceImpl implements PersonService {
         return optionalPerson.get();
     }
 
-    public Person saveAndReturn(PersonModel personModel) {
-        Person person = setAddByLoggedUserId(personMapper.mapPersonModelToPerson(personModel));
+    public Person saveAndReturn(PersonDto personDto) {
+        Person person = setAddByLoggedUserId(personMapper.mapPersonDtoToPerson(personDto));
 
         return save(person);
     }
@@ -68,11 +68,11 @@ public class PersonServiceImpl implements PersonService {
         return person;
     }
 
-    public Person saveParent(PersonModel parent, Person person) {
+    public Person saveParent(PersonDto parent, Person person) {
         return saveAndReturn(determinateParentLastName(parent, person));
     }
 
-    private PersonModel determinateParentLastName(PersonModel parent, Person person) {
+    private PersonDto determinateParentLastName(PersonDto parent, Person person) {
         switch (person.getSex()) {
             case MALE -> parent.setLastName(person.getLastName());
             case FEMALE -> parent.setLastName(person.getFamilyName() == null || person.getFamilyName().isBlank() ? person.getLastName() : person.getFamilyName());
@@ -80,11 +80,11 @@ public class PersonServiceImpl implements PersonService {
         return parent;
     }
 
-    public Person saveSibling(PersonModel sibling, Person person) {
+    public Person saveSibling(PersonDto sibling, Person person) {
         return saveAndReturn(determinateSiblingLastName(sibling, person));
     }
 
-    private PersonModel determinateSiblingLastName(PersonModel sibling, Person person) {
+    private PersonDto determinateSiblingLastName(PersonDto sibling, Person person) {
         switch (sibling.getSex()) {
             case MALE -> {
                 switch (person.getSex()) {
@@ -102,13 +102,13 @@ public class PersonServiceImpl implements PersonService {
         return sibling;
     }
 
-    public UUID saveAndReturnId(PersonModel personModel, Family family) {
-        Person savedPerson = saveAndReturnPerson(personModel, family);
+    public UUID saveAndReturnId(PersonDto personDto, Family family) {
+        Person savedPerson = saveAndReturnPerson(personDto, family);
         return savedPerson.getId();
     }
 
-    public Person saveAndReturnPerson(PersonModel personModel, Family family) {
-        Person person = setAddByLoggedUserId(personMapper.mapPersonModelWithFamilyToPerson(personModel, family));
+    public Person saveAndReturnPerson(PersonDto personDto, Family family) {
+        Person person = setAddByLoggedUserId(personMapper.mapPersonDtoWithFamilyToPerson(personDto, family));
         if (person == null) {
             return null;
         }
@@ -124,7 +124,7 @@ public class PersonServiceImpl implements PersonService {
                 .toList();
     }
 
-    public Person createChildAndSave(PersonModel child, Person firstParent, Person secondParent) {
+    public Person createChildAndSave(PersonDto child, Person firstParent, Person secondParent) {
         switch (firstParent.getSex()) {
             case MALE -> {
                 return saveAndReturn(determinateChildLastName(child, firstParent, secondParent));
@@ -136,7 +136,7 @@ public class PersonServiceImpl implements PersonService {
         return saveAndReturn(determinateChildLastName(child, firstParent, secondParent));
     }
 
-    private PersonModel determinateChildLastName(PersonModel child, Person father, Person mother) {
+    private PersonDto determinateChildLastName(PersonDto child, Person father, Person mother) {
         String fatherLastName = father.getLastName();
         String motherLastName = mother.getLastName();
         String motherFamilyName = mother.getFamilyName();

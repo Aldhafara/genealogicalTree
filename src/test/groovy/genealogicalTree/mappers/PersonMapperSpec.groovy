@@ -4,7 +4,7 @@ import com.aldhafara.genealogicalTree.entities.Family
 import com.aldhafara.genealogicalTree.entities.Person
 import com.aldhafara.genealogicalTree.mappers.FamilyMapper
 import com.aldhafara.genealogicalTree.mappers.PersonMapper
-import com.aldhafara.genealogicalTree.models.PersonModel
+import com.aldhafara.genealogicalTree.models.dto.PersonDto
 import com.aldhafara.genealogicalTree.models.SexEnum
 import spock.lang.Specification
 
@@ -25,10 +25,10 @@ class PersonMapperSpec extends Specification {
             def family = []
 
         when:
-            def result = new PersonMapper(familyMapper).mapPersonToPersonModel(person, family)
+            def result = new PersonMapper(familyMapper).mapPersonToPersonDto(person, family)
 
         then:
-            result instanceof PersonModel
+            result instanceof PersonDto
             result.partners == null
     }
 
@@ -47,7 +47,7 @@ class PersonMapperSpec extends Specification {
                     .build()
 
         when:
-            def personModel = personMapper.mapPersonToPersonModel(person, null)
+            def personModel = personMapper.mapPersonToPersonDto(person, null)
 
         then:
             personModel.id == person.id
@@ -63,7 +63,7 @@ class PersonMapperSpec extends Specification {
 
     def "should map PersonModel to Person correctly"() {
         given:
-            def personModel = PersonModel.builder()
+            def personModel = PersonDto.builder()
                     .id(UUID.randomUUID())
                     .addBy(UUID.fromString("847c2f40-eda9-4fac-8ba1-3a2c03551934"))
                     .firstName("Jane")
@@ -76,7 +76,7 @@ class PersonMapperSpec extends Specification {
                     .build()
 
         when:
-            def person = personMapper.mapPersonModelToPerson(personModel)
+            def person = personMapper.mapPersonDtoToPerson(personModel)
 
         then:
             person.id == personModel.id
@@ -101,7 +101,7 @@ class PersonMapperSpec extends Specification {
                     .build()
 
         when:
-            def personModel = personMapper.mapPersonToPersonModel(person, null)
+            def personModel = personMapper.mapPersonToPersonDto(person, null)
 
         then:
             personModel.id == person.id
@@ -110,7 +110,7 @@ class PersonMapperSpec extends Specification {
 
     def "should handle null birthDate in PersonModel when mapping to Person"() {
         given:
-            def personModel = PersonModel.builder()
+            def personModel = PersonDto.builder()
                     .id(UUID.randomUUID())
                     .addBy(UUID.fromString("847c2f40-eda9-4fac-8ba1-3a2c03551934"))
                     .firstName("Emma")
@@ -119,7 +119,7 @@ class PersonMapperSpec extends Specification {
                     .build()
 
         when:
-            def person = personMapper.mapPersonModelToPerson(personModel)
+            def person = personMapper.mapPersonDtoToPerson(personModel)
 
         then:
             person.id == personModel.id
@@ -142,7 +142,7 @@ class PersonMapperSpec extends Specification {
             def families = [firstFamily, secondFamily]
 
         when:
-            def result = new PersonMapper(familyMapper).mapPersonToPersonModel(person, families)
+            def result = new PersonMapper(familyMapper).mapPersonToPersonDto(person, families)
 
         then:
             result.children.size() == 3
@@ -157,7 +157,7 @@ class PersonMapperSpec extends Specification {
             def addById = UUID.randomUUID()
             def updateDate = Instant.now()
 
-            def personModel = new PersonModel(
+            def personModel = new PersonDto(
                     id: personId,
                     addBy: addById,
                     firstName: "John",
@@ -181,7 +181,7 @@ class PersonMapperSpec extends Specification {
             )
 
         when:
-            def result = personMapper.mapPersonModelWithFamilyToPerson(personModel, family)
+            def result = personMapper.mapPersonDtoWithFamilyToPerson(personModel, family)
 
         then:
             result != null
@@ -209,7 +209,7 @@ class PersonMapperSpec extends Specification {
             def family = [new Family(father: person, mother: partner)]
 
         when:
-            def result = new PersonMapper(familyMapper).mapPersonToPersonModel(person, family)
+            def result = new PersonMapper(familyMapper).mapPersonToPersonDto(person, family)
 
         then:
             result.partners.size() == 1
@@ -226,7 +226,7 @@ class PersonMapperSpec extends Specification {
             def family = [new Family(father: person, mother: partner1), new Family(father: person, mother: partner2)]
 
         when:
-            def result = new PersonMapper(familyMapper).mapPersonToPersonModel(person, family)
+            def result = new PersonMapper(familyMapper).mapPersonToPersonDto(person, family)
 
         then:
             result.partners.size() == 2
@@ -249,7 +249,7 @@ class PersonMapperSpec extends Specification {
             def family = new Family(father: new Person(), mother: new Person(), children: [])
 
         when:
-            def result = new PersonMapper(familyMapper).mapPersonToPersonModel(person, [family])
+            def result = new PersonMapper(familyMapper).mapPersonToPersonDto(person, [family])
 
         then:
             result.siblings.size() == 2
@@ -269,7 +269,7 @@ class PersonMapperSpec extends Specification {
             ]
 
         when:
-            def result = new PersonMapper(familyMapper).mapPersonToPersonModel(person, families)
+            def result = new PersonMapper(familyMapper).mapPersonToPersonDto(person, families)
 
         then:
             result.partners.size() == 4

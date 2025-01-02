@@ -1,9 +1,9 @@
 package com.aldhafara.genealogicalTree.controllers;
 
 import com.aldhafara.genealogicalTree.exceptions.NotUniqueLogin;
-import com.aldhafara.genealogicalTree.models.PersonModel;
+import com.aldhafara.genealogicalTree.models.dto.PersonDto;
 import com.aldhafara.genealogicalTree.models.SexEnum;
-import com.aldhafara.genealogicalTree.models.UserModel;
+import com.aldhafara.genealogicalTree.models.dto.UserDto;
 import com.aldhafara.genealogicalTree.services.PersonServiceImpl;
 import com.aldhafara.genealogicalTree.services.RegisterUserServiceImpl;
 import org.springframework.stereotype.Controller;
@@ -27,25 +27,25 @@ public class RegistrationController {
 
     @GetMapping("/register")
     public String getRegisterPage(Model model) {
-        model.addAttribute("user", new UserModel());
-        model.addAttribute("person", new PersonModel());
+        model.addAttribute("user", new UserDto());
+        model.addAttribute("person", new PersonDto());
         model.addAttribute("sexOptions", SexEnum.values());
         return "register";
     }
 
     @PostMapping("/register")
     public String registerUser(Model model,
-                               @ModelAttribute UserModel userModel,
-                               @ModelAttribute PersonModel personModel) {
+                               @ModelAttribute UserDto userDto,
+                               @ModelAttribute PersonDto personDto) {
         try {
-            UserModel saveUser = userService.save(userModel);
-            personModel.setAddBy(saveUser.getId());
-            UUID savedPersonId = personService.saveAndReturnId(personModel, null);
+            UserDto saveUser = userService.save(userDto);
+            personDto.setAddBy(saveUser.getId());
+            UUID savedPersonId = personService.saveAndReturnId(personDto, null);
             saveUser.setDetailsId(savedPersonId);
             userService.update(saveUser);
             return "redirect:/login";
         } catch (NotUniqueLogin e) {
-            model.addAttribute("loginError", String.format("Użytkownik %s już istnieje. Zmień login.", userModel.getLogin()));
+            model.addAttribute("loginError", String.format("Użytkownik %s już istnieje. Zmień login.", userDto.getLogin()));
             return "register";
         }
     }

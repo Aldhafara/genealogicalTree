@@ -4,9 +4,9 @@ import com.aldhafara.genealogicalTree.entities.Person;
 import com.aldhafara.genealogicalTree.exceptions.PersonNotFoundException;
 import com.aldhafara.genealogicalTree.mappers.PersonMapper;
 import com.aldhafara.genealogicalTree.models.PersonBasicData;
-import com.aldhafara.genealogicalTree.models.PersonModel;
+import com.aldhafara.genealogicalTree.models.dto.PersonDto;
 import com.aldhafara.genealogicalTree.models.SexEnum;
-import com.aldhafara.genealogicalTree.models.UserModel;
+import com.aldhafara.genealogicalTree.models.dto.UserDto;
 import com.aldhafara.genealogicalTree.services.FamilyServiceImpl;
 import com.aldhafara.genealogicalTree.services.PersonServiceImpl;
 import org.springframework.http.HttpStatus;
@@ -39,43 +39,43 @@ public class PersonController {
 
     @GetMapping("/aboutme")
     public String aboutMe(@CurrentSecurityContext SecurityContext context) {
-        UserModel userModel = (UserModel) context.getAuthentication().getPrincipal();
-        return "redirect:/person/" + userModel.getDetailsId();
+        UserDto userDto = (UserDto) context.getAuthentication().getPrincipal();
+        return "redirect:/person/" + userDto.getDetailsId();
     }
 
     @GetMapping("/{id}")
     public Object getDetails(@PathVariable UUID id,
                              Model model) {
-        PersonModel personModel;
+        PersonDto personDto;
         try {
-            personModel = personMapper.mapPersonToPersonModel(personService.getById(id), familyService.getFamiliesWithParent(id));
+            personDto = personMapper.mapPersonToPersonDto(personService.getById(id), familyService.getFamiliesWithParent(id));
         } catch (PersonNotFoundException e) {
             return new ResponseEntity<>(
                     "Person not found", HttpStatus.NOT_FOUND);
         }
-        model.addAttribute("person", personModel);
-        model.addAttribute("siblingsWithStepSiblings", personModel.getSiblingsWithStepSiblings());
-        model.addAttribute("siblings", personModel.getSiblings());
-        model.addAttribute("children", personModel.getChildren());
-        model.addAttribute("mother", personModel.getMother());
-        model.addAttribute("father", personModel.getFather());
-        model.addAttribute("partners", personModel.getPartners());
-        model.addAttribute("families", personModel.getFamiliesAsParent());
+        model.addAttribute("person", personDto);
+        model.addAttribute("siblingsWithStepSiblings", personDto.getSiblingsWithStepSiblings());
+        model.addAttribute("siblings", personDto.getSiblings());
+        model.addAttribute("children", personDto.getChildren());
+        model.addAttribute("mother", personDto.getMother());
+        model.addAttribute("father", personDto.getFather());
+        model.addAttribute("partners", personDto.getPartners());
+        model.addAttribute("families", personDto.getFamiliesAsParent());
         model.addAttribute("sexOptions", SexEnum.values());
         return "personDetails";
     }
 
     @PostMapping("/edit")
-    public String editPerson(@ModelAttribute PersonModel personModel) {
-        personService.saveAndReturnId(personModel, familyService.getFamilyByIdOrReturnNew(personModel.getFamilyId()));
+    public String editPerson(@ModelAttribute PersonDto personDto) {
+        personService.saveAndReturnId(personDto, familyService.getFamilyByIdOrReturnNew(personDto.getFamilyId()));
 
-        return "redirect:/person/" + personModel.getId();
+        return "redirect:/person/" + personDto.getId();
     }
 
     @GetMapping("/add")
     public String addPerson() {
-        PersonModel personModel = new PersonModel();
-        UUID newPersonId = personService.saveAndReturnId(personModel, familyService.getFamilyByIdOrReturnNew(personModel.getFamilyId()));
+        PersonDto personDto = new PersonDto();
+        UUID newPersonId = personService.saveAndReturnId(personDto, familyService.getFamilyByIdOrReturnNew(personDto.getFamilyId()));
         return "redirect:/person/" + newPersonId;
     }
 
@@ -146,7 +146,7 @@ public class PersonController {
     }
 
     private Person createAndSaveParent(SexEnum parentSex, Person child) {
-        PersonModel parentModel = new PersonModel();
+        PersonDto parentModel = new PersonDto();
         parentModel.setSex(parentSex);
         return personService.saveParent(parentModel, child);
     }
@@ -181,7 +181,7 @@ public class PersonController {
     private Person createSibling(UUID personId, SexEnum siblingSex) throws PersonNotFoundException {
         Person person = personService.getById(personId);
 
-        PersonModel sibling = new PersonModel();
+        PersonDto sibling = new PersonDto();
         sibling.setSex(siblingSex);
 
         Person savedSibling = personService.saveSibling(sibling, person);
@@ -228,7 +228,7 @@ public class PersonController {
             throw new IllegalArgumentException("A child cannot exist without parents");
         }
 
-        PersonModel child = new PersonModel();
+        PersonDto child = new PersonDto();
         child.setSex(childSex);
 
         Person savedChild = personService.createChildAndSave(child, firstParent, secondParent);

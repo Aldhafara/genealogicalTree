@@ -1,6 +1,6 @@
 package com.aldhafara.genealogicalTree.configuration;
 
-import com.aldhafara.genealogicalTree.models.UserModel;
+import com.aldhafara.genealogicalTree.models.dto.UserDto;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,7 +24,7 @@ public class SecurityContextFacade {
         if (authentication == null) {
             return null;
         }
-        UserModel user = (UserModel) authentication.getPrincipal();
+        UserDto user = (UserDto) authentication.getPrincipal();
         return (user != null) ? user.getId() : null;
     }
 }

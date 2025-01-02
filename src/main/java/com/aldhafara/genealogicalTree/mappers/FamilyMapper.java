@@ -1,24 +1,24 @@
 package com.aldhafara.genealogicalTree.mappers;
 
 import com.aldhafara.genealogicalTree.entities.Family;
-import com.aldhafara.genealogicalTree.models.FamilyModel;
+import com.aldhafara.genealogicalTree.models.dto.FamilyDto;
 import org.springframework.stereotype.Component;
 
 @Component
 public class FamilyMapper {
-    public Family mapFamilyModelToFamily(FamilyModel familyModel) {
+    public Family mapFamilyDtoToFamily(FamilyDto familyDto) {
         return Family.builder()
-                .id(familyModel.getId())
-                .addBy(familyModel.getAddBy())
-                .father(familyModel.getFather())
-                .mother(familyModel.getMother())
-                .children(familyModel.getChildren())
-                .updateDate(familyModel.getUpdateDate())
+                .id(familyDto.getId())
+                .addBy(familyDto.getAddBy())
+                .father(familyDto.getFather())
+                .mother(familyDto.getMother())
+                .children(familyDto.getChildren())
+                .updateDate(familyDto.getUpdateDate())
                 .build();
     }
 
-    public FamilyModel mapFamilyToFamilyModel(Family family) {
-        return FamilyModel.builder()
+    public FamilyDto mapFamilyToFamilyDto(Family family) {
+        return FamilyDto.builder()
                 .id(family.getId())
                 .addBy(family.getAddBy())
                 .father(family.getFather())

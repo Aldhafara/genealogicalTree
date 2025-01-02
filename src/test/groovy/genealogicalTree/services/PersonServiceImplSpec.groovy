@@ -5,7 +5,7 @@ import com.aldhafara.genealogicalTree.entities.Person
 import com.aldhafara.genealogicalTree.exceptions.PersonNotFoundException
 import com.aldhafara.genealogicalTree.mappers.FamilyMapper
 import com.aldhafara.genealogicalTree.mappers.PersonMapper
-import com.aldhafara.genealogicalTree.models.PersonModel
+import com.aldhafara.genealogicalTree.models.dto.PersonDto
 import com.aldhafara.genealogicalTree.repositories.PersonRepository
 import com.aldhafara.genealogicalTree.services.PersonServiceImpl
 import jakarta.transaction.Transactional
@@ -56,9 +56,9 @@ class PersonServiceImplSpec extends Specification {
 
     def "should rollback transaction if savePerson fails"() {
         given:
-            def personModel = new PersonModel(firstName: "John", lastName: "Doe")
+            def personModel = new PersonDto(firstName: "John", lastName: "Doe")
             def mappedPerson = new Person(firstName: "John", lastName: "Doe")
-            personMapper.mapPersonModelWithFamilyToPerson(personModel, null) >> mappedPerson
+            personMapper.mapPersonDtoWithFamilyToPerson(personModel, null) >> mappedPerson
             personRepository.save(_) >> { throw new RuntimeException("Database error") }
 
         when:
@@ -97,12 +97,12 @@ class PersonServiceImplSpec extends Specification {
 
     def "should map PersonModel to Person and save with current user as addBy"() {
         given:
-            def personModel = new PersonModel()
+            def personModel = new PersonDto()
             def mappedPerson = new Person()
             def currentUserId = UUID.randomUUID()
             def savedPerson = new Person(id: UUID.randomUUID())
         and:
-            personMapper.mapPersonModelWithFamilyToPerson(personModel,null) >> mappedPerson
+            personMapper.mapPersonDtoWithFamilyToPerson(personModel,null) >> mappedPerson
             securityContextFacade.getCurrentUserId() >> currentUserId
             personRepository.save(mappedPerson) >> savedPerson
 
@@ -117,23 +117,23 @@ class PersonServiceImplSpec extends Specification {
 
     def "should set parent's last name based on person's sex and family name"() {
         given:
-            def parentSmithModel = new PersonModel(lastName: "Smith")
+            def parentSmithModel = new PersonDto(lastName: "Smith")
             def parentSmith = new Person(lastName: "Smith")
-            def parentBrownModel = new PersonModel(lastName: "Brown")
+            def parentBrownModel = new PersonDto(lastName: "Brown")
             def parentBrown = new Person(lastName: "Brown")
         and:
             PersonMapper personMapper = new PersonMapper(familyMapper)
             personService = new PersonServiceImpl(personRepository, personMapper, securityContextFacade)
         and:
-            personMapper.mapPersonModelToPerson(parentSmithModel) >> parentSmith
-            personMapper.mapPersonModelToPerson(parentBrownModel) >> parentBrown
+            personMapper.mapPersonDtoToPerson(parentSmithModel) >> parentSmith
+            personMapper.mapPersonDtoToPerson(parentBrownModel) >> parentBrown
             personRepository.save(_ as Person) >> { Person parent ->
                 parent.id = UUID.randomUUID()
                 return parent
             }
 
         when:
-            def result = personService.saveParent(new PersonModel(), person)
+            def result = personService.saveParent(new PersonDto(), person)
 
         then:
             result.lastName == expectedParentLastName
@@ -147,16 +147,16 @@ class PersonServiceImplSpec extends Specification {
 
     def "should save sibling with adjusted family name based on person's sex"() {
         given:
-            def siblingSmithModel = new PersonModel(lastName: "Smith")
+            def siblingSmithModel = new PersonDto(lastName: "Smith")
             def siblingSmith = new Person(lastName: "Smith")
-            def siblingBrownModel = new PersonModel(lastName: "Brown")
+            def siblingBrownModel = new PersonDto(lastName: "Brown")
             def siblingBrown = new Person(lastName: "Brown")
         and:
             PersonMapper personMapper = new PersonMapper(familyMapper)
             PersonServiceImpl personService = new PersonServiceImpl(personRepository, personMapper, securityContextFacade)
         and:
-            personMapper.mapPersonModelToPerson(siblingSmithModel) >> siblingSmith
-            personMapper.mapPersonModelToPerson(siblingBrownModel) >> siblingBrown
+            personMapper.mapPersonDtoToPerson(siblingSmithModel) >> siblingSmith
+            personMapper.mapPersonDtoToPerson(siblingBrownModel) >> siblingBrown
             personRepository.save(_ as Person) >> { Person sibling ->
                 sibling.id = UUID.randomUUID()
                 return sibling
@@ -164,7 +164,7 @@ class PersonServiceImplSpec extends Specification {
 
         when:
             def person = new Person(sex: personSex, lastName: "Smith", familyName: "Brown")
-            def result = personService.saveSibling(new PersonModel(sex: siblingSex), person)
+            def result = personService.saveSibling(new PersonDto(sex: siblingSex), person)
 
         then:
             result.lastName == expectedLastName
@@ -180,7 +180,7 @@ class PersonServiceImplSpec extends Specification {
 
     def "createChildAndSave should assign proper last name to child"() {
         given:
-            def childModel = new PersonModel()
+            def childModel = new PersonDto()
 
         when:
             personService.createChildAndSave(childModel, father, mother)

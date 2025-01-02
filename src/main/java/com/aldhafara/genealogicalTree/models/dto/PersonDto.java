@@ -1,5 +1,7 @@
-package com.aldhafara.genealogicalTree.models;
+package com.aldhafara.genealogicalTree.models.dto;
 
+import com.aldhafara.genealogicalTree.models.PersonBasicData;
+import com.aldhafara.genealogicalTree.models.SexEnum;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.Instant;
@@ -9,7 +11,7 @@ import java.util.UUID;
 
 import static java.time.ZoneOffset.UTC;
 
-public class PersonModel {
+public class PersonDto {
 
     private UUID id;
     private UUID addBy;
@@ -28,18 +30,18 @@ public class PersonModel {
     private PersonBasicData father;
     private List<PersonBasicData> partners;
     private UUID familyId;
-    private List<FamilyModel> familiesAsParent;
+    private List<FamilyDto> familiesAsParent;
 
-    public PersonModel() {
+    public PersonDto() {
     }
 
-    public PersonModel(UUID addBy, String firstName, String lastName) {
+    public PersonDto(UUID addBy, String firstName, String lastName) {
         this.addBy = addBy;
         this.firstName = firstName;
         this.lastName = lastName;
     }
 
-    public PersonModel(Builder builder) {
+    public PersonDto(Builder builder) {
         this.id = builder.id;
         this.addBy = builder.addBy;
         this.firstName = builder.firstName;
@@ -198,11 +200,11 @@ public class PersonModel {
         this.familyId = familyId;
     }
 
-    public List<FamilyModel> getFamiliesAsParent() {
+    public List<FamilyDto> getFamiliesAsParent() {
         return familiesAsParent;
     }
 
-    public void setFamiliesAsParent(List<FamilyModel> familiesAsParent) {
+    public void setFamiliesAsParent(List<FamilyDto> familiesAsParent) {
         this.familiesAsParent = familiesAsParent;
     }
 
@@ -221,7 +223,7 @@ public class PersonModel {
         private PersonBasicData mother;
         private PersonBasicData father;
         private List<PersonBasicData> partners;
-        private List<FamilyModel> familiesAsParent;
+        private List<FamilyDto> familiesAsParent;
 
         public Builder id(UUID id) {
             this.id = id;
@@ -299,13 +301,13 @@ public class PersonModel {
             return this;
         }
 
-        public Builder familiesAsParent(List<FamilyModel> familyIdsAsParent) {
+        public Builder familiesAsParent(List<FamilyDto> familyIdsAsParent) {
             this.familiesAsParent = familyIdsAsParent;
             return this;
         }
 
-        public PersonModel build() {
-            return new PersonModel(this);
+        public PersonDto build() {
+            return new PersonDto(this);
         }
     }
 }

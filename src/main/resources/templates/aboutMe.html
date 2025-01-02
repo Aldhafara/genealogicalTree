@@ -6,10 +6,10 @@
         <title >Index</title>
         <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     </head>
-    <body th:style="'background: #f7f2e9'">
+   <body class="main-background">
         <div th:insert="~{static/fragments :: header}"></div>
 
-        <p>Hello User <span th:text="${userModel.login}"></span></p>
+        <p>Hello User <span th:text="${userDto.login}"></span></p>
 
         <div th:insert="~{static/fragments :: footer}"></div>
     </body>

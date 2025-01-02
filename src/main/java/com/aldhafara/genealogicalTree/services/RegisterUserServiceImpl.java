@@ -3,7 +3,7 @@ package com.aldhafara.genealogicalTree.services;
 import com.aldhafara.genealogicalTree.entities.RegisterUser;
 import com.aldhafara.genealogicalTree.exceptions.NotUniqueLogin;
 import com.aldhafara.genealogicalTree.mappers.UserMapper;
-import com.aldhafara.genealogicalTree.models.UserModel;
+import com.aldhafara.genealogicalTree.models.dto.UserDto;
 import com.aldhafara.genealogicalTree.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,9 +25,9 @@ public class RegisterUserServiceImpl implements RegisterUserService {
     }
 
     @Transactional
-    public UserModel save(UserModel userModel) throws NotUniqueLogin {
+    public UserDto save(UserDto userDto) throws NotUniqueLogin {
 
-        RegisterUser registerUser = userMapper.mapUserModelToRegisterUser(userModel);
+        RegisterUser registerUser = userMapper.mapUserDtoToRegisterUser(userDto);
 
         String lowerCaseLogin = registerUser.getLogin().toLowerCase(ROOT);
 
@@ -39,13 +39,13 @@ public class RegisterUserServiceImpl implements RegisterUserService {
         registerUser.setRoles("USER");
         registerUser.setLogin(lowerCaseLogin);
         RegisterUser savedUser = userRepository.save(registerUser);
-        return userMapper.mapRegisterUserToUserModel(savedUser);
+        return userMapper.mapRegisterUserToUserDto(savedUser);
     }
 
     @Override
-    public void update(UserModel userModel) {
+    public void update(UserDto userDto) {
 
-        RegisterUser registerUser = userMapper.mapUserModelToRegisterUser(userModel);
+        RegisterUser registerUser = userMapper.mapUserDtoToRegisterUser(userDto);
         String lowerCaseLogin = registerUser.getLogin().toLowerCase(ROOT);
         registerUser.setRoles("USER");
         registerUser.setLogin(lowerCaseLogin);

@@ -1,4 +1,4 @@
-package com.aldhafara.genealogicalTree.models;
+package com.aldhafara.genealogicalTree.models.dto;
 
 import com.aldhafara.genealogicalTree.entities.Person;
 
@@ -6,7 +6,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
-public class FamilyModel {
+public class FamilyDto {
 
     private UUID id;
     private UUID addBy;
@@ -15,10 +15,10 @@ public class FamilyModel {
     private List<Person> children;
     private Instant updateDate;
 
-    public FamilyModel() {
+    public FamilyDto() {
     }
 
-    public FamilyModel(FamilyModel.Builder builder) {
+    public FamilyDto(FamilyDto.Builder builder) {
         this.id = builder.id;
         this.addBy = builder.addBy;
         this.father = builder.father;
@@ -132,8 +132,8 @@ public class FamilyModel {
             return this;
         }
 
-        public FamilyModel build() {
-            return new FamilyModel(this);
+        public FamilyDto build() {
+            return new FamilyDto(this);
         }
     }
 }

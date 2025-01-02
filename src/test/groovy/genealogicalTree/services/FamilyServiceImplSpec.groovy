@@ -4,7 +4,7 @@ import com.aldhafara.genealogicalTree.configuration.SecurityContextFacade
 import com.aldhafara.genealogicalTree.entities.Family
 import com.aldhafara.genealogicalTree.entities.Person
 import com.aldhafara.genealogicalTree.mappers.FamilyMapper
-import com.aldhafara.genealogicalTree.models.FamilyModel
+import com.aldhafara.genealogicalTree.models.dto.FamilyDto
 import com.aldhafara.genealogicalTree.repositories.FamilyRepository
 import com.aldhafara.genealogicalTree.services.FamilyServiceImpl
 import spock.lang.Specification
@@ -57,7 +57,7 @@ class FamilyServiceImplSpec extends Specification {
     def "should map FamilyModel to Family and save with addBy with current logged user id"() {
         given:
             def currentUserId = UUID.randomUUID()
-            def familyModel = FamilyModel.builder()
+            def familyModel = FamilyDto.builder()
                     .id(UUID.randomUUID())
                     .addBy(null)
                     .father(new Person(id: UUID.randomUUID()))
@@ -74,7 +74,7 @@ class FamilyServiceImplSpec extends Specification {
                     .updateDate(clock.instant())
                     .build()
             securityContextFacade.getCurrentUserId() >> currentUserId
-            familyMapper.mapFamilyModelToFamily(familyModel) >> family
+            familyMapper.mapFamilyDtoToFamily(familyModel) >> family
 
         when:
             def result = familyService.save(familyModel)

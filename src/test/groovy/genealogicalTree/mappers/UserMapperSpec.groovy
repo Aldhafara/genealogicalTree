@@ -2,7 +2,7 @@ package genealogicalTree.mappers
 
 import com.aldhafara.genealogicalTree.entities.RegisterUser
 import com.aldhafara.genealogicalTree.mappers.UserMapper
-import com.aldhafara.genealogicalTree.models.UserModel
+import com.aldhafara.genealogicalTree.models.dto.UserDto
 import spock.lang.Specification
 
 class UserMapperSpec extends Specification {
@@ -20,7 +20,7 @@ class UserMapperSpec extends Specification {
             )
 
         when:
-            UserModel userModel = userMapper.mapRegisterUserToUserModel(registerUser)
+            UserDto userModel = userMapper.mapRegisterUserToUserDto(registerUser)
 
         then:
             userModel.id == UUID.fromString("a4be2635-235a-48f5-9be9-2dce4f16d7b4")
@@ -32,7 +32,7 @@ class UserMapperSpec extends Specification {
 
     def "should map UserModel to RegisterUser"() {
         given:
-            UserModel userModel = new UserModel(
+            UserDto userModel = new UserDto(
                 id: UUID.fromString("a4be2635-235a-48f5-9be9-2dce4f16d7b4"),
                 login: "testUser",
                 password: "password123",
@@ -41,7 +41,7 @@ class UserMapperSpec extends Specification {
             )
 
         when:
-            RegisterUser registerUser = userMapper.mapUserModelToRegisterUser(userModel)
+            RegisterUser registerUser = userMapper.mapUserDtoToRegisterUser(userModel)
 
         then:
             registerUser.id == UUID.fromString("a4be2635-235a-48f5-9be9-2dce4f16d7b4")

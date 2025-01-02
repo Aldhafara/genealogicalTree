@@ -1,7 +1,7 @@
 package com.aldhafara.genealogicalTree.services;
 
 import com.aldhafara.genealogicalTree.entities.RegisterUser;
-import com.aldhafara.genealogicalTree.models.UserModel;
+import com.aldhafara.genealogicalTree.models.dto.UserDto;
 import com.aldhafara.genealogicalTree.repositories.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,7 +22,7 @@ public class CustomerUserDetailsService implements UserDetailsService {
         RegisterUser user = userRepository.findByLogin(username.toLowerCase(ROOT))
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
 
-        return UserModel.builder()
+        return UserDto.builder()
                 .id(user.getId())
                 .login(user.getLogin())
                 .password(user.getPassword())

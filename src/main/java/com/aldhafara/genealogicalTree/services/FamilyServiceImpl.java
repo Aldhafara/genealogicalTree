@@ -4,7 +4,7 @@ import com.aldhafara.genealogicalTree.configuration.SecurityContextFacade;
 import com.aldhafara.genealogicalTree.entities.Family;
 import com.aldhafara.genealogicalTree.entities.Person;
 import com.aldhafara.genealogicalTree.mappers.FamilyMapper;
-import com.aldhafara.genealogicalTree.models.FamilyModel;
+import com.aldhafara.genealogicalTree.models.dto.FamilyDto;
 import com.aldhafara.genealogicalTree.repositories.FamilyRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -47,8 +47,8 @@ public class FamilyServiceImpl implements FamilyService{
     }
 
     @Transactional
-    public UUID save(FamilyModel familyModel) {
-        Family family = familyMapper.mapFamilyModelToFamily(familyModel);
+    public UUID save(FamilyDto familyDto) {
+        Family family = familyMapper.mapFamilyDtoToFamily(familyDto);
         return saveAndReturnId(family);
     }
 

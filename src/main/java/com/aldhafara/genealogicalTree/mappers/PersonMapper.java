@@ -2,9 +2,9 @@ package com.aldhafara.genealogicalTree.mappers;
 
 import com.aldhafara.genealogicalTree.entities.Family;
 import com.aldhafara.genealogicalTree.entities.Person;
-import com.aldhafara.genealogicalTree.models.FamilyModel;
+import com.aldhafara.genealogicalTree.models.dto.FamilyDto;
 import com.aldhafara.genealogicalTree.models.PersonBasicData;
-import com.aldhafara.genealogicalTree.models.PersonModel;
+import com.aldhafara.genealogicalTree.models.dto.PersonDto;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -22,15 +22,15 @@ public class PersonMapper {
         this.familyMapper = familyMapper;
     }
 
-    public PersonModel mapPersonToPersonModel(Person person, List<Family> familiesWithPersonAsParent) {
+    public PersonDto mapPersonToPersonDto(Person person, List<Family> familiesWithPersonAsParent) {
         if (person == null) {
-            return new PersonModel();
+            return new PersonDto();
         }
 
         List<PersonBasicData> siblingsList = new ArrayList<>();
         List<PersonBasicData> children = new ArrayList<>();
         List<PersonBasicData> partners = new ArrayList<>();
-        List<FamilyModel> familiesAsParent = new ArrayList<>();
+        List<FamilyDto> familiesAsParent = new ArrayList<>();
         PersonBasicData mother = null;
         PersonBasicData father = null;
 
@@ -56,13 +56,13 @@ public class PersonMapper {
                     .forEach(children::add);
 
             familiesWithPersonAsParent.forEach(family -> {
-                familiesAsParent.add(familyMapper.mapFamilyToFamilyModel(family));
-                addPartnerIfNotPerson(partners, family.getFather(), person);
-                addPartnerIfNotPerson(partners, family.getMother(), person);
+                familiesAsParent.add(familyMapper.mapFamilyToFamilyDto(family));
+                addPartnerIfNotSamePerson(partners, family.getFather(), person);
+                addPartnerIfNotSamePerson(partners, family.getMother(), person);
             });
         }
 
-        return PersonModel.builder()
+        return PersonDto.builder()
                 .id(person.getId())
                 .addBy(person.getAddBy())
                 .firstName(person.getFirstName())
@@ -81,37 +81,37 @@ public class PersonMapper {
                 .build();
     }
 
-    private void addPartnerIfNotPerson(List<PersonBasicData> partners, Person partner, Person person) {
+    private void addPartnerIfNotSamePerson(List<PersonBasicData> partners, Person partner, Person person) {
         Optional.ofNullable(partner)
                 .filter(p -> p != person)
                 .ifPresent(p -> partners.add(new PersonBasicData(p)));
     }
 
-    public Person mapPersonModelToPerson(PersonModel personModel) {
+    public Person mapPersonDtoToPerson(PersonDto personDto) {
         return Person.builder()
-                .id(personModel.getId())
-                .addBy(personModel.getAddBy())
-                .firstName(personModel.getFirstName())
-                .lastName(personModel.getLastName())
-                .updateDate(personModel.getUpdateDate())
-                .familyName(personModel.getFamilyName())
-                .sex(personModel.getSex())
-                .birthDate(personModel.getBirthDateAsInstant())
-                .birthPlace(personModel.getBirthPlace())
+                .id(personDto.getId())
+                .addBy(personDto.getAddBy())
+                .firstName(personDto.getFirstName())
+                .lastName(personDto.getLastName())
+                .updateDate(personDto.getUpdateDate())
+                .familyName(personDto.getFamilyName())
+                .sex(personDto.getSex())
+                .birthDate(personDto.getBirthDateAsInstant())
+                .birthPlace(personDto.getBirthPlace())
                 .build();
     }
 
-    public Person mapPersonModelWithFamilyToPerson(PersonModel personModel, Family family) {
+    public Person mapPersonDtoWithFamilyToPerson(PersonDto personDto, Family family) {
         return Person.builder()
-                .id(personModel.getId())
-                .addBy(personModel.getAddBy())
-                .firstName(personModel.getFirstName())
-                .lastName(personModel.getLastName())
-                .updateDate(personModel.getUpdateDate())
-                .familyName(personModel.getFamilyName())
-                .sex(personModel.getSex())
-                .birthDate(personModel.getBirthDateAsInstant())
-                .birthPlace(personModel.getBirthPlace())
+                .id(personDto.getId())
+                .addBy(personDto.getAddBy())
+                .firstName(personDto.getFirstName())
+                .lastName(personDto.getLastName())
+                .updateDate(personDto.getUpdateDate())
+                .familyName(personDto.getFamilyName())
+                .sex(personDto.getSex())
+                .birthDate(personDto.getBirthDateAsInstant())
+                .birthPlace(personDto.getBirthPlace())
                 .family(family)
                 .build();
     }
