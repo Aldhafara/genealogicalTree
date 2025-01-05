@@ -1,0 +1,10 @@
+{
+  "registerUser": {
+    "login": "existingUser",
+    "password": "password123"
+  },
+  "personDetails": {
+    "firstName": "John",
+    "lastName": "Doe"
+  }
+}

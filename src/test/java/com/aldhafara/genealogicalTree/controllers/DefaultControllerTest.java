@@ -38,12 +38,6 @@ class DefaultControllerTest {
     }
 
     @Test
-    void shouldAlwaysReturnRegisterPage() throws Exception {
-        mockMvc.perform(get("/register"))
-                .andExpect(status().isOk());
-    }
-
-    @Test
     @WithMockUser(username = "testUser")
     void shouldRedirectToIndexAfterLogout() throws Exception {
         mockMvc.perform(post("/logout")

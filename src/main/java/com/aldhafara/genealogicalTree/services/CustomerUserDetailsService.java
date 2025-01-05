@@ -3,6 +3,7 @@ package com.aldhafara.genealogicalTree.services;
 import com.aldhafara.genealogicalTree.entities.RegisterUser;
 import com.aldhafara.genealogicalTree.models.dto.UserDto;
 import com.aldhafara.genealogicalTree.repositories.UserRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -29,5 +30,13 @@ public class CustomerUserDetailsService implements UserDetailsService {
                 .roles(user.getRoles())
                 .detailsId(user.getDetailsId())
                 .build();
+    }
+
+    public boolean userHasRole(UserDetails userDetails, String role) {
+        if (StringUtils.isBlank(role) || userDetails == null) {
+            return false;
+        }
+        UserDto user = (UserDto) userDetails;
+        return user.hasRole(role.toUpperCase());
     }
 }

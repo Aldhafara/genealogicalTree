@@ -86,6 +86,10 @@ public class UserDto implements UserDetails {
         this.roles = roles;
     }
 
+    public boolean hasRole(String role) {
+        return roles.toUpperCase().contains(role.toUpperCase());
+    }
+
     public UUID getDetailsId() {
         return detailsId;
     }

@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -75,6 +76,12 @@ public class RegisterUser implements UserDetails {
             collection.add(new SimpleGrantedAuthority(role));
         }
         return collection;
+    }
+
+    public void setAuthorities(List<String> roles) {
+        if (!roles.isEmpty()) {
+            this.roles = roles.stream().reduce((a, b) -> a + " ; " + b).get();
+        }
     }
 
     public String getPassword() {

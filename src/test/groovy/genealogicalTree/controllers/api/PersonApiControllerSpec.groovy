@@ -22,11 +22,10 @@ class PersonApiControllerSpec extends Specification {
     @Autowired
     MockMvc mockMvc
 
-    @Autowired
     PersonApiController personApiController
 
-    def personService = Mock(PersonServiceImpl)
-    def familyService = Mock(FamilyServiceImpl)
+    def personService
+    def familyService
 
     def setup() {
         personService = Mock(PersonServiceImpl)
