@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html lang="en-EN" xmlns:th="http://www.thymeleaf.org">
+    <div th:insert="~{static/fragments :: bootstrapStylesheet}"></div>
+    <head>
+        <link rel="stylesheet" href="/css/tree.css">
+        <div th:insert="~{static/fragments :: languageScript}"></div>
+        <title >Index</title>
+        <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        <script src="/js/tree.js" defer></script>
+    </head>
+   <body class="main-background">
+        <div th:insert="~{static/fragments :: header}"></div>
+
+
+        <div class="content justify-content-center">
+            <div class="tree-container justify-content-center">
+                <div id="tree"></div>
+            </div>
+        </div>
+
+
+        <div th:insert="~{static/fragments :: footer}"></div>
+    </body>
+</html>

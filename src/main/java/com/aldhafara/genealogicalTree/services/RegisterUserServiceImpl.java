@@ -5,6 +5,7 @@ import com.aldhafara.genealogicalTree.exceptions.NotUniqueLogin;
 import com.aldhafara.genealogicalTree.mappers.UserMapper;
 import com.aldhafara.genealogicalTree.models.dto.UserDto;
 import com.aldhafara.genealogicalTree.repositories.UserRepository;
+import com.aldhafara.genealogicalTree.services.interfaces.RegisterUserService;
 import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

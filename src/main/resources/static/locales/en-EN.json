@@ -6,6 +6,7 @@
   "sex" : "Sex",
   "choose" : "Choose...",
   "unknown" : "unknown",
+  "noDate": "No date",
 
   "mainPage" : "Main page",
   "logout" : "Logout",
@@ -19,6 +20,8 @@
   "addFamilyMember" : "Add family member",
   "allFamilyMembers" : "Members of your family",
   "allFamilyMembersDescription" : "You will find all family members here",
+  "goToTree" : "Go to tree",
+  "goToTreeDescription" : "Here you will find your family members presented in the form of a graph",
 
   "addMother" :  "Add mother",
   "addFather" : "Add father",

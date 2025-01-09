@@ -138,6 +138,7 @@
 						<include>**/*.java</include>
 						<include>**/*.groovy</include>
 					</includes>
+					<testSourceDirectory>src/test</testSourceDirectory>
 				</configuration>
 			</plugin>
 		</plugins>

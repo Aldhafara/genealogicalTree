@@ -6,6 +6,7 @@ import com.aldhafara.genealogicalTree.entities.Person;
 import com.aldhafara.genealogicalTree.mappers.FamilyMapper;
 import com.aldhafara.genealogicalTree.models.dto.FamilyDto;
 import com.aldhafara.genealogicalTree.repositories.FamilyRepository;
+import com.aldhafara.genealogicalTree.services.interfaces.FamilyService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class FamilyServiceImpl implements FamilyService{
+public class FamilyServiceImpl implements FamilyService {
 
     private final FamilyRepository familyRepository;
     private final FamilyMapper familyMapper;

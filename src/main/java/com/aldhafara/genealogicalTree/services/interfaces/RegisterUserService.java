@@ -1,4 +1,4 @@
-package com.aldhafara.genealogicalTree.services;
+package com.aldhafara.genealogicalTree.services.interfaces;
 
 import com.aldhafara.genealogicalTree.exceptions.NotUniqueLogin;
 import com.aldhafara.genealogicalTree.models.dto.UserDto;

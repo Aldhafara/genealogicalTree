@@ -1,0 +1,41 @@
+.tree-container {
+    display: flex; /* Ustawia model flexbox */
+    justify-content: center; /* Wyśrodkowanie poziome */
+    align-items: center; /* Wyśrodkowanie pionowe */
+    height: 100vh; /* Ustaw wysokość kontenera na 100% wysokości widoku */
+}
+
+#tree {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Upewnij się, że SVG wypełnia kontener */
+    height: 100%; /* Wypełnia całkowicie wysokość rodzica */
+}
+.node rect {
+  fill: lightblue;
+  stroke: steelblue;
+  stroke-width: 2px;
+}
+.node text {
+  font-size: 12px;
+  text-anchor: middle;
+  alignment-baseline: middle;
+}
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 2px;
+}
+.tree-container {
+    width: 100%;
+    height: 500px;
+}
+.node rect.collapsed {
+  fill: #ccc;
+}
+
+.partner rect {
+  fill: #f5f5f5;
+  stroke: #000;
+}

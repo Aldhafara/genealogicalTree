@@ -73,4 +73,19 @@ class DefaultControllerTest {
                 .andExpect(content().string(org.hamcrest.Matchers.containsString("username")))
                 .andExpect(content().string(org.hamcrest.Matchers.containsString("password")));
     }
+
+    @Test
+    @WithMockUser(username = "testUser")
+    void shouldReturnTreePage() throws Exception {
+        mockMvc.perform(get("/family-tree"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("tree"));
+    }
+
+    @Test
+    void shouldRedirectToLoginPageForUnauthenticatedUserAccessingTreePage() throws Exception {
+        mockMvc.perform(get("/home"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("**/login"));
+    }
 }

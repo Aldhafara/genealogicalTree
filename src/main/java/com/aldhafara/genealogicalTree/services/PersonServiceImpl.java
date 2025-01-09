@@ -8,6 +8,7 @@ import com.aldhafara.genealogicalTree.mappers.PersonMapper;
 import com.aldhafara.genealogicalTree.models.PersonBasicData;
 import com.aldhafara.genealogicalTree.models.dto.PersonDto;
 import com.aldhafara.genealogicalTree.repositories.PersonRepository;
+import com.aldhafara.genealogicalTree.services.interfaces.PersonService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
