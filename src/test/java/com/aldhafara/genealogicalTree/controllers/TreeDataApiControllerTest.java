@@ -10,6 +10,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -46,7 +47,17 @@ public class TreeDataApiControllerTest {
     void testGetTreeStructure_ReturnsDefaultStructureForDefaultId() throws Exception {
         mockMvc.perform(get(GET_STRUCTURE_ENDPOINT + DEFAULT_ID))
                 .andExpect(status().isOk())
-                .andExpect(content().string(org.hamcrest.Matchers.containsString("\"father\": {")));
+                .andExpect(content().contentTypeCompatibleWith("application/json"))
+                .andExpect(jsonPath("$.id").value("550e8400-e29b-41d4-a716-446655440000"))
+                .andExpect(jsonPath("$.father").exists())
+                .andExpect(jsonPath("$.father.id").value("123e4567-e89b-12d3-a456-426614174000"))
+                .andExpect(jsonPath("$.father.name").value("John Smith"))
+                .andExpect(jsonPath("$.father.familyName").value("Smith"))
+                .andExpect(jsonPath("$.mother").exists())
+                .andExpect(jsonPath("$.children").isArray())
+                .andExpect(jsonPath("$.children.length()").value(3))
+                .andExpect(jsonPath("$.children[0].name").value("Alice Smith"))
+                .andExpect(jsonPath("$.children[0].familyName").value("Smith"));
     }
 
     @Test
