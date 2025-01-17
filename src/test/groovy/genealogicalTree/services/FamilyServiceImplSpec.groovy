@@ -5,6 +5,7 @@ import com.aldhafara.genealogicalTree.entities.Family
 import com.aldhafara.genealogicalTree.entities.Person
 import com.aldhafara.genealogicalTree.mappers.FamilyMapper
 import com.aldhafara.genealogicalTree.models.dto.FamilyDto
+import com.aldhafara.genealogicalTree.models.dto.PersonDto
 import com.aldhafara.genealogicalTree.repositories.FamilyRepository
 import com.aldhafara.genealogicalTree.services.FamilyServiceImpl
 import spock.lang.Specification
@@ -60,9 +61,9 @@ class FamilyServiceImplSpec extends Specification {
             def familyModel = FamilyDto.builder()
                     .id(UUID.randomUUID())
                     .addBy(null)
-                    .father(new Person(id: UUID.randomUUID()))
-                    .mother(new Person(id: UUID.randomUUID()))
-                    .children([new Person(id: UUID.randomUUID())])
+                    .father(new PersonDto(id: UUID.randomUUID()))
+                    .mother(new PersonDto(id: UUID.randomUUID()))
+                    .children([new PersonDto(id: UUID.randomUUID())])
                     .updateDate(clock.instant())
                     .build()
             def family = Family.builder()

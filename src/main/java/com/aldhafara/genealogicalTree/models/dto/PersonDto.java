@@ -2,6 +2,8 @@ package com.aldhafara.genealogicalTree.models.dto;
 
 import com.aldhafara.genealogicalTree.models.PersonBasicData;
 import com.aldhafara.genealogicalTree.models.SexEnum;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.Instant;
@@ -11,6 +13,8 @@ import java.util.UUID;
 
 import static java.time.ZoneOffset.UTC;
 
+@Setter
+@Getter
 public class PersonDto {
 
     private UUID id;
@@ -63,46 +67,6 @@ public class PersonDto {
         return new Builder();
     }
 
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public Instant getUpdateDate() {
-        return updateDate;
-    }
-
-    public void setUpdateDate(Instant updateDate) {
-        this.updateDate = updateDate;
-    }
-
-    public String getFamilyName() {
-        return familyName;
-    }
-
-    public void setFamilyName(String familyName) {
-        this.familyName = familyName;
-    }
-
-    public SexEnum getSex() {
-        return sex;
-    }
-
-    public void setSex(SexEnum sex) {
-        this.sex = sex;
-    }
-
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
-    }
-
     public Instant getBirthDateAsInstant() {
         return birthDate != null ? birthDate.atStartOfDay(UTC).toInstant() : null;
     }
@@ -110,102 +74,6 @@ public class PersonDto {
     public void setBirthDateFromInstant(Instant birthDateInstant) {
         this.birthDate = birthDateInstant != null ?
                 LocalDate.ofInstant(birthDateInstant, UTC) : null;
-    }
-
-    public String getBirthPlace() {
-        return birthPlace;
-    }
-
-    public void setBirthPlace(String birthPlace) {
-        this.birthPlace = birthPlace;
-    }
-
-    public UUID getAddBy() {
-        return addBy;
-    }
-
-    public void setAddBy(UUID addBy) {
-        this.addBy = addBy;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public List<PersonBasicData> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<PersonBasicData> children) {
-        this.children = children;
-    }
-
-    public List<PersonBasicData> getSiblings() {
-        return siblings;
-    }
-
-    public void setSiblings(List<PersonBasicData> siblings) {
-        this.siblings = siblings;
-    }
-
-    public List<PersonBasicData> getSiblingsWithStepSiblings() {
-        return siblingsWithStepSiblings;
-    }
-
-    public void setSiblingsWithStepSiblings(List<PersonBasicData> siblingsWithStepSiblings) {
-        this.siblingsWithStepSiblings = siblingsWithStepSiblings;
-    }
-
-    public PersonBasicData getMother() {
-        return mother;
-    }
-
-    public void setMother(PersonBasicData mother) {
-        this.mother = mother;
-    }
-
-    public PersonBasicData getFather() {
-        return father;
-    }
-
-    public void setFather(PersonBasicData father) {
-        this.father = father;
-    }
-
-    public List<PersonBasicData> getPartners() {
-        return partners;
-    }
-
-    public void setPartners(List<PersonBasicData> partners) {
-        this.partners = partners;
-    }
-
-    public UUID getFamilyId() {
-        return familyId;
-    }
-
-    public void setFamilyId(UUID familyId) {
-        this.familyId = familyId;
-    }
-
-    public List<FamilyDto> getFamiliesAsParent() {
-        return familiesAsParent;
-    }
-
-    public void setFamiliesAsParent(List<FamilyDto> familiesAsParent) {
-        this.familiesAsParent = familiesAsParent;
     }
 
     public static final class Builder {

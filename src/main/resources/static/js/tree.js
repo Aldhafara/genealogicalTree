@@ -18,9 +18,6 @@ const mainGroup = svg.append("g");
 
 let lastCenteredNode = { x: 0, y: 0, scale: 1 };
 
-/**
- * Centrowanie widoku na określonych współrzędnych.
- */
 function centerView(x, y, scale = 1) {
     lastCenteredNode = { x, y, scale };
     svg.transition().duration(750).call(
@@ -29,12 +26,11 @@ function centerView(x, y, scale = 1) {
     );
 }
 
-/**
- * Rysowanie prostokąta.
- */
 function drawRectangle(group, x, y, text, id) {
     const width = 120;
     const height = 50;
+    const margin = 5;
+
     const rect = group.append("rect")
         .attr("x", x - width / 2)
         .attr("y", y - height / 2)
@@ -53,11 +49,25 @@ function drawRectangle(group, x, y, text, id) {
         .attr("text-anchor", "middle")
         .attr("alignment-baseline", "middle")
         .text(text);
+
+    const linkX = x + width / 2 - margin;
+    const linkY = y + height / 2 - margin;
+    const linkText = "Details";
+
+    group.append("a")
+        .attr("href", `/person/${id}`)
+        .attr("target", "_blank")
+        .append("text")
+        .attr("x", linkX)
+        .attr("y", linkY)
+        .attr("text-anchor", "end")
+        .attr("alignment-baseline", "bottom")
+        .attr("font-size", "12px")
+        .attr("fill", "blue")
+        .style("cursor", "pointer")
+        .text(linkText);
 }
 
-/**
- * Rysowanie linii.
- */
 function drawLine(group, x1, y1, x2, y2) {
     group.append("line")
         .attr("x1", x1)
@@ -68,14 +78,11 @@ function drawLine(group, x1, y1, x2, y2) {
         .attr("stroke-width", 2);
 }
 
-/**
- * Rysowanie drzewa.
- */
 function drawTree(family) {
     const parentSpacing = 200;
 
-    drawRectangle(mainGroup, -parentSpacing / 2, 0, family.father.name || translations["unknown"], family.father.id);
-    drawRectangle(mainGroup, parentSpacing / 2, 0, family.mother.name || translations["unknown"], family.mother.id);
+    drawRectangle(mainGroup, -parentSpacing / 2, 0, getFullName(family.father), family.father.id);
+    drawRectangle(mainGroup, parentSpacing / 2, 0, getFullName(family.mother), family.mother.id);
 
     const radius = 20;
     mainGroup.append("circle")
@@ -98,7 +105,7 @@ function drawTree(family) {
 
         if (family.children.length === 1) {
             drawLine(mainGroup, 0, 20, 0, yPosition);
-            drawRectangle(mainGroup, 0, childY, family.children[0].name || translations["unknown"], family.children[0].id);
+            drawRectangle(mainGroup, 0, childY, getFullName(family.children[0]), family.children[0].id);
         } else {
             const lineLength = (family.children.length - 1) * childSpacing;
             const startX = -lineLength / 2;
@@ -110,10 +117,17 @@ function drawTree(family) {
             family.children.forEach((child, index) => {
                 const childX = startX + index * childSpacing;
                 drawLine(mainGroup, childX, yPosition, childX, childY - 60);
-                drawRectangle(mainGroup, childX, childY, child.name || translations["unknown"], child.id);
+                drawRectangle(mainGroup, childX, childY, getFullName(child), child.id);
             });
         }
     }
+}
+
+function getFullName(child) {
+    const firstName = child.firstName || translations["unknown"];
+    const lastName = child.lastName || translations["unknown"];
+
+    return firstName + " " + lastName;
 }
 
 async function fetchMyId() {
@@ -131,8 +145,8 @@ async function fetchMyId() {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
-        const data = await response.text();
-        return data;
+        const data = await response.json();
+        return data.id;
     } catch (error) {
         console.error("Error fetching UUID:", error);
         throw error;

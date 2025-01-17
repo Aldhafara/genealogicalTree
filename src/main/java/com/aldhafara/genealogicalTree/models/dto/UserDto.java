@@ -1,16 +1,23 @@
 package com.aldhafara.genealogicalTree.models.dto;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.UUID;
 
+@Getter
 public class UserDto implements UserDetails {
     private UUID id;
+    @Setter
     private String login;
+    @Setter
     private String password;
+    @Setter
     private String roles;
+    @Setter
     private UUID detailsId;
 
     public UserDto(Builder builder) {
@@ -28,29 +35,9 @@ public class UserDto implements UserDetails {
         return new UserDto.Builder();
     }
 
-    public UUID getId() {
-        return id;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     @Override
@@ -78,24 +65,8 @@ public class UserDto implements UserDetails {
         return true;
     }
 
-    public String getRoles() {
-        return roles;
-    }
-
-    public void setRoles(String roles) {
-        this.roles = roles;
-    }
-
     public boolean hasRole(String role) {
         return roles.toUpperCase().contains(role.toUpperCase());
-    }
-
-    public UUID getDetailsId() {
-        return detailsId;
-    }
-
-    public void setDetailsId(UUID detailsId) {
-        this.detailsId = detailsId;
     }
 
     public static final class Builder {

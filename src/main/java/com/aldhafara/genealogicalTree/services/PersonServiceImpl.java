@@ -10,6 +10,7 @@ import com.aldhafara.genealogicalTree.models.dto.PersonDto;
 import com.aldhafara.genealogicalTree.repositories.PersonRepository;
 import com.aldhafara.genealogicalTree.services.interfaces.PersonService;
 import jakarta.transaction.Transactional;
+import lombok.Setter;
 import org.springframework.stereotype.Service;
 
 import java.time.Clock;
@@ -23,16 +24,13 @@ public class PersonServiceImpl implements PersonService {
     private final PersonRepository personRepository;
     private final PersonMapper personMapper;
     private final SecurityContextFacade securityContextFacade;
+    @Setter
     private Clock clock = Clock.systemUTC();
 
     public PersonServiceImpl(PersonRepository personRepository, PersonMapper personMapper, SecurityContextFacade securityContextFacade) {
         this.personRepository = personRepository;
         this.personMapper = personMapper;
         this.securityContextFacade = securityContextFacade;
-    }
-
-    public void setClock(Clock clock) {
-        this.clock = clock;
     }
 
     @Transactional

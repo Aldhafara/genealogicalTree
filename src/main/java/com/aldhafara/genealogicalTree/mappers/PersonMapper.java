@@ -5,6 +5,7 @@ import com.aldhafara.genealogicalTree.entities.Person;
 import com.aldhafara.genealogicalTree.models.dto.FamilyDto;
 import com.aldhafara.genealogicalTree.models.PersonBasicData;
 import com.aldhafara.genealogicalTree.models.dto.PersonDto;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class PersonMapper {
 
     private final FamilyMapper familyMapper;
 
-    public PersonMapper(FamilyMapper familyMapper) {
+    public PersonMapper(@Lazy FamilyMapper familyMapper) {
         this.familyMapper = familyMapper;
     }
 

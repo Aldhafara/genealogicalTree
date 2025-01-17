@@ -8,6 +8,7 @@ import com.aldhafara.genealogicalTree.models.dto.FamilyDto;
 import com.aldhafara.genealogicalTree.repositories.FamilyRepository;
 import com.aldhafara.genealogicalTree.services.interfaces.FamilyService;
 import jakarta.transaction.Transactional;
+import lombok.Setter;
 import org.springframework.stereotype.Service;
 
 import java.time.Clock;
@@ -21,16 +22,13 @@ public class FamilyServiceImpl implements FamilyService {
     private final FamilyRepository familyRepository;
     private final FamilyMapper familyMapper;
     private final SecurityContextFacade securityContextFacade;
+    @Setter
     private Clock clock = Clock.systemUTC();
 
     public FamilyServiceImpl(FamilyRepository familyRepository, FamilyMapper familyMapper, SecurityContextFacade securityContextFacade) {
         this.familyRepository = familyRepository;
         this.familyMapper = familyMapper;
         this.securityContextFacade = securityContextFacade;
-    }
-
-    public void setClock(Clock clock) {
-        this.clock = clock;
     }
 
     @Override

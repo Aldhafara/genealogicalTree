@@ -1,23 +1,23 @@
 package com.aldhafara.genealogicalTree.controllers.api;
 
+import com.aldhafara.genealogicalTree.configuration.SecurityContextFacade;
 import com.aldhafara.genealogicalTree.exceptions.TreeStructureNotFoundException;
-import com.aldhafara.genealogicalTree.services.dev.TreeDataServiceDummyImpl;
+import com.aldhafara.genealogicalTree.models.dto.FamilyTreeDto;
 import com.aldhafara.genealogicalTree.services.interfaces.TreeDataService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.CurrentSecurityContext;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -26,9 +26,12 @@ import java.util.UUID;
 public class TreeDataApiController {
 
     private final TreeDataService treeDataService;
+    private final SecurityContextFacade securityContextFacade;
 
-    public TreeDataApiController(TreeDataService treeDataService) {
-        this.treeDataService = new TreeDataServiceDummyImpl();
+    @Autowired
+    public TreeDataApiController(TreeDataService treeDataService, SecurityContextFacade securityContextFacade) {
+        this.treeDataService = treeDataService;
+        this.securityContextFacade = securityContextFacade;
     }
 
     @Operation(
@@ -39,8 +42,12 @@ public class TreeDataApiController {
                             responseCode = "200",
                             description = "Successfully retrieved the user ID",
                             content = @Content(
+
                                     mediaType = "application/json",
-                                    schema = @Schema(type = "string", example = "123e4567-e89b-12d3-a456-426614174000")
+                                    schema = @Schema(
+                                            type = "string",
+                                            example = "{ \"id\": \"123e4567-e89b-12d3-a456-426614174000\" }] }"
+                                    )
                             )
                     ),
                     @ApiResponse(
@@ -50,12 +57,13 @@ public class TreeDataApiController {
             }
     )
     @GetMapping("/get-my-id")
-    public ResponseEntity<String> getMyId(@CurrentSecurityContext SecurityContext context) {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body("123e4567-e89b-12d3-a456-426614174000");
-//        UserDto userDto = (UserDto) context.getAuthentication().getPrincipal();
-//        return ResponseEntity.status(HttpStatus.OK)
-//                .body(userDto.getDetailsId().toString());
+    public ResponseEntity<?> getMyId() {
+        UUID userId = securityContextFacade.getCurrentUserDetailsId();
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        Map<String, String> response = Map.of("id", userId.toString());
+        return ResponseEntity.ok(response);
     }
 
     @Operation(
@@ -92,16 +100,18 @@ public class TreeDataApiController {
             }
     )
     @GetMapping("/get-structure/{id}")
-    public ResponseEntity<String> getTreeStructure(@PathVariable UUID id) {
+    public ResponseEntity<?> getTreeStructure(@PathVariable UUID id) {
         try {
-            String treeStructure = treeDataService.getTreeStructure(id);
-            return ResponseEntity.ok()
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(treeStructure);
+            FamilyTreeDto treeStructure = treeDataService.getTreeStructure(id);
+            return ResponseEntity.ok(treeStructure);
         } catch (TreeStructureNotFoundException ex) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body("{\"error\":\"" + ex.getMessage() + "\"}");
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(Map.of(
+                            "error", "Tree structure not found",
+                            "message", ex.getMessage(),
+                            "status", HttpStatus.NOT_FOUND.value()
+                    ));
         }
     }
 }

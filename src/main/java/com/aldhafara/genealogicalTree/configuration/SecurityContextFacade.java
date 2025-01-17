@@ -19,12 +19,21 @@ public class SecurityContextFacade {
         return getCurrentSecurityContext().getAuthentication();
     }
 
-    public UUID getCurrentUserId() {
+    private UserDto getCurrentUser() {
         Authentication authentication = getAuthentication();
         if (authentication == null) {
             return null;
         }
-        UserDto user = (UserDto) authentication.getPrincipal();
+        return (UserDto) authentication.getPrincipal();
+    }
+
+    public UUID getCurrentUserId() {
+        UserDto user = getCurrentUser();
         return (user != null) ? user.getId() : null;
+    }
+
+    public UUID getCurrentUserDetailsId() {
+        UserDto user = getCurrentUser();
+        return (user != null) ? user.getDetailsId() : null;
     }
 }
