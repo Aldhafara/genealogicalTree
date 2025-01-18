@@ -12,10 +12,12 @@ import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
 
 import java.time.Instant;
 import java.util.UUID;
 
+@Getter
 @Entity
 @Table(name = "persons", indexes = {
         @Index(name = "idx_family_id", columnList = "family_id")
@@ -64,76 +66,36 @@ public class Person {
         return new Builder();
     }
 
-    public UUID getId() {
-        return id;
-    }
-
-    public UUID getAddBy() {
-        return addBy;
-    }
-
     public void setAddBy(UUID addBy) {
         this.addBy = addBy;
-    }
-
-    public String getFirstName() {
-        return firstName;
     }
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
-    public String getLastName() {
-        return lastName;
-    }
-
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public Instant getUpdateDate() {
-        return updateDate;
     }
 
     public void setUpdateDate(Instant updateDate) {
         this.updateDate = updateDate;
     }
 
-    public String getFamilyName() {
-        return familyName;
-    }
-
     public void setFamilyName(String familyName) {
         this.familyName = familyName;
-    }
-
-    public SexEnum getSex() {
-        return sex;
     }
 
     public void setSex(SexEnum sex) {
         this.sex = sex;
     }
 
-    public Instant getBirthDate() {
-        return birthDate;
-    }
-
     public void setBirthDate(Instant birthDate) {
         this.birthDate = birthDate;
     }
 
-    public String getBirthPlace() {
-        return birthPlace;
-    }
-
     public void setBirthPlace(String birthPlace) {
         this.birthPlace = birthPlace;
-    }
-
-    public Family getFamily() {
-        return family;
     }
 
     public void setFamily(Family family) {

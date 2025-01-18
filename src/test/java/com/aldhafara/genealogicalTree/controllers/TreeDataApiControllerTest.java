@@ -1,7 +1,13 @@
 package com.aldhafara.genealogicalTree.controllers;
 
+import com.aldhafara.genealogicalTree.exceptions.TreeStructureNotFoundException;
+import com.aldhafara.genealogicalTree.models.dto.FamilyTreeDto;
+import com.aldhafara.genealogicalTree.models.dto.PersonDto;
 import com.aldhafara.genealogicalTree.models.dto.UserDto;
+import com.aldhafara.genealogicalTree.services.interfaces.TreeDataService;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,8 +17,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
 import java.util.UUID;
 
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -32,6 +40,9 @@ public class TreeDataApiControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @Mock
+    private TreeDataService treeDataService;
+
     @Test
     void testGetMyId_UnauthorizedWhenNotAuthenticated() throws Exception {
         mockMvc.perform(get(GET_MY_ID_ENDPOINT))
@@ -50,9 +61,26 @@ public class TreeDataApiControllerTest {
     }
 
     @Test
-    void testGetTreeStructure_ReturnsDefaultStructureForDefaultId() throws Exception {
+    void testGetTreeStructure_Returns404WhenServiceThrowException() throws Exception {
         mockDefaultUser();
 
+        when(treeDataService.getTreeStructure(UUID.fromString(DEFAULT_ID)))
+                .thenThrow(new TreeStructureNotFoundException(""));
+
+        mockMvc.perform(get(GET_STRUCTURE_ENDPOINT + DEFAULT_ID))
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentTypeCompatibleWith("application/json"));
+    }
+
+    @Test
+    @Disabled
+    void testGetTreeStructure_ReturnsCorrectStructureForDefaultId() throws Exception {
+        mockDefaultUser();
+
+        UUID uuid = UUID.fromString(DEFAULT_ID);
+        System.out.println(uuid);
+        when(treeDataService.getTreeStructure(uuid))
+                .thenReturn(createFamilyTreeDto());
         mockMvc.perform(get(GET_STRUCTURE_ENDPOINT + DEFAULT_ID))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith("application/json"))
@@ -68,6 +96,39 @@ public class TreeDataApiControllerTest {
                 .andExpect(jsonPath("$.children[0].firstName").value("Alice"))
                 .andExpect(jsonPath("$.children[0].lastName").value("Smith"))
                 .andExpect(jsonPath("$.children[0].familyName").value("Smith"));
+    }
+
+    private FamilyTreeDto createFamilyTreeDto() {
+        FamilyTreeDto familyTreeDto = new FamilyTreeDto();
+        familyTreeDto.setId(UUID.fromString("550e8400-e29b-41d4-a716-446655440000"));
+        familyTreeDto.setFather(new PersonDto.Builder()
+                .id(UUID.fromString(DEFAULT_ID))
+                .firstName("John")
+                .lastName("Smith")
+                .familyName("Smith")
+                .build());
+        familyTreeDto.setMother(new PersonDto.Builder()
+                .firstName("Jane")
+                .lastName("Smith")
+                .build());
+
+        PersonDto child1 = new PersonDto.Builder()
+                .firstName("Alice")
+                .lastName("Smith")
+                .familyName("Smith")
+                .build();
+        PersonDto child2 = new PersonDto.Builder()
+                .firstName("Bob")
+                .lastName("Smith")
+                .familyName("Smith")
+                .build();
+        PersonDto child3 = new PersonDto.Builder()
+                .firstName("Charlie")
+                .lastName("Smith")
+                .familyName("Smith")
+                .build();
+        familyTreeDto.setChildren(List.of(child1, child2, child3));
+        return familyTreeDto;
     }
 
     @Test

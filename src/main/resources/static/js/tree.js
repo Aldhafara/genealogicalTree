@@ -110,7 +110,7 @@ function drawTree(family) {
             const lineLength = (family.children.length - 1) * childSpacing;
             const startX = -lineLength / 2;
 
-            drawLine(mainGroup, 0, 20, 0, yPosition);
+            drawLine(mainGroup, 0, 20, 0, yPosition / 2);
 
             drawLine(mainGroup, startX, yPosition / 2, startX + lineLength, yPosition / 2);
 
