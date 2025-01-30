@@ -6,6 +6,7 @@ import com.aldhafara.genealogicalTree.mappers.PersonMapper;
 import com.aldhafara.genealogicalTree.models.dto.FamilyTreeDto;
 import com.aldhafara.genealogicalTree.repositories.FamilyRepository;
 import com.aldhafara.genealogicalTree.services.interfaces.TreeDataService;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class TreeDataServiceImpl implements TreeDataService {
     }
 
     @Override
+    @Cacheable(value = "treeStructures", key = "#id")
     public FamilyTreeDto getTreeStructure(UUID id) throws TreeStructureNotFoundException {
 
         List<Family> families = familyRepository.findByParent(id);
@@ -42,7 +44,6 @@ public class TreeDataServiceImpl implements TreeDataService {
                     ));
             familyTreeRoot.setMarriageDate(family.getUpdateDate()); //TODO Zmienić na marriageDate
         });
-        familyTreeRoot.getChildren().forEach(System.out::println);
 
         return familyTreeRoot;
     }
