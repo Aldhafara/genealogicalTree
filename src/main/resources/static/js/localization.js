@@ -28,6 +28,7 @@ function formatName(name, unknown) {
 
 async function changeLanguage(language) {
     const translations = await loadTranslations(language);
+    window.translations = translations;
     if (translations) {
         localStorage.setItem("lang", language);
         document.documentElement.lang = language;

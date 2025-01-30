@@ -52,7 +52,7 @@ function drawRectangle(group, x, y, text, id) {
 
     const linkX = x + width / 2 - margin;
     const linkY = y + height / 2 - margin;
-    const linkText = "Details";
+    const linkText = window.translations["details"];
 
     group.append("a")
         .attr("href", `/person/${id}`)
@@ -92,7 +92,7 @@ function drawTree(family) {
         .attr("fill", "#f0f0f0")
         .attr("stroke", "#000")
         .on("mouseover", function () {
-            d3.select(this).append("title").text(family.marriageDate || translations["noDate"]);
+            d3.select(this).append("title").text(family.marriageDate || window.translations["noDate"]);
         });
 
     drawLine(mainGroup, -parentSpacing / 2 + 60, 0, -radius, 0);
@@ -124,8 +124,8 @@ function drawTree(family) {
 }
 
 function getFullName(child) {
-    const firstName = child.firstName || translations["unknown"];
-    const lastName = child.lastName || translations["unknown"];
+    const firstName = child.firstName || window.translations["unknown"];
+    const lastName = child.lastName || window.translations["unknown"];
 
     return firstName + " " + lastName;
 }
