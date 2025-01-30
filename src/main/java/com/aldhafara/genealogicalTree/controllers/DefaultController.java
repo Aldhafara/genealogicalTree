@@ -31,9 +31,4 @@ public class DefaultController {
         return "login";
     }
 
-    @GetMapping("/family-tree")
-    public String getTreeStructure() {
-        return "tree";
-    }
-
 }

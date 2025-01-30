@@ -176,9 +176,11 @@ async function fetchTreeStructure(id) {
     }
 }
 
-async function initializeTree() {
+async function initializeTree(initialUuid = null) {
     try {
-        initialUuid = await fetchMyId();
+        if (!initialUuid) {
+            initialUuid = await fetchMyId();
+        }
         familyTreeData = await fetchTreeStructure(initialUuid);
         drawTree(familyTreeData);
         const initialNode = mainGroup.select(`[data-id='${initialUuid}']`);
@@ -191,7 +193,10 @@ async function initializeTree() {
     }
 }
 
-initializeTree();
+const treeElement = document.getElementById("tree");
+const initialUuid = treeElement.getAttribute("data-initial-id");
+
+initializeTree(initialUuid);
 
 window.addEventListener("resize", () => {
     windowWidth = window.innerWidth - 2 * HORIZONTAL_MARGIN;

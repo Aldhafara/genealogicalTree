@@ -137,6 +137,11 @@
                                 <p><span data-i18n="updateDate">Update date:</span> <span th:text="${#dates.format(person.updateDate,' dd-MM-yyyy HH:mm:ss')}"></span></p>
                             </div>
                         </div>
+                        <div class="align-self-center">
+                            <a th:href="@{/family-tree/{id}(id=${person.id})}"
+                               role="button" class="btn btn-primary btn-lg"
+                               data-i18n="viewInTree">View in Tree</a>
+                        </div>
                         <div>
                             <br>
                             <button class="btn btn-primary btn-lg" type="button" id="editButton" data-i18n="edit">Edit</button>
