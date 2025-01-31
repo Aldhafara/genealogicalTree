@@ -1,5 +1,6 @@
 const HORIZONTAL_MARGIN = 50;
 const VERTICAL_MARGIN = 120;
+const RECTANGLE_WIDTH = 140;
 
 let windowWidth = window.innerWidth - 2 * HORIZONTAL_MARGIN;
 let windowHeight = window.innerHeight  - 2 * VERTICAL_MARGIN;
@@ -27,14 +28,13 @@ function centerView(x, y, scale = 1) {
 }
 
 function drawRectangle(group, x, y, text, id) {
-    const width = 120;
     const height = 50;
     const margin = 5;
 
     const rect = group.append("rect")
-        .attr("x", x - width / 2)
+        .attr("x", x - RECTANGLE_WIDTH / 2)
         .attr("y", y - height / 2)
-        .attr("width", width)
+        .attr("width", RECTANGLE_WIDTH)
         .attr("height", height)
         .attr("rx", 10)
         .attr("ry", 10)
@@ -50,7 +50,7 @@ function drawRectangle(group, x, y, text, id) {
         .attr("alignment-baseline", "middle")
         .text(text);
 
-    const linkX = x + width / 2 - margin;
+    const linkX = x + RECTANGLE_WIDTH / 2 - margin;
     const linkY = y + height / 2 - margin;
     const linkText = window.translations["details"];
 
@@ -78,15 +78,26 @@ function drawLine(group, x1, y1, x2, y2) {
         .attr("stroke-width", 2);
 }
 
-function drawTree(family) {
+function drawTree(treeStructure) {
     const parentSpacing = 200;
 
-    drawRectangle(mainGroup, -parentSpacing / 2, 0, getFullName(family.father), family.father.id);
-    drawRectangle(mainGroup, parentSpacing / 2, 0, getFullName(family.mother), family.mother.id);
+    if (treeStructure.families.length <= 1) {
+        drawSingleTree(treeStructure.families[0], 0);
+    } else {
+        drawSingleTree(treeStructure.families[0], -200);
+        drawSingleTree(treeStructure.families[1], 200);
+    }
+}
 
-    const radius = 20;
+function drawSingleTree(family, circleXPosition) {
+    const parentSpacing = 200;
+
+    drawRectangle(mainGroup, -parentSpacing / 2 + circleXPosition, 0, getFullName(family.father), family.father.id);
+    drawRectangle(mainGroup, parentSpacing / 2 + circleXPosition, 0, getFullName(family.mother), family.mother.id);
+
+    const radius = 5;
     mainGroup.append("circle")
-        .attr("cx", 0)
+        .attr("cx", circleXPosition)
         .attr("cy", 0)
         .attr("r", radius)
         .attr("fill", "#f0f0f0")
@@ -95,29 +106,29 @@ function drawTree(family) {
             d3.select(this).append("title").text(family.marriageDate || window.translations["noDate"]);
         });
 
-    drawLine(mainGroup, -parentSpacing / 2 + 60, 0, -radius, 0);
-    drawLine(mainGroup, parentSpacing / 2 - 60, 0, radius, 0);
+    drawLine(mainGroup, -parentSpacing / 2 + RECTANGLE_WIDTH / 2 + circleXPosition, 0, circleXPosition - radius, 0);
+    drawLine(mainGroup, parentSpacing / 2 - RECTANGLE_WIDTH / 2 + circleXPosition, 0, circleXPosition + radius, 0);
 
     if (family.children && family.children.length > 0) {
         const childY = 100;
-        const childSpacing = 130;
+        const childSpacing = RECTANGLE_WIDTH + 10;
         const yPosition = childY - 20;
 
         if (family.children.length === 1) {
-            drawLine(mainGroup, 0, 20, 0, yPosition);
-            drawRectangle(mainGroup, 0, childY, getFullName(family.children[0]), family.children[0].id);
+            drawLine(mainGroup, 0 + circleXPosition, radius, 0 + circleXPosition, yPosition);
+            drawRectangle(mainGroup, 0 + circleXPosition, childY, getFullName(family.children[0]), family.children[0].id);
         } else {
             const lineLength = (family.children.length - 1) * childSpacing;
             const startX = -lineLength / 2;
 
-            drawLine(mainGroup, 0, 20, 0, yPosition / 2);
+            drawLine(mainGroup, 0 + circleXPosition, radius, 0 + circleXPosition, yPosition / 2);
 
-            drawLine(mainGroup, startX, yPosition / 2, startX + lineLength, yPosition / 2);
+            drawLine(mainGroup, startX + circleXPosition, yPosition / 2, startX + lineLength + circleXPosition, yPosition / 2);
 
             family.children.forEach((child, index) => {
                 const childX = startX + index * childSpacing;
-                drawLine(mainGroup, childX, yPosition, childX, childY - 60);
-                drawRectangle(mainGroup, childX, childY, getFullName(child), child.id);
+                drawLine(mainGroup, childX + circleXPosition, yPosition, childX + circleXPosition, childY - 60);
+                drawRectangle(mainGroup, childX + circleXPosition, childY, getFullName(child), child.id);
             });
         }
     }

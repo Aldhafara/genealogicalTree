@@ -3,7 +3,7 @@ package com.aldhafara.genealogicalTree.services;
 import com.aldhafara.genealogicalTree.entities.Family;
 import com.aldhafara.genealogicalTree.exceptions.TreeStructureNotFoundException;
 import com.aldhafara.genealogicalTree.mappers.PersonMapper;
-import com.aldhafara.genealogicalTree.models.dto.FamilyTreeDto;
+import com.aldhafara.genealogicalTree.models.dto.TreeStructuresDto;
 import com.aldhafara.genealogicalTree.repositories.FamilyRepository;
 import com.aldhafara.genealogicalTree.services.interfaces.TreeDataService;
 import org.springframework.cache.annotation.Cacheable;
@@ -26,23 +26,27 @@ public class TreeDataServiceImpl implements TreeDataService {
 
     @Override
     @Cacheable(value = "treeStructures", key = "#id")
-    public FamilyTreeDto getTreeStructure(UUID id) throws TreeStructureNotFoundException {
+    public TreeStructuresDto getTreeStructure(UUID id) throws TreeStructureNotFoundException {
 
         List<Family> families = familyRepository.findByParent(id);
         if (families == null || families.isEmpty()) {
             throw new TreeStructureNotFoundException("Tree structure for person with ID " + id + " not found");
         }
 
-        FamilyTreeDto familyTreeRoot = new FamilyTreeDto();
+        TreeStructuresDto familyTreeRoot = new TreeStructuresDto();
         families.forEach(family -> {
-            familyTreeRoot.setId(family.getId());
-            familyTreeRoot.setFather(personMapper.mapPersonToPersonDto(family.getFather(), null));
-            familyTreeRoot.setMother(personMapper.mapPersonToPersonDto(family.getMother(), null));
+            TreeStructuresDto.TreeStructure familyTree = new TreeStructuresDto.TreeStructure();
+
+            familyTree.setId(family.getId());
+            familyTree.setFather(personMapper.mapPersonToPersonDto(family.getFather(), null));
+            familyTree.setMother(personMapper.mapPersonToPersonDto(family.getMother(), null));
             Optional.ofNullable(family.getChildren())
                     .ifPresent(children -> children.forEach(child ->
-                            familyTreeRoot.getChildren().add(personMapper.mapPersonToPersonDto(child, null))
+                            familyTree.getChildren().add(personMapper.mapPersonToPersonDto(child, null))
                     ));
-            familyTreeRoot.setMarriageDate(family.getUpdateDate()); //TODO Zmienić na marriageDate
+            familyTree.setMarriageDate(family.getUpdateDate()); //TODO Zmienić na marriageDate
+
+            familyTreeRoot.getFamilies().add(familyTree);
         });
 
         return familyTreeRoot;

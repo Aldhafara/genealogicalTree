@@ -2,7 +2,7 @@ package com.aldhafara.genealogicalTree.controllers.api;
 
 import com.aldhafara.genealogicalTree.configuration.SecurityContextFacade;
 import com.aldhafara.genealogicalTree.exceptions.TreeStructureNotFoundException;
-import com.aldhafara.genealogicalTree.models.dto.FamilyTreeDto;
+import com.aldhafara.genealogicalTree.models.dto.TreeStructuresDto;
 import com.aldhafara.genealogicalTree.services.interfaces.TreeDataService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -99,7 +99,7 @@ public class TreeDataApiController {
     @GetMapping("/get-structure/{id}")
     public ResponseEntity<?> getTreeStructure(@PathVariable UUID id) {
         try {
-            FamilyTreeDto treeStructure = treeDataService.getTreeStructure(id);
+            TreeStructuresDto treeStructure = treeDataService.getTreeStructure(id);
             return ResponseEntity.ok(treeStructure);
         } catch (TreeStructureNotFoundException ex) {
             return ResponseEntity

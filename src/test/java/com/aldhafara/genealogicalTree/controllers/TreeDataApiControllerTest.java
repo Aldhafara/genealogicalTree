@@ -1,7 +1,7 @@
 package com.aldhafara.genealogicalTree.controllers;
 
 import com.aldhafara.genealogicalTree.exceptions.TreeStructureNotFoundException;
-import com.aldhafara.genealogicalTree.models.dto.FamilyTreeDto;
+import com.aldhafara.genealogicalTree.models.dto.TreeStructuresDto;
 import com.aldhafara.genealogicalTree.models.dto.PersonDto;
 import com.aldhafara.genealogicalTree.models.dto.UserDto;
 import com.aldhafara.genealogicalTree.services.interfaces.TreeDataService;
@@ -98,16 +98,17 @@ public class TreeDataApiControllerTest {
                 .andExpect(jsonPath("$.children[0].familyName").value("Smith"));
     }
 
-    private FamilyTreeDto createFamilyTreeDto() {
-        FamilyTreeDto familyTreeDto = new FamilyTreeDto();
-        familyTreeDto.setId(UUID.fromString("550e8400-e29b-41d4-a716-446655440000"));
-        familyTreeDto.setFather(new PersonDto.Builder()
+    private TreeStructuresDto createFamilyTreeDto() {
+        TreeStructuresDto treeStructuresDto = new TreeStructuresDto();
+        TreeStructuresDto.TreeStructure family = new TreeStructuresDto.TreeStructure();
+        family.setId(UUID.fromString("550e8400-e29b-41d4-a716-446655440000"));
+        family.setFather(new PersonDto.Builder()
                 .id(UUID.fromString(DEFAULT_ID))
                 .firstName("John")
                 .lastName("Smith")
                 .familyName("Smith")
                 .build());
-        familyTreeDto.setMother(new PersonDto.Builder()
+        family.setMother(new PersonDto.Builder()
                 .firstName("Jane")
                 .lastName("Smith")
                 .build());
@@ -127,8 +128,10 @@ public class TreeDataApiControllerTest {
                 .lastName("Smith")
                 .familyName("Smith")
                 .build();
-        familyTreeDto.setChildren(List.of(child1, child2, child3));
-        return familyTreeDto;
+        family.setChildren(List.of(child1, child2, child3));
+
+        treeStructuresDto.getFamilies().add(family);
+        return treeStructuresDto;
     }
 
     @Test
