@@ -23,6 +23,11 @@
   "allFamilyMembersDescription" : "You will find all family members here",
   "goToTree" : "Go to tree",
   "goToTreeDescription" : "Here you will find your family members presented in the form of a graph",
+  "loadDemo" : "Load demo tree",
+  "demoDescription" : "View an example family tree without needing to add your own data",
+
+  "loadDuckTalesDemo": "Load Donald Duck tree",
+  "loadDuckTalesDescription": "McDuck and Quack family – the story of duck generations",
 
   "addMother" :  "Add mother",
   "addFather" : "Add father",

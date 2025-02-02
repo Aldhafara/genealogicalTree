@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
 @Service
 public class PersonServiceImpl implements PersonService {
 
@@ -51,6 +53,14 @@ public class PersonServiceImpl implements PersonService {
             throw new PersonNotFoundException();
         }
         return optionalPerson.get();
+    }
+
+    @Override
+    public Optional<UUID> findIdByFirstNameAndLastName(String firstName, String lastName) {
+        if (isBlank(firstName) || isBlank(lastName)) {
+            return Optional.empty();
+        }
+        return personRepository.findIdByFirstNameAndLastName(firstName, lastName);
     }
 
     public Person saveAndReturn(PersonDto personDto) {

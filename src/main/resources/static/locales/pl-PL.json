@@ -23,6 +23,11 @@
   "allFamilyMembersDescription" : "Znajdziesz tutaj wszystkich członków Twojej rodziny",
   "goToTree" : "Przejdź do drzewa",
   "goToTreeDescription" : "Znajdziesz tutaj członków Twojej rodziny przedstawionych w formie grafu",
+  "loadDemo" : "Załaduj przykładowe drzewo",
+  "demoDescription" : "Zobacz przykładowe drzewo bez konieczności dodawania własnych danych",
+
+  "loadDuckTalesDemo": "Załaduj drzewo Kaczora Donalda",
+  "loadDuckTalesDescription": "Rodzina McKwaczów i Kwaczaków – historia kaczych pokoleń",
 
   "addMother" :  "Dodaj matkę",
   "addFather" : "Dodaj ojca",

@@ -13,12 +13,15 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Getter
 @Entity
 @Table(name = "families", indexes = {
         @Index(name = "idx_father_id", columnList = "father_id"),
@@ -29,16 +32,21 @@ public class Family {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+    @Setter
     private UUID addBy;
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "father_id", unique = false)
     private Person father;
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "mother_id", unique = false)
     private Person mother;
+    @Setter
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "family_id")
     private List<Person> children = new ArrayList<>();
+    @Setter
     private Instant updateDate;
 
     public Family() {
@@ -73,54 +81,6 @@ public class Family {
 
     public static Family.Builder builder() {
         return new Builder();
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public UUID getAddBy() {
-        return addBy;
-    }
-
-    public void setAddBy(UUID addBy) {
-        this.addBy = addBy;
-    }
-
-    public Person getFather() {
-        return father;
-    }
-
-    public void setFather(Person father) {
-        this.father = father;
-    }
-
-    public Person getMother() {
-        return mother;
-    }
-
-    public void setMother(Person mother) {
-        this.mother = mother;
-    }
-
-    public List<Person> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<Person> children) {
-        this.children = children;
-    }
-
-    public Instant getUpdateDate() {
-        return updateDate;
-    }
-
-    public void setUpdateDate(Instant updateDate) {
-        this.updateDate = updateDate;
     }
 
     public void addChild(Person child) {

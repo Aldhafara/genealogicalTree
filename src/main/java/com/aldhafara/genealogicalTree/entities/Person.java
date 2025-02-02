@@ -13,6 +13,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -27,15 +28,24 @@ public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+    @Setter
     private UUID addBy;
+    @Setter
     private String firstName;
+    @Setter
     private String lastName;
+    @Setter
     private Instant updateDate;
+    @Setter
     private String familyName;
+    @Setter
     @Enumerated(EnumType.STRING)
     private SexEnum sex;
+    @Setter
     private Instant birthDate;
+    @Setter
     private String birthPlace;
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="family_id", insertable = false, updatable = false)
     private Family family;
@@ -64,42 +74,6 @@ public class Person {
 
     public static Person.Builder builder() {
         return new Builder();
-    }
-
-    public void setAddBy(UUID addBy) {
-        this.addBy = addBy;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public void setUpdateDate(Instant updateDate) {
-        this.updateDate = updateDate;
-    }
-
-    public void setFamilyName(String familyName) {
-        this.familyName = familyName;
-    }
-
-    public void setSex(SexEnum sex) {
-        this.sex = sex;
-    }
-
-    public void setBirthDate(Instant birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public void setBirthPlace(String birthPlace) {
-        this.birthPlace = birthPlace;
-    }
-
-    public void setFamily(Family family) {
-        this.family = family;
     }
 
     public static final class Builder {

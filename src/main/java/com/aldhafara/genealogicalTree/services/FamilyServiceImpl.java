@@ -31,11 +31,12 @@ public class FamilyServiceImpl implements FamilyService {
         this.securityContextFacade = securityContextFacade;
     }
 
+    @Transactional
     @Override
     public Family save(Family family) {
         family.setUpdateDate(clock.instant());
-        UUID registerUserId = securityContextFacade.getCurrentUserId();
         if (family.getAddBy() == null) {
+            UUID registerUserId = securityContextFacade.getCurrentUserId();
             family.setAddBy(registerUserId);
         }
         return familyRepository.save(family);
