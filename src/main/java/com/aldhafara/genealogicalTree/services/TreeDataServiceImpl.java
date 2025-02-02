@@ -3,6 +3,7 @@ package com.aldhafara.genealogicalTree.services;
 import com.aldhafara.genealogicalTree.entities.Family;
 import com.aldhafara.genealogicalTree.exceptions.TreeStructureNotFoundException;
 import com.aldhafara.genealogicalTree.mappers.PersonMapper;
+import com.aldhafara.genealogicalTree.models.SexEnum;
 import com.aldhafara.genealogicalTree.models.dto.TreeStructuresDto;
 import com.aldhafara.genealogicalTree.repositories.FamilyRepository;
 import com.aldhafara.genealogicalTree.services.interfaces.TreeDataService;
@@ -48,7 +49,9 @@ public class TreeDataServiceImpl implements TreeDataService {
 
             familyTreeRoot.getFamilies().add(familyTree);
         });
-
+        if (families.get(0).getMother() != null) {
+            familyTreeRoot.setMainPersonSex(families.get(0).getMother().getId() == id ? SexEnum.FEMALE : SexEnum.MALE);
+        }
         return familyTreeRoot;
     }
 }

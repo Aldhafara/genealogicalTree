@@ -1,6 +1,7 @@
 package com.aldhafara.genealogicalTree.models.dto;
 
 import com.aldhafara.genealogicalTree.models.RelationshipStatus;
+import com.aldhafara.genealogicalTree.models.SexEnum;
 import lombok.Data;
 
 import java.time.Instant;
@@ -11,6 +12,7 @@ import java.util.UUID;
 @Data
 public class TreeStructuresDto {
     private List<TreeStructure> families = new ArrayList<>();
+    private SexEnum mainPersonSex;
 
     @Data
     public static class TreeStructure {
