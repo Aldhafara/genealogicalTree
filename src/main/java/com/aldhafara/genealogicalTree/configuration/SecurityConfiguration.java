@@ -46,6 +46,7 @@ public class SecurityConfiguration {
                 .logout(logout -> logout
                         .logoutSuccessUrl("/")
                 );
+
         return http.build();
     }
 
@@ -53,5 +54,4 @@ public class SecurityConfiguration {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
     }
-
 }
