@@ -99,7 +99,7 @@ function drawRectangle(group, x, y, text, id) {
 
     const linkX = x + RECTANGLE_WIDTH / 2 - margin;
     const linkY = y + RECTANGLE_HEIGHT / 2 - margin;
-    const linkText = window.translations["details"];
+    const linkText = getDefaultValue("details");
 
     group.append("a")
         .attr("href", `/person/${id}`)
@@ -179,7 +179,7 @@ function drawSingleTree(family, circleXPosition, circleYPosition = 0, parentAlre
         .attr("fill", "#f0f0f0")
         .attr("stroke", "#000")
         .on("mouseover", function () {
-            d3.select(this).append("title").text(family.marriageDate || window.translations["noDate"]);
+            d3.select(this).append("title").text(family.marriageDate || getDefaultValue("noDate"));
         });
 
     if (family.children && family.children.length > 0) {
@@ -207,10 +207,18 @@ function drawSingleTree(family, circleXPosition, circleYPosition = 0, parentAlre
 }
 
 function getFullName(child) {
-    const firstName = child.firstName || window.translations["unknown"];
-    const lastName = child.lastName || window.translations["unknown"];
+    const firstName = child.firstName || getDefaultValue("unknown");
+    const lastName = child.lastName || getDefaultValue("unknown");
 
     return firstName + " " + lastName;
+}
+
+function getDefaultValue(key) {
+    if (!window.translations) {
+        console.warn("translations are undefined")
+        return "text";
+    }
+    return window.translations[key];
 }
 
 async function fetchMyId() {
