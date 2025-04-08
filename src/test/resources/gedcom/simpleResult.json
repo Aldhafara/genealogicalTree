@@ -1,0 +1,14 @@
+[ {
+  "head" : null,
+  "sour" : "MyGedcom"
+}, {
+  "indi" : "I1",
+  "name" : "Jan /Kowalski/",
+  "sex" : "M"
+}, {
+  "fam" : "F1",
+  "husb" : "I1"
+}, {
+  "sour" : "S1",
+  "titl" : "Book of Life"
+} ]

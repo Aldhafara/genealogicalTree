@@ -25,6 +25,7 @@
   "goToTreeDescription" : "Znajdziesz tutaj członków Twojej rodziny przedstawionych w formie grafu",
   "loadDemo" : "Załaduj przykładowe drzewo",
   "demoDescription" : "Zobacz przykładowe drzewo bez konieczności dodawania własnych danych",
+  "uploadGedFile": "Wgraj plik .ged",
 
   "loadDuckTalesDemo": "Załaduj drzewo Kaczora Donalda",
   "loadDuckTalesDescription": "Rodzina McKwaczów i Kwaczaków – historia kaczych pokoleń",

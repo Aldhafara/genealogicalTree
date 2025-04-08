@@ -78,7 +78,6 @@ public class TreeDataApiControllerTest {
         mockDefaultUser();
 
         UUID uuid = UUID.fromString(DEFAULT_ID);
-        System.out.println(uuid);
         when(treeDataService.getTreeStructure(uuid))
                 .thenReturn(createFamilyTreeDto());
         mockMvc.perform(get(GET_STRUCTURE_ENDPOINT + DEFAULT_ID))

@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html lang="en-EN" xmlns:th="http://www.thymeleaf.org">
+    <div th:insert="~{static/fragments :: bootstrapStylesheet}"></div>
+    <head>
+        <div th:insert="~{static/fragments :: languageScript}"></div>
+        <title >Index</title>
+        <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    </head>
+   <body class="main-background">
+        <div th:insert="~{static/fragments :: header}"></div>
+
+        <div class="col-md-6">
+            <form action="/api/file/upload" method="POST" enctype="multipart/form-data">
+                <input type="file" name="file" class="row mb-3 form-control" id="formFile" accept=".ged" required>
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                <button type="submit" class="row mb-3 btn btn-primary" data-i18n="uploadGedFile">Upload</button>
+            </form>
+        </div>
+
+        <div th:insert="~{static/fragments :: footer}"></div>
+    </body>
+</html>

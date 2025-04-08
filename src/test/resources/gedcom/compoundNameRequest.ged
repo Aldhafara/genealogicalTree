@@ -1,0 +1,12 @@
+0 HEAD
+1 SOUR MyGedcom
+0 @I2@ INDI
+1 NAME Anna /Nowak/
+2 GIVN Anna
+2 SURN Nowak
+2 _MARNM Kowalska
+1 SEX F
+0 @F1@ FAM
+1 HUSB @I1@
+0 @S1@ SOUR
+1 TITL Book of Life

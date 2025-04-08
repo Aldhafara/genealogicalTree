@@ -1,0 +1,14 @@
+0 @I1@ INDI
+1 NAME Jan /Kowalski/
+1 SEX M
+0 @I2@ INDI
+1 NAME Anna /Nowak/
+1 SEX F
+0 @F1@ FAM
+1 HUSB @I85@
+1 WIFE @I84@
+1 CHIL @I87@
+1 CHIL @I88@
+1 CHIL @I90@
+1 CHIL @I89@
+1 CHIL @I86@
