@@ -84,6 +84,7 @@ Projekt korzysta z PostgreSQL.
 | GET    | /person/aboutme        | Przekierowuje na stronę ze szczegółami obecnie zalogowanie użytkownika  | ✅          |
 | GET    | /family-tree/get-my-id | Pobierz UUID obecnie zalogowanie użytkownika                            | ✅          |
 | GET    | /family-tree/get-structure/{id} | Zwraca strukturę drzewa dla użytkownika o zadanym UUID         | ✅          |
+
 _Pełna lista endpointów i parametrów – zobacz  [Swagger](#swagger--dokumentacja-api)_
 
 ---
