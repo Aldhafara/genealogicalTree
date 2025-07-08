@@ -1,0 +1,14 @@
+target/
+.git/
+.env
+.idea/
+.vscode/
+*.iml
+*.log
+*.swp
+*.tmp
+*.DS_Store
+Thumbs.db
+*.pem
+*.key
+*.crt
