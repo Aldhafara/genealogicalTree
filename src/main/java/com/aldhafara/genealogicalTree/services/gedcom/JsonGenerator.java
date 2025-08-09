@@ -1,5 +1,6 @@
 package com.aldhafara.genealogicalTree.services.gedcom;
 
+import com.aldhafara.genealogicalTree.models.gedcom.GedcomRecord;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.stereotype.Component;

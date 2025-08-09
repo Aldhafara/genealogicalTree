@@ -1,9 +1,11 @@
 [ {
   "head" : null,
-  "sour" : "MyGedcom"
+  "sour" : [ "MyGedcom" ]
 }, {
   "indi" : "I1",
-  "name" : "Jan /Kowalski/",
+  "name" : {
+    "value" : "Jan /Kowalski/"
+  },
   "sex" : "M"
 }, {
   "fam" : "F1",

@@ -1,5 +1,6 @@
-package com.aldhafara.genealogicalTree.services.gedcom;
+package com.aldhafara.genealogicalTree.models.gedcom;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -7,6 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+@EqualsAndHashCode
 @Getter
 public class GedcomRecord {
     private final String id;
@@ -40,14 +42,5 @@ public class GedcomRecord {
         json.put(type, id);
         details.forEach(json::put);
         return json;
-    }
-
-    @Override
-    public String toString() {
-        return "GedcomRecord{" +
-                "id='" + id + '\'' +
-                ", type='" + type + '\'' +
-                ", details=" + details +
-                '}';
     }
 }

@@ -1,7 +1,7 @@
 package com.aldhafara.genealogicalTree.services;
 
 import com.aldhafara.genealogicalTree.exceptions.IllegalFileFormatException;
-import com.aldhafara.genealogicalTree.services.gedcom.GedcomData;
+import com.aldhafara.genealogicalTree.models.gedcom.GedcomData;
 import com.aldhafara.genealogicalTree.services.gedcom.GedcomToJsonService;
 import com.aldhafara.genealogicalTree.services.gedcom.JsonGenerator;
 import com.aldhafara.genealogicalTree.services.interfaces.FileService;
@@ -36,7 +36,7 @@ public class FileServiceImpl implements FileService {
         GedcomData result;
         try {
             result = gedcomToJsonService.convert(file);
-            List<String> gedcomPersons = jsonGenerator.generateJsonList(result.gedcomPersons());
+            List<String> gedcomPersons = jsonGenerator.generateJsonList(result.gedcomPeople());
             System.out.println(gedcomPersons); //TODO Add persons to DB
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -44,7 +44,7 @@ public class FileServiceImpl implements FileService {
 
         logger.info("Received file: " + fileName);
         logger.info("File size: " + fileSize + " bytes");
-        logger.info("Found " + result.gedcomPersons().size() + " individuals");
+        logger.info("Found " + result.gedcomPeople().size() + " individuals");
         logger.info("Found " + result.gedcomFamilies().size() + " families");
     }
 }
