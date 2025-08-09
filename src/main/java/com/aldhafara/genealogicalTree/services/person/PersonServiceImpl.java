@@ -1,4 +1,4 @@
-package com.aldhafara.genealogicalTree.services;
+package com.aldhafara.genealogicalTree.services.person;
 
 import com.aldhafara.genealogicalTree.configuration.SecurityContextFacade;
 import com.aldhafara.genealogicalTree.entities.Family;

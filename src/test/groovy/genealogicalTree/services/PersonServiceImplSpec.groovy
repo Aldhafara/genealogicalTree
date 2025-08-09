@@ -7,7 +7,7 @@ import com.aldhafara.genealogicalTree.mappers.FamilyMapper
 import com.aldhafara.genealogicalTree.mappers.PersonMapper
 import com.aldhafara.genealogicalTree.models.dto.PersonDto
 import com.aldhafara.genealogicalTree.repositories.PersonRepository
-import com.aldhafara.genealogicalTree.services.PersonServiceImpl
+import com.aldhafara.genealogicalTree.services.person.PersonServiceImpl
 import jakarta.transaction.Transactional
 import org.springframework.test.annotation.Rollback
 import spock.lang.Specification

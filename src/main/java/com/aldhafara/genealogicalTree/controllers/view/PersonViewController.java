@@ -6,7 +6,7 @@ import com.aldhafara.genealogicalTree.models.PersonBasicData;
 import com.aldhafara.genealogicalTree.models.SexEnum;
 import com.aldhafara.genealogicalTree.models.dto.PersonDto;
 import com.aldhafara.genealogicalTree.services.FamilyServiceImpl;
-import com.aldhafara.genealogicalTree.services.PersonServiceImpl;
+import com.aldhafara.genealogicalTree.services.person.PersonServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

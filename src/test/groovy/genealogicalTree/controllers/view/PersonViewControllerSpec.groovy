@@ -9,7 +9,7 @@ import com.aldhafara.genealogicalTree.models.PersonBasicData
 import com.aldhafara.genealogicalTree.models.SexEnum
 import com.aldhafara.genealogicalTree.models.dto.PersonDto
 import com.aldhafara.genealogicalTree.services.FamilyServiceImpl
-import com.aldhafara.genealogicalTree.services.PersonServiceImpl
+import com.aldhafara.genealogicalTree.services.person.PersonServiceImpl
 import org.springframework.ui.Model
 import spock.lang.Specification
 import org.springframework.boot.test.context.SpringBootTest

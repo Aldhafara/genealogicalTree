@@ -3,7 +3,7 @@ package genealogicalTree.services
 import com.aldhafara.genealogicalTree.exceptions.NotUniqueLogin
 import com.aldhafara.genealogicalTree.models.dto.PersonDto
 import com.aldhafara.genealogicalTree.models.dto.UserDto
-import com.aldhafara.genealogicalTree.services.PersonServiceImpl
+import com.aldhafara.genealogicalTree.services.person.PersonServiceImpl
 import com.aldhafara.genealogicalTree.services.RegisterUserServiceImpl
 import com.aldhafara.genealogicalTree.services.RegistrationService
 import spock.lang.Specification
