@@ -6,7 +6,7 @@ import com.aldhafara.genealogicalTree.models.SexEnum;
 import com.aldhafara.genealogicalTree.models.dto.PersonDto;
 import com.aldhafara.genealogicalTree.models.dto.UserDto;
 import com.aldhafara.genealogicalTree.services.FamilyServiceImpl;
-import com.aldhafara.genealogicalTree.services.PersonServiceImpl;
+import com.aldhafara.genealogicalTree.services.person.PersonServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.Content;
