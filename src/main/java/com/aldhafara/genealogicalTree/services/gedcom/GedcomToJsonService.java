@@ -1,5 +1,7 @@
 package com.aldhafara.genealogicalTree.services.gedcom;
 
+import com.aldhafara.genealogicalTree.models.gedcom.GedcomData;
+import com.aldhafara.genealogicalTree.models.gedcom.GedcomRecord;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 

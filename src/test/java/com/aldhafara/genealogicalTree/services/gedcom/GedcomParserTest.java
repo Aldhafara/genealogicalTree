@@ -1,5 +1,7 @@
 package com.aldhafara.genealogicalTree.services.gedcom;
 
+import com.aldhafara.genealogicalTree.models.gedcom.GedcomData;
+import com.aldhafara.genealogicalTree.models.gedcom.GedcomRecord;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
 
@@ -78,7 +80,7 @@ public class GedcomParserTest {
 
         assertNotNull(data);
         assertEquals("head", data.gedcomDetails().getType());
-        assertEquals(1, data.gedcomPersons().size());
+        assertEquals(1, data.gedcomPeople().size());
         assertEquals(1, data.gedcomFamilies().size());
         assertEquals(1, data.gedcomSources().size());
     }
