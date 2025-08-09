@@ -2,9 +2,7 @@ package com.aldhafara.genealogicalTree.services.interfaces;
 
 import com.aldhafara.genealogicalTree.exceptions.NotUniqueLogin;
 import com.aldhafara.genealogicalTree.models.dto.UserDto;
-import org.springframework.stereotype.Service;
 
-@Service
 public interface RegisterUserService {
 
     UserDto save(UserDto user) throws NotUniqueLogin;
