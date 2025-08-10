@@ -5,8 +5,11 @@ import com.aldhafara.genealogicalTree.models.SexEnum;
 import com.aldhafara.genealogicalTree.models.dto.PersonDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.LocalDate;
+import java.util.stream.Stream;
 
 import static java.time.ZoneOffset.UTC;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -89,6 +92,24 @@ public class PersonMatcherTest {
 
         assertEquals(0.0, score);
     }
+
+    static Stream<TestCase> nullCases() {
+        return Stream.of(
+                new TestCase(null, new Person()),
+                new TestCase(new PersonDto(), null),
+                new TestCase(null, null)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("nullCases")
+    void shouldReturnZeroWhenAnyPersonIsNull(TestCase tc) {
+        double score = matcher.similarityScore(tc.p1, tc.p2);
+
+        assertEquals(0.0, score);
+    }
+
+    private record TestCase(PersonDto p1, Person p2) {}
 
     @Test
     void shouldMatchIgnoringCaseAndMinorTypos() {
