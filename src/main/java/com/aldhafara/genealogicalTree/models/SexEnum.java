@@ -1,19 +1,15 @@
 package com.aldhafara.genealogicalTree.models;
 
+import lombok.Getter;
+
 public enum SexEnum {
 
     MALE('M', "mężczyzna"),
     FEMALE('F', "kobieta");
 
-    private char sex;
-    private String alternativeName;
-
-    SexEnum() {
-    }
-
-    SexEnum(char sex) {
-        this.sex = sex;
-    }
+    private final char sex;
+    @Getter
+    private final String alternativeName;
 
     SexEnum(char sex, String alternativeName) {
         this.sex = sex;
@@ -24,7 +20,11 @@ public enum SexEnum {
         return sex;
     }
 
-    public String getAlternativeName() {
-        return alternativeName;
+    public static SexEnum fromChar(Character c) {
+        if (c == null) return null;
+        for (SexEnum s : values()) {
+            if (s.sex == c) return s;
+        }
+        throw new IllegalArgumentException("Invalid SexEnum: " + c);
     }
 }
