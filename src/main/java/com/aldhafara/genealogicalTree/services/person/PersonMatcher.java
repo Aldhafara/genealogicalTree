@@ -17,25 +17,29 @@ public class PersonMatcher {
 
     private final LevenshteinDistance levenshtein = new LevenshteinDistance();
 
-    public double similarityScore(PersonDto p1, Person p2) {
+    public double similarityScore(PersonDto firstPerson, Person secondPerson) {
+        if (firstPerson == null || secondPerson == null) {
+            return 0.0;
+        }
+
         AtomicInteger total = new AtomicInteger();
         DoubleAdder score = new DoubleAdder();
 
-        compareField(p1::getFirstName, p2::getFirstName, total, score);
-        compareField(p1::getLastName, p2::getLastName, total, score);
-        compareField(p1::getFamilyName, p2::getFamilyName, total, score);
+        compareField(firstPerson::getFirstName, secondPerson::getFirstName, total, score);
+        compareField(firstPerson::getLastName, secondPerson::getLastName, total, score);
+        compareField(firstPerson::getFamilyName, secondPerson::getFamilyName, total, score);
 
-        compareField(() -> p1.getSex() != null ? p1.getSex().getAlternativeName() : null,
-                () -> p2.getSex() != null ? p2.getSex().getAlternativeName() : null,
+        compareField(() -> firstPerson.getSex() != null ? firstPerson.getSex().getAlternativeName() : null,
+                () -> secondPerson.getSex() != null ? secondPerson.getSex().getAlternativeName() : null,
                 total, score);
 
-        if (p1.getBirthDate() != null && p2.getBirthDate() != null &&
-                p1.getBirthDate().equals(LocalDate.ofInstant(p2.getBirthDate(), UTC))) {
+        if (firstPerson.getBirthDate() != null && secondPerson.getBirthDate() != null &&
+                firstPerson.getBirthDate().equals(LocalDate.ofInstant(secondPerson.getBirthDate(), UTC))) {
             total.incrementAndGet();
             score.add(1.0);
         }
 
-        compareField(p1::getBirthPlace, p2::getBirthPlace, total, score);
+        compareField(firstPerson::getBirthPlace, secondPerson::getBirthPlace, total, score);
 
         return total.get() == 0 ? 0.0 : score.doubleValue() / total.get();
     }
