@@ -1,7 +1,9 @@
 package com.aldhafara.genealogicalTree.services;
 
 import com.aldhafara.genealogicalTree.exceptions.IllegalFileFormatException;
+import com.aldhafara.genealogicalTree.exceptions.PersonNotFoundException;
 import com.aldhafara.genealogicalTree.models.gedcom.GedcomData;
+import com.aldhafara.genealogicalTree.services.gedcom.GedcomImportService;
 import com.aldhafara.genealogicalTree.services.gedcom.GedcomToJsonService;
 import com.aldhafara.genealogicalTree.services.gedcom.JsonGenerator;
 import com.aldhafara.genealogicalTree.services.interfaces.FileService;
@@ -19,10 +21,12 @@ public class FileServiceImpl implements FileService {
 
     private final GedcomToJsonService gedcomToJsonService;
     private final JsonGenerator jsonGenerator;
+    private final GedcomImportService importService;
 
-    public FileServiceImpl(GedcomToJsonService gedcomToJsonService, JsonGenerator jsonGenerator) {
+    public FileServiceImpl(GedcomToJsonService gedcomToJsonService, JsonGenerator jsonGenerator, GedcomImportService importService) {
         this.gedcomToJsonService = gedcomToJsonService;
         this.jsonGenerator = jsonGenerator;
+        this.importService = importService;
     }
 
     @Override
@@ -36,10 +40,10 @@ public class FileServiceImpl implements FileService {
         GedcomData result;
         try {
             result = gedcomToJsonService.convert(file);
-            List<String> gedcomPersons = jsonGenerator.generateJsonList(result.gedcomPeople());
-            System.out.println(gedcomPersons); //TODO Add persons to DB
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            List<String> gedcomPeople = jsonGenerator.generateJsonList(result.gedcomPeople());
+            importService.importFromGedcom(gedcomPeople);
+        } catch (IOException | PersonNotFoundException e) {
+            throw new RuntimeException("Failed to process GEDCOM file", e);
         }
 
         logger.info("Received file: " + fileName);

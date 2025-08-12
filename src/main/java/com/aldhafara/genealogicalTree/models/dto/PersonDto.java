@@ -13,8 +13,8 @@ import java.util.UUID;
 
 import static java.time.ZoneOffset.UTC;
 
-@Setter
 @Getter
+@Setter
 public class PersonDto {
 
     private UUID id;
@@ -35,6 +35,7 @@ public class PersonDto {
     private List<PersonBasicData> partners;
     private UUID familyId;
     private List<FamilyDto> familiesAsParent;
+    private double similarity;
 
     public PersonDto() {
     }
@@ -61,6 +62,7 @@ public class PersonDto {
         this.father = builder.father;
         this.partners = builder.partners;
         this.familiesAsParent = builder.familiesAsParent;
+        this.similarity = builder.similarity;
     }
 
     public static Builder builder() {
@@ -92,6 +94,7 @@ public class PersonDto {
         private PersonBasicData father;
         private List<PersonBasicData> partners;
         private List<FamilyDto> familiesAsParent;
+        private double similarity;
 
         public Builder id(UUID id) {
             this.id = id;
@@ -171,6 +174,11 @@ public class PersonDto {
 
         public Builder familiesAsParent(List<FamilyDto> familyIdsAsParent) {
             this.familiesAsParent = familyIdsAsParent;
+            return this;
+        }
+
+        public Builder similarity(double similarity) {
+            this.similarity = similarity;
             return this;
         }
 
