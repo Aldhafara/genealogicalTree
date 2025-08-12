@@ -25,6 +25,8 @@ public class PersonGedDto {
     private String familyAsChild;
     @JsonProperty("sour")
     private List<GedcomSource> source;
+    @JsonProperty
+    private String rin;
     @JsonProperty("_uid")
     private String id;
     @JsonProperty("obje")
