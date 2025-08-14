@@ -50,13 +50,24 @@
             <div class="row-sm-7">
                 <label for="password" class="col-sm-5 form-label" data-i18n="password">Password:</label>
                 <div class="col-sm-12">
-                    <input required type="password" id="password" class="form-control" name="user.password" th:field="*{user.password}">
+                    <div class="input-group">
+                        <input required type="password" id="password" class="form-control" name="user.password" th:field="*{user.password}" placeholder="Password">
+                        <span class="input-group-text toggle-password" data-target="password" style="cursor: pointer; user-select: none;" title="Press and hold to show password">
+                👁️
+            </span>
+                    </div>
                 </div>
             </div>
+
             <div class="row-sm-7">
                 <label for="retypePassword" class="col-sm-5 form-label" data-i18n="repeatPassword">Repeat password:</label>
                 <div class="col-sm-12">
-                    <input required type="password" id="retypePassword" class="form-control" name="retypePassword">
+                    <div class="input-group">
+                        <input required type="password" id="retypePassword" class="form-control" name="retypePassword" placeholder="Retype password">
+                        <span class="input-group-text toggle-password" data-target="retypePassword" style="cursor: pointer; user-select: none;" title="Press and hold to show password">
+                👁️
+            </span>
+                    </div>
                 </div>
             </div>
             <div>
@@ -64,6 +75,24 @@
                 <button class="btn btn-primary btn-lg" type="submit" data-i18n="register">Register</button>
             </div>
         </form>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                document.querySelectorAll('.toggle-password').forEach(toggle => {
+                    const targetId = toggle.getAttribute('data-target');
+                    const input = document.getElementById(targetId);
+
+                    const showPassword = () => input.type = 'text';
+                    const hidePassword = () => input.type = 'password';
+
+                    toggle.addEventListener('mousedown', showPassword);
+                    toggle.addEventListener('mouseup', hidePassword);
+                    toggle.addEventListener('mouseleave', (event) => {
+                        if (event.buttons === 1) hidePassword();
+                    });
+                });
+            });
+        </script>
 
         <div th:insert="~{static/fragments :: footer}"></div>
     </body>

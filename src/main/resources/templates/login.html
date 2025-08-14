@@ -20,9 +20,35 @@
             <div class="row mb-3">
                 <label for="password" class="col-sm-2 col-form-label" data-i18n="password">Password:</label>
                 <div class="col-sm-10">
-                    <input type="password" id="password" class="form-control" name="password">
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="password" placeholder="Password">
+                        <span class="input-group-text" id="togglePassword" style="cursor: pointer; user-select: none;" title="Press and hold to show password">
+                            👁️
+                        </span>
+                    </div>
                 </div>
             </div>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    const togglePassword = document.querySelector('#togglePassword');
+                    const passwordInput = document.querySelector('#password');
+
+                    togglePassword.addEventListener('mousedown', () => {
+                        passwordInput.setAttribute('type', 'text');
+                    });
+
+                    togglePassword.addEventListener('mouseup', () => {
+                        passwordInput.setAttribute('type', 'password');
+                    });
+
+                    togglePassword.addEventListener('mouseleave', (event) => {
+                        if (event.buttons === 1) {
+                            passwordInput.setAttribute('type', 'password');
+                        }
+                    });
+                });
+            </script>
             <div>
                 <br>
                 <button class="btn btn-primary btn-lg" type="submit" data-i18n="login">Login</button>
