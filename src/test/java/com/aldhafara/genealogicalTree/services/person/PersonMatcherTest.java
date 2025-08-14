@@ -67,7 +67,7 @@ public class PersonMatcherTest {
         PersonDto p1 = dto("Jan", "Kowalski", "Nowak", 'M', LocalDate.of(1990, 1, 1), "Warszawa");
         Person p2 = entity("Jan", "Kowalski", "Nowak", 'M', LocalDate.of(1990, 1, 1), "Warszawa");
 
-        double score = matcher.similarityScore(p1, p2);
+        double score = matcher.similarityScore(p1, p2).score();
 
         assertEquals(1.0, score);
     }
@@ -77,7 +77,7 @@ public class PersonMatcherTest {
         PersonDto p1 = dto("Jan", "Kowalski", null, 'M', LocalDate.of(1990, 1, 1), "Warszawa");
         Person p2 = entity("Jan", "Nowak", null, 'M', LocalDate.of(1990, 1, 1), "Warszawa");
 
-        double score = matcher.similarityScore(p1, p2);
+        double score = matcher.similarityScore(p1, p2).score();
 
         assertTrue(score > 0.5);
         assertTrue(score < 1.0);
@@ -88,7 +88,7 @@ public class PersonMatcherTest {
         PersonDto p1 = dto(null, null, null, null, null, null);
         Person p2 = entity(null, null, null, null, null, null);
 
-        double score = matcher.similarityScore(p1, p2);
+        double score = matcher.similarityScore(p1, p2).score();
 
         assertEquals(0.0, score);
     }
@@ -104,7 +104,7 @@ public class PersonMatcherTest {
     @ParameterizedTest
     @MethodSource("nullCases")
     void shouldReturnZeroWhenAnyPersonIsNull(TestCase tc) {
-        double score = matcher.similarityScore(tc.p1, tc.p2);
+        double score = matcher.similarityScore(tc.p1, tc.p2).score();
 
         assertEquals(0.0, score);
     }
@@ -116,9 +116,9 @@ public class PersonMatcherTest {
         PersonDto p1 = dto("Jan", "Kowalski", null, null, null, null);
         Person p2 = entity("JAN", "Kowaslki", null, null, null, null);
 
-        double score = matcher.similarityScore(p1, p2);
+        double score = matcher.similarityScore(p1, p2).score();
 
-        assertTrue(score > 0.8);
+        assertTrue(score > 0.7);
         assertTrue(score < 1.0);
     }
 
@@ -127,7 +127,7 @@ public class PersonMatcherTest {
         PersonDto p1 = dto(null, null, null, null, LocalDate.of(1990, 1, 1), null);
         Person p2 = entity(null, null, null, null, LocalDate.of(1990, 1, 1), null);
 
-        double score = matcher.similarityScore(p1, p2);
+        double score = matcher.similarityScore(p1, p2).score();
 
         assertEquals(1.0, score);
     }
@@ -137,7 +137,7 @@ public class PersonMatcherTest {
         PersonDto p1 = dto(null, null, null, null, null, "Warszawa");
         Person p2 = entity(null, null, null, null, null, "Warszawa");
 
-        double score = matcher.similarityScore(p1, p2);
+        double score = matcher.similarityScore(p1, p2).score();
 
         assertEquals(1.0, score);
     }

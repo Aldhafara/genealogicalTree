@@ -5,6 +5,7 @@ import com.aldhafara.genealogicalTree.entities.Person
 import com.aldhafara.genealogicalTree.exceptions.PersonNotFoundException
 import com.aldhafara.genealogicalTree.mappers.PersonDtoMapper
 import com.aldhafara.genealogicalTree.models.dto.PersonDto
+import com.aldhafara.genealogicalTree.models.gedcom.MatchResult
 import com.aldhafara.genealogicalTree.services.gedcom.GedcomImportService
 import com.aldhafara.genealogicalTree.services.person.PersonMatcher
 import com.aldhafara.genealogicalTree.services.person.PersonServiceImpl
@@ -59,7 +60,7 @@ class GedcomImportServiceSpec extends Specification {
             personDtoMapper.mapJsonPersonToPerson(_) >> dto
             securityContextFacade.getCurrentUserDetailsId() >> UUID.randomUUID()
             personService.getById(_) >> loggedPerson
-            personMatcher.similarityScore(dto, loggedPerson) >> 0.7
+            personMatcher.similarityScore(dto, loggedPerson) >> new MatchResult(0.7, 3)
 
         when:
             service.importFromGedcom([gedcomJson])
@@ -91,16 +92,15 @@ class GedcomImportServiceSpec extends Specification {
             personDtoMapper.mapJsonPersonToPerson(_) >>> [dto1, dto2]
             securityContextFacade.getCurrentUserDetailsId() >> uuid
             personService.getById(_) >> loggedPerson
-            personMatcher.similarityScore(dto1, loggedPerson) >> 0.91
-            personMatcher.similarityScore(dto2, loggedPerson) >> 0.95
+            personMatcher.similarityScore(dto1, loggedPerson) >> new MatchResult(0.91, 3)
+            personMatcher.similarityScore(dto2, loggedPerson) >> new MatchResult(0.95, 3)
             personService.saveAndReturn(_) >> new Person()
 
         when:
             service.importFromGedcom(["{}", "{}"])
 
         then:
-            1 * personService.saveAndReturn(dto1)
-            1 * personService.saveAndReturn(dto2)
+            1 * personService.saveAll([dto1, dto2])
     }
 
     @Unroll
@@ -113,13 +113,13 @@ class GedcomImportServiceSpec extends Specification {
             personDtoMapper.mapJsonPersonToPerson(_) >> dto
             securityContextFacade.getCurrentUserDetailsId() >> UUID.randomUUID()
             personService.getById(_) >> loggedPerson
-            personMatcher.similarityScore(_, _) >> similarity
+            personMatcher.similarityScore(_, _) >> new MatchResult(similarity, 3)
 
         when:
             service.importFromGedcom([gedcomJson])
 
         then:
-            (shouldSave ? 1 : 0) * personService.saveAndReturn(dto)
+            (shouldSave ? 1 : 0) * personService.saveAll([dto])
 
         where:
             similarity || shouldSave
