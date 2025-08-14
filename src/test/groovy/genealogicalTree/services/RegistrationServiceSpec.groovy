@@ -3,9 +3,9 @@ package genealogicalTree.services
 import com.aldhafara.genealogicalTree.exceptions.NotUniqueLogin
 import com.aldhafara.genealogicalTree.models.dto.PersonDto
 import com.aldhafara.genealogicalTree.models.dto.UserDto
-import com.aldhafara.genealogicalTree.services.person.PersonServiceImpl
 import com.aldhafara.genealogicalTree.services.RegisterUserServiceImpl
 import com.aldhafara.genealogicalTree.services.RegistrationService
+import com.aldhafara.genealogicalTree.services.person.PersonServiceImpl
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -21,26 +21,26 @@ class RegistrationServiceSpec extends Specification {
         given:
             def user = new UserDto(login: "testUser", password: "password123")
             def person = new PersonDto(firstName: "John", lastName: "Doe")
+            def savedUserId = UUID.randomUUID()
 
         and:
-            def savedPersonId = UUID.randomUUID()
-            def savedUser = new UserDto(id: savedPersonId, login: user.getLogin(), password: user.getPassword())
+            def savedUser = new UserDto(id: savedUserId, login: "testUser", password: "password123")
 
         and:
-            userService.save(user) >> savedUser
-            personService.saveAndReturnId(person, null) >> savedPersonId
+            userService.save(_ as UserDto) >> savedUser
+            personService.saveAndReturnId(_ as PersonDto, null) >> UUID.fromString("00000000-0000-0000-0000-000000000001")
 
         when:
             registrationService.register(user, person)
 
         then:
-            1 * userService.save(user)
+            1 * userService.save({ it.login == "testUser" }) >> savedUser
 
         and:
-            1 * personService.saveAndReturnId({ it.addBy == savedPersonId }, null)
+            1 * personService.saveAndReturnId({ it.addBy == savedUserId }, null) >> UUID.fromString("00000000-0000-0000-0000-000000000001")
 
         and:
-            1 * userService.update({ it.detailsId == savedPersonId })
+            1 * userService.update({ it.detailsId == UUID.fromString("00000000-0000-0000-0000-000000000001") })
     }
 
     def "should throw NotUniqueLogin when user service throws it"() {
