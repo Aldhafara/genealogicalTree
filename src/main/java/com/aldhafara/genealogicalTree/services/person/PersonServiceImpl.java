@@ -35,7 +35,6 @@ public class PersonServiceImpl implements PersonService {
         this.securityContextFacade = securityContextFacade;
     }
 
-    @Transactional
     @Override
     public Person save(Person person) {
         if (person == null) {
@@ -84,7 +83,8 @@ public class PersonServiceImpl implements PersonService {
     private PersonDto determinateParentLastName(PersonDto parent, Person person) {
         switch (person.getSex()) {
             case MALE -> parent.setLastName(person.getLastName());
-            case FEMALE -> parent.setLastName(person.getFamilyName() == null || person.getFamilyName().isBlank() ? person.getLastName() : person.getFamilyName());
+            case FEMALE ->
+                    parent.setLastName(person.getFamilyName() == null || person.getFamilyName().isBlank() ? person.getLastName() : person.getFamilyName());
         }
         return parent;
     }
@@ -98,13 +98,15 @@ public class PersonServiceImpl implements PersonService {
             case MALE -> {
                 switch (person.getSex()) {
                     case MALE -> sibling.setLastName(person.getLastName());
-                    case FEMALE -> sibling.setLastName(person.getFamilyName().isBlank() ? person.getLastName() : person.getFamilyName());
+                    case FEMALE ->
+                            sibling.setLastName(person.getFamilyName().isBlank() ? person.getLastName() : person.getFamilyName());
                 }
             }
-            case FEMALE ->{
+            case FEMALE -> {
                 switch (person.getSex()) {
                     case MALE -> sibling.setFamilyName(person.getLastName());
-                    case FEMALE -> sibling.setFamilyName(person.getFamilyName().isBlank() ? person.getLastName() : person.getFamilyName());
+                    case FEMALE ->
+                            sibling.setFamilyName(person.getFamilyName().isBlank() ? person.getLastName() : person.getFamilyName());
                 }
             }
         }
@@ -160,4 +162,12 @@ public class PersonServiceImpl implements PersonService {
         }
         return child;
     }
+
+    @Transactional
+    public void saveAll(List<PersonDto> persons) {
+        for (PersonDto dto : persons) {
+            saveAndReturn(dto);
+        }
+    }
+
 }

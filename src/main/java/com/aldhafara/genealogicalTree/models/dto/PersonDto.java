@@ -2,6 +2,7 @@ package com.aldhafara.genealogicalTree.models.dto;
 
 import com.aldhafara.genealogicalTree.models.PersonBasicData;
 import com.aldhafara.genealogicalTree.models.SexEnum;
+import com.aldhafara.genealogicalTree.models.gedcom.MatchResult;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -35,7 +36,7 @@ public class PersonDto {
     private List<PersonBasicData> partners;
     private UUID familyId;
     private List<FamilyDto> familiesAsParent;
-    private double similarity;
+    private MatchResult matchResult;
 
     public PersonDto() {
     }
@@ -62,7 +63,7 @@ public class PersonDto {
         this.father = builder.father;
         this.partners = builder.partners;
         this.familiesAsParent = builder.familiesAsParent;
-        this.similarity = builder.similarity;
+        this.matchResult = builder.matchResult;
     }
 
     public static Builder builder() {
@@ -94,7 +95,7 @@ public class PersonDto {
         private PersonBasicData father;
         private List<PersonBasicData> partners;
         private List<FamilyDto> familiesAsParent;
-        private double similarity;
+        private MatchResult matchResult;
 
         public Builder id(UUID id) {
             this.id = id;
@@ -177,8 +178,8 @@ public class PersonDto {
             return this;
         }
 
-        public Builder similarity(double similarity) {
-            this.similarity = similarity;
+        public Builder matchResult(MatchResult matchResult) {
+            this.matchResult = matchResult;
             return this;
         }
 

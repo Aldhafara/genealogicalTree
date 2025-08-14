@@ -10,8 +10,9 @@ import com.aldhafara.genealogicalTree.services.person.PersonServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
+
+import static java.util.Comparator.comparingDouble;
 
 @Service
 public class GedcomImportService {
@@ -39,14 +40,32 @@ public class GedcomImportService {
         }
 
         Person loggedPerson = personService.getById(securityContextFacade.getCurrentUserDetailsId());
-        persons.forEach(personDto -> personDto.setSimilarity(personMatcher.similarityScore(personDto, loggedPerson)));
-        persons.sort(Comparator.comparingDouble(PersonDto::getSimilarity).reversed());
-
-        //TODO Add new service
-        //TODO Add view to compare actual logged person details to the most similar person from persons list
-
-        if (persons.get(0).getSimilarity() >= 0.9) {
-            persons.forEach(personService::saveAndReturn);
+        persons.forEach(personDto -> personDto.setMatchResult(personMatcher.similarityScore(personDto, loggedPerson)));
+        List<PersonDto> topMatchedPersons = persons.stream()
+                .filter(p -> p.getMatchResult().comparedFields() >= 3)
+                .sorted(comparingDouble((PersonDto p) -> p.getMatchResult().score()).reversed())
+                .toList();
+        if (topMatchedPersons.isEmpty()) {
+            throw new PersonNotFoundException();
         }
+
+        if (topMatchedPersons.get(0).getMatchResult().score() >= 0.9) {
+            personService.saveAll(persons);
+        }
+        // TODO [Refactor idea]:
+        // Instead of saving all persons from the input list directly to the database,
+        // introduce a new dedicated service that will:
+        //
+        // (a) If there are NO family members in the DB for the currently logged-in user:
+        //     - Save all persons from the list `persons` into the DB.
+        // (b) If there ARE existing family members for this user:
+        //     - Compare each new person with existing DB persons (using similarity scoring).
+        //     - Show the user a comparison view with two records:
+        //         1. Person from DB
+        //         2. Person we want to add
+        //       - Let the user confirm if it's the same person or not.
+        //     - Based on user decision: update existing record or insert new person.
+        //
+        // This will prevent duplicate records and allow the user to control merges.
     }
 }

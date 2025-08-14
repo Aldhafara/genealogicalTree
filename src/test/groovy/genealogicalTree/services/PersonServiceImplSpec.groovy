@@ -102,7 +102,7 @@ class PersonServiceImplSpec extends Specification {
             def currentUserId = UUID.randomUUID()
             def savedPerson = new Person(id: UUID.randomUUID())
         and:
-            personMapper.mapPersonDtoWithFamilyToPerson(personModel,null) >> mappedPerson
+            personMapper.mapPersonDtoWithFamilyToPerson(personModel, null) >> mappedPerson
             securityContextFacade.getCurrentUserId() >> currentUserId
             personRepository.save(mappedPerson) >> savedPerson
 
@@ -171,11 +171,11 @@ class PersonServiceImplSpec extends Specification {
             result.familyName == expectedFamilyName
 
         where:
-            siblingSex | personSex  || expectedLastName | expectedFamilyName
-            MALE       | MALE       || "Smith"          | null
-            MALE       | FEMALE     || "Brown"          | null
-            FEMALE     | MALE       || null             | "Smith"
-            FEMALE     | FEMALE     || null             | "Brown"
+            siblingSex | personSex || expectedLastName | expectedFamilyName
+            MALE       | MALE      || "Smith"          | null
+            MALE       | FEMALE    || "Brown"          | null
+            FEMALE     | MALE      || null             | "Smith"
+            FEMALE     | FEMALE    || null             | "Brown"
     }
 
     def "createChildAndSave should assign proper last name to child"() {
@@ -197,5 +197,27 @@ class PersonServiceImplSpec extends Specification {
             new Person(sex: MALE)                    | new Person(sex: FEMALE, familyName: "Forrester")                    || "Forrester"
             new Person(sex: MALE)                    | new Person(sex: FEMALE, familyName: "")                             || null
             new Person(sex: MALE)                    | new Person(sex: FEMALE)                                             || null
+    }
+
+    def "saveAll should call saveAndReturn for each person in the list"() {
+        given:
+            def persons = [new PersonDto(firstName: "John"), new PersonDto(firstName: "Jane")]
+
+        when:
+            personService.saveAll(persons)
+
+        then:
+            1 * personMapper.mapPersonDtoToPerson(persons[0]) >> new Person()
+            1 * personMapper.mapPersonDtoToPerson(persons[1]) >> new Person()
+            2 * personRepository.save(_ as Person) >> { Person p -> p }  // dwa zapisy
+    }
+
+    def "saveAll should not call saveAndReturn when list is empty"() {
+        when:
+            personService.saveAll([])
+
+        then:
+            0 * personMapper._
+            0 * personRepository._
     }
 }
