@@ -1,5 +1,6 @@
 package com.aldhafara.genealogicalTree.configuration;
 
+import com.aldhafara.genealogicalTree.configuration.security.CustomAuthenticationFailureHandler;
 import com.aldhafara.genealogicalTree.repositories.UserRepository;
 import com.aldhafara.genealogicalTree.services.CustomerUserDetailsService;
 import org.springframework.context.annotation.Bean;
@@ -15,9 +16,12 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfiguration {
 
     private final UserRepository userRepository;
+    private final CustomAuthenticationFailureHandler failureHandler;
 
-    public SecurityConfiguration(UserRepository userRepository) {
+    public SecurityConfiguration(UserRepository userRepository,
+                                 CustomAuthenticationFailureHandler failureHandler) {
         this.userRepository = userRepository;
+        this.failureHandler = failureHandler;
     }
 
     @Bean
@@ -34,14 +38,16 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/", "/register").permitAll()
+                        .requestMatchers("/", "/register", "/login").permitAll()
                         .requestMatchers("/js/**", "/locales/**", "/css/**", "/images/**").permitAll()
                         .requestMatchers("/swagger-ui/**", "/api-docs/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginPage("/login").permitAll()
+                        .loginPage("/login")
+                        .failureHandler(failureHandler)
                         .defaultSuccessUrl("/home", true)
+                        .permitAll()
                 )
                 .logout(logout -> logout
                         .logoutSuccessUrl("/")
