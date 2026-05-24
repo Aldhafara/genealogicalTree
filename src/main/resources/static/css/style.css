@@ -1,31 +1,66 @@
 .main-background {
-    background: #f7f2e9
+    background: #f7f2e9;
 }
+
+.btn-nav,
+.btn-language {
+    min-width: 130px;
+    white-space: nowrap;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+@media (max-width: 576px) {
+    .btn-nav,
+    .btn-language {
+        min-width: 130px;
+    }
+}
+
 .btn-nav {
     color: #fff;
     background-color: #17a2b8;
     border-color: #17a2b8;
 }
-.btn-nav:hover {
-    color: #0056b3;
+
+.btn-nav:hover,
+.btn-nav:focus {
+    color: #fff;
+    background-color: #138496;
+    border-color: #117a8b;
 }
+
 .btn-language {
     color: #fff;
     background-color: #007bff;
     border-color: #007bff;
 }
+
+.btn-language:hover,
+.btn-language:focus {
+    color: #fff;
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
+
 .person-details-font {
     font-weight: 300;
     line-height: 1.2;
 }
+
 .hidden {
     display: none;
 }
+
 .hoverAnimation {
     cursor: pointer;
     transition: transform 0.5s, box-shadow 200ms ease-out;
 }
+
 .hoverAnimation:hover {
     transform: scale(1.1);
-    box-shadow: 0 0 6px rgba(35, 173, 278, 1);
+    box-shadow: 0 0 6px rgba(35, 173, 255, 1);
 }

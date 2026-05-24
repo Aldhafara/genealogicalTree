@@ -8,7 +8,7 @@
     <body class="main-background">
         <header th:replace="~{common/fragments :: header}"></header>
 
-        <h1 data-i18n="register">Register</h1>
+        <h1 class="text-center text-lg-left" data-i18n="register">Register</h1>
         <form th:action="@{/register}" class="col-sm-6" method="post"
               oninput='retypePassword.setCustomValidity(retypePassword.value !== password.value ? "Passwords do not match." : "")'>
             <div class="row-sm-7">
