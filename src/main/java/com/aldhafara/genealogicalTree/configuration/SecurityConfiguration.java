@@ -39,7 +39,7 @@ public class SecurityConfiguration {
         http
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/", "/register", "/login").permitAll()
-                        .requestMatchers("/js/**", "/locales/**", "/css/**", "/images/**").permitAll()
+                        .requestMatchers("/js/**", "/locales/**", "/css/**", "/svg/**").permitAll()
                         .requestMatchers("/swagger-ui/**", "/api-docs/**").permitAll()
                         .anyRequest().authenticated()
                 )
