@@ -1,33 +1,32 @@
 <!DOCTYPE HTML>
 <html lang="en-EN" xmlns:th="http://www.thymeleaf.org">
-    <div th:insert="~{static/fragments :: bootstrapStylesheet}"></div>
     <head>
-        <div th:insert="~{static/fragments :: languageScript}"></div>
+        <meta charset="UTF-8">
+        <th:block th:replace="~{common/fragments :: headResources}"></th:block>
         <title data-i18n="familyMembers">Members</title>
-        <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     </head>
     <body class="main-background">
-        <div th:insert="~{static/fragments :: header}"></div>
+        <header th:replace="~{common/fragments :: header}"></header>
 
         <table class="table table-hover">
             <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col" data-i18n="firstName">First name</th>
-                    <th scope="col" data-i18n="lastName">Last name</th>
-                </tr>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col" data-i18n="firstName">First name</th>
+                <th scope="col" data-i18n="lastName">Last name</th>
+            </tr>
             </thead>
             <tbody>
-                <tr th:each="person : ${allPersons}"
-                    th:data-url="@{/person/{id}(id=${person.id})}"
-                    onclick="window.location.href = this.getAttribute('data-url')">
-                    <th scope="row" th:text="${personStat.index + 1}"></th>
-                    <td th:data-first-name="${person.firstName}" data-i18n-format-firstName="formatName">...</td>
-                    <td th:data-last-name="${person.lastName}" data-i18n-format-lastName="formatName">...</td>
-                </tr>
+            <tr th:each="person : ${allPersons}"
+                th:data-url="@{/person/{id}(id=${person.id})}"
+                onclick="window.location.href = this.getAttribute('data-url')">
+                <th scope="row" th:text="${personStat.index + 1}"></th>
+                <td th:data-first-name="${person.firstName}" data-i18n-format-firstName="formatName">...</td>
+                <td th:data-last-name="${person.lastName}" data-i18n-format-lastName="formatName">...</td>
+            </tr>
             </tbody>
         </table>
 
-        <div th:insert="~{static/fragments :: footer}"></div>
+        <footer th:replace="~{common/fragments :: footer}"></footer>
     </body>
 </html>

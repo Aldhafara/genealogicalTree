@@ -1,18 +1,18 @@
 <!DOCTYPE HTML>
 <html lang="en-EN" xmlns:th="http://www.thymeleaf.org">
-    <div th:insert="~{static/fragments :: bootstrapStylesheet}"></div>
     <head>
-        <div th:insert="~{static/fragments :: languageScript}"></div>
+        <meta charset="UTF-8">
+        <th:block th:replace="~{common/fragments :: headResources}"></th:block>
         <title data-i18n="mainPage">Main page</title>
-        <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     </head>
-   <body class="main-background">
-        <div th:insert="~{static/fragments :: header}"></div>
+    <body class="main-background">
+        <header th:replace="~{common/fragments :: header}"></header>
 
         <div class="container my-4">
             <div class="d-flex row align-items-stretch">
                 <div class="col-md-6 d-flex align-items-stretch p-3">
-                    <div class="rounded-3 text-center bg-light mh-150 w-100 d-flex justify-content-center align-items-center hoverAnimation" onclick="location.href='/api/person/aboutme';">
+                    <div class="rounded-3 text-center bg-light mh-150 w-100 d-flex justify-content-center align-items-center hoverAnimation"
+                         onclick="location.href='/api/person/aboutme';">
                         <div class="align-self-center">
                             <h1 class="display-4" data-i18n="myDetails">My details</h1>
                             <p class="lead" data-i18n="myDetailsDescription"></p>
@@ -20,7 +20,8 @@
                     </div>
                 </div>
                 <div class="col-md-6 d-flex align-items-stretch p-3">
-                    <div class="rounded-3 text-center bg-light mh-150 w-100 d-flex justify-content-center align-items-center hoverAnimation" onclick="location.href='/person/add';">
+                    <div class="rounded-3 text-center bg-light mh-150 w-100 d-flex justify-content-center align-items-center hoverAnimation"
+                         onclick="location.href='/person/add';">
                         <div class="align-self-center">
                             <h1 class="display-4" data-i18n="addFamilyMember">Add family member</h1>
                             <p class="lead"></p>
@@ -28,7 +29,8 @@
                     </div>
                 </div>
                 <div class="col-md-6 d-flex align-items-stretch p-3">
-                    <div class="rounded-3 text-center bg-light mh-150 w-100 d-flex justify-content-center align-items-center hoverAnimation" onclick="location.href='/person/all';">
+                    <div class="rounded-3 text-center bg-light mh-150 w-100 d-flex justify-content-center align-items-center hoverAnimation"
+                         onclick="location.href='/person/all';">
                         <div class="align-self-center">
                             <h1 class="display-4" data-i18n="allFamilyMembers">Members of your family</h1>
                             <p class="lead" data-i18n="allFamilyMembersDescription"></p>
@@ -36,7 +38,8 @@
                     </div>
                 </div>
                 <div class="col-md-6 d-flex align-items-stretch p-3">
-                    <div class="rounded-3 text-center bg-light mh-150 w-100 d-flex justify-content-center align-items-center hoverAnimation" onclick="location.href='/family-tree';">
+                    <div class="rounded-3 text-center bg-light mh-150 w-100 d-flex justify-content-center align-items-center hoverAnimation"
+                         onclick="location.href='/family-tree';">
                         <div class="align-self-center">
                             <h1 class="display-4" data-i18n="goToTree">Go to tree</h1>
                             <p class="lead" data-i18n="goToTreeDescription"></p>
@@ -44,7 +47,8 @@
                     </div>
                 </div>
                 <div class="col-md-6 d-flex align-items-stretch p-3">
-                    <div class="rounded-3 text-center bg-light mh-150 w-100 d-flex justify-content-center align-items-center hoverAnimation" onclick="location.href='/demo';">
+                    <div class="rounded-3 text-center bg-light mh-150 w-100 d-flex justify-content-center align-items-center hoverAnimation"
+                         onclick="location.href='/demo';">
                         <div class="align-self-center">
                             <h1 class="display-4" data-i18n="loadDemo">Load demo tree</h1>
                             <p class="lead" data-i18n="demoDescription"></p>
@@ -52,7 +56,8 @@
                     </div>
                 </div>
                 <div class="col-md-6 d-flex align-items-stretch p-3">
-                    <div class="rounded-3 text-center bg-light mh-150 w-100 d-flex justify-content-center align-items-center hoverAnimation" onclick="location.href='/file/upload';">
+                    <div class="rounded-3 text-center bg-light mh-150 w-100 d-flex justify-content-center align-items-center hoverAnimation"
+                         onclick="location.href='/file/upload';">
                         <div class="align-self-center">
                             <h1 class="display-4" data-i18n="uploadGedFile">Upload .ged file</h1>
                             <p class="lead"></p>
@@ -61,6 +66,6 @@
                 </div>
             </div>
         </div>
-        <div th:insert="~{static/fragments :: footer}"></div>
+        <footer th:replace="~{common/fragments :: footer}"></footer>
     </body>
 </html>

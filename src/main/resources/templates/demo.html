@@ -1,19 +1,19 @@
 <!DOCTYPE HTML>
 <html lang="en-EN" xmlns:th="http://www.thymeleaf.org">
-    <div th:insert="~{static/fragments :: bootstrapStylesheet}"></div>
     <head>
-        <div th:insert="~{static/fragments :: languageScript}"></div>
+        <meta charset="UTF-8">
+        <th:block th:replace="~{common/fragments :: headResources}"></th:block>
         <title>Demo</title>
-        <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     </head>
-   <body class="main-background">
-        <div th:insert="~{static/fragments :: header}"></div>
+    <body class="main-background">
+        <header th:replace="~{common/fragments :: header}"></header>
 
         <div class="container my-4">
             <div class="d-flex row align-items-stretch">
 
                 <div class="col-md-6 d-flex align-items-stretch p-3">
-                    <div class="rounded-3 text-center bg-light mh-150 w-100 d-flex justify-content-center align-items-center hoverAnimation" onclick="location.href='/demo/loadDuckTales';">
+                    <div class="rounded-3 text-center bg-light mh-150 w-100 d-flex justify-content-center align-items-center hoverAnimation"
+                         onclick="location.href='/demo/loadDuckTales';">
                         <div class="align-self-center">
                             <h1 class="display-4" data-i18n="loadDuckTalesDemo">Load Donald Duck tree</h1>
                             <p class="lead" data-i18n="loadDuckTalesDescription"></p>
@@ -24,6 +24,6 @@
             </div>
         </div>
 
-        <div th:insert="~{static/fragments :: footer}"></div>
+        <footer th:replace="~{common/fragments :: footer}"></footer>
     </body>
 </html>

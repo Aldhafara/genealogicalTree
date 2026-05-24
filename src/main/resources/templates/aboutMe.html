@@ -1,16 +1,14 @@
 <!DOCTYPE HTML>
 <html lang="en-EN" xmlns:th="http://www.thymeleaf.org">
-    <div th:insert="~{static/fragments :: bootstrapStylesheet}"></div>
     <head>
-        <div th:insert="~{static/fragments :: languageScript}"></div>
-        <title >Index</title>
-        <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+        <meta charset="UTF-8">
+        <th:block th:replace="~{common/fragments :: headResources}"></th:block>
+        <title>Index</title>
     </head>
-   <body class="main-background">
-        <div th:insert="~{static/fragments :: header}"></div>
-
+    <body class="main-background">
+        <header th:replace="~{common/fragments :: header}"></header>
         <p>Hello User <span th:text="${userDto.login}"></span></p>
 
-        <div th:insert="~{static/fragments :: footer}"></div>
+        <footer th:replace="~{common/fragments :: footer}"></footer>
     </body>
 </html>

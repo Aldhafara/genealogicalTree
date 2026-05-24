@@ -1,13 +1,13 @@
 <!DOCTYPE HTML>
 <html lang="en-EN" xmlns:th="http://www.thymeleaf.org">
-    <div th:insert="~{static/fragments :: bootstrapStylesheet}"></div>
     <head>
-        <div th:insert="~{static/fragments :: languageScript}"></div>
-        <title th:data-first-name="${person.firstName}" th:data-last-name="${person.lastName}" data-i18n-format-fullName="formatName"></title>
-        <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+        <meta charset="UTF-8">
+        <th:block th:replace="~{common/fragments :: headResources}"></th:block>
+        <title th:data-first-name="${person.firstName}" th:data-last-name="${person.lastName}"
+               data-i18n-format-fullName="formatName"></title>
     </head>
-   <body class="main-background">
-        <div th:insert="~{static/fragments :: header}"></div>
+    <body class="main-background">
+        <header th:replace="~{common/fragments :: header}"></header>
 
         <div class="container">
             <div class="row parents align-items-center">
@@ -17,7 +17,8 @@
                              th:data="*{mother.id}"
                              onclick="redirectToDetails(this)">
                             <div class="align-self-center">
-                                <h1 class="person-details-font p-3" th:data-first-name="${mother.firstName}" th:data-last-name="${mother.lastName}" data-i18n-format-fullName="formatName"></h1>
+                                <h1 class="person-details-font p-3" th:data-first-name="${mother.firstName}"
+                                    th:data-last-name="${mother.lastName}" data-i18n-format-fullName="formatName"></h1>
                             </div>
                         </div>
                     </div>
@@ -37,7 +38,8 @@
                              th:data="*{father.id}"
                              onclick="redirectToDetails(this)">
                             <div class="align-self-center">
-                                <h1 class="person-details-font p-3" th:data-first-name="${father.firstName}" th:data-last-name="${father.lastName}" data-i18n-format-fullName="formatName"></h1>
+                                <h1 class="person-details-font p-3" th:data-first-name="${father.firstName}"
+                                    th:data-last-name="${father.lastName}" data-i18n-format-fullName="formatName"></h1>
                             </div>
                         </div>
                     </div>
@@ -80,61 +82,77 @@
                     </div>
                     <div class="row siblings">
                         <div class="col">
-                            <div class="row d-flex justify-content-center" th:if="${siblings != null and !siblings.isEmpty()}">
+                            <div class="row d-flex justify-content-center"
+                                 th:if="${siblings != null and !siblings.isEmpty()}">
                                 <label for="sibling" data-i18n="siblings">Siblings:</label>
                             </div>
                             <div class="row siblings-list list-group p-2" th:each="sibling : ${siblings}">
-                                <a th:href="@{/person/{id}(id=${sibling.id})}" class="list-group-item list-group-item-action list-group-item-secondary" th:data-first-name="${sibling.firstName}" th:data-last-name="${sibling.lastName}" data-i18n-format-fullName="formatName">...</a>
+                                <a th:href="@{/person/{id}(id=${sibling.id})}"
+                                   class="list-group-item list-group-item-action list-group-item-secondary"
+                                   th:data-first-name="${sibling.firstName}" th:data-last-name="${sibling.lastName}"
+                                   data-i18n-format-fullName="formatName">...</a>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-6 text-center p-3 details">
                     <form id="viewForm" class="col-sm-12">
-                        <input type="hidden" id="id"  class="form-control" name="person.id" th:field="*{person.id}"/>
+                        <input type="hidden" id="id" class="form-control" name="person.id" th:field="*{person.id}"/>
                         <div class="row-sm-7">
                             <label for="firstName" class="col-sm-5 form-label" data-i18n="firstName">First name:</label>
                             <div class="col-sm-12">
-                                <input disabled type="text" id="firstName" class="form-control" name="person.firstName" th:field="*{person.firstName}">
+                                <input disabled type="text" id="firstName" class="form-control" name="person.firstName"
+                                       th:field="*{person.firstName}">
                             </div>
                         </div>
                         <div class="row-sm-7">
                             <label for="lastName" class="col-sm-5 form-label" data-i18n="lastName">Last name:</label>
                             <div class="col-sm-12">
-                                <input disabled type="text" id="lastName" class="form-control" name="person.lastName" th:field="*{person.lastName}">
+                                <input disabled type="text" id="lastName" class="form-control" name="person.lastName"
+                                       th:field="*{person.lastName}">
                             </div>
                         </div>
                         <div class="row-sm-7">
                             <label class="col-sm-5"></label>
                             <div class="col-sm-12 input-group mb-3">
                                 <label for="sex" class="input-group-text col-sm-2" data-i18n="sex">Sex</label>
-                                <select disabled class="form-select col-sm-10" id="sex" name="person.sex" th:field="*{person.sex}">
+                                <select disabled class="form-select col-sm-10" id="sex" name="person.sex"
+                                        th:field="*{person.sex}">
                                     <option value="" disabled selected data-i18n="choose">Choose...</option>
-                                    <option th:each="option : ${sexOptions}" th:value="${option}" th:text="${option.getAlternativeName()}"></option>
+                                    <option th:each="option : ${sexOptions}" th:value="${option}"
+                                            th:text="${option.getAlternativeName()}"></option>
                                 </select>
                             </div>
                         </div>
                         <div class="row-sm-7">
-                            <label for="familyName" class="col-sm-5 form-label" data-i18n="familyName">Family name:</label>
+                            <label for="familyName" class="col-sm-5 form-label" data-i18n="familyName">Family
+                                name:</label>
                             <div class="col-sm-12">
-                                <input disabled type="text" id="familyName" class="form-control" name="person.familyName" th:field="*{person.familyName}"/>
+                                <input disabled type="text" id="familyName" class="form-control"
+                                       name="person.familyName"
+                                       th:field="*{person.familyName}"/>
                             </div>
                         </div>
                         <div class="row-sm-7">
-                            <label for="birthPlace" class="col-sm-5 form-label" data-i18n="birthPlace">Birth place:</label>
+                            <label for="birthPlace" class="col-sm-5 form-label" data-i18n="birthPlace">Birth
+                                place:</label>
                             <div class="col-sm-12">
-                                <input disabled type="text" id="birthPlace" class="form-control" name="person.birthPlace" th:field="*{person.birthPlace}">
+                                <input disabled type="text" id="birthPlace" class="form-control"
+                                       name="person.birthPlace"
+                                       th:field="*{person.birthPlace}">
                             </div>
                         </div>
                         <div class="row-sm-7">
                             <label for="birthDate" class="col-sm-5 form-label" data-i18n="birthDate">Birth date:</label>
                             <div class="col-sm-12">
-                                <input disabled type="date" id="birthDate" class="form-control" name="person.birthDate" th:field="*{person.birthDate}"/>
+                                <input disabled type="date" id="birthDate" class="form-control" name="person.birthDate"
+                                       th:field="*{person.birthDate}"/>
                             </div>
                         </div>
                         <div class="row-sm-7">
                             <div class="col-sm-12">
-                                <p><span data-i18n="updateDate">Update date:</span> <span th:text="${#dates.format(person.updateDate,' dd-MM-yyyy HH:mm:ss')}"></span></p>
+                                <p><span data-i18n="updateDate">Update date:</span> <span
+                                        th:text="${#dates.format(person.updateDate,' dd-MM-yyyy HH:mm:ss')}"></span></p>
                             </div>
                         </div>
                         <div class="align-self-center">
@@ -144,60 +162,72 @@
                         </div>
                         <div>
                             <br>
-                            <button class="btn btn-primary btn-lg" type="button" id="editButton" data-i18n="edit">Edit</button>
+                            <button class="btn btn-primary btn-lg" type="button" id="editButton" data-i18n="edit">Edit
+                            </button>
                         </div>
                     </form>
 
                     <form id="editForm" th:action="@{/person/edit}" class="col-sm-12 hidden" method="post">
-                        <input type="hidden" id="id"  class="form-control" name="person.id" th:field="*{person.id}"/>
+                        <input type="hidden" id="id" class="form-control" name="person.id" th:field="*{person.id}"/>
                         <div class="row-sm-7">
                             <label for="firstName" class="col-sm-5 form-label" data-i18n="firstName">First name:</label>
                             <div class="col-sm-12">
-                                <input required type="text" id="firstName" class="form-control" name="person.firstName" th:field="*{person.firstName}">
+                                <input required type="text" id="firstName" class="form-control" name="person.firstName"
+                                       th:field="*{person.firstName}">
                             </div>
                         </div>
                         <div class="row-sm-7">
                             <label for="lastName" class="col-sm-5 form-label" data-i18n="lastName">Last name:</label>
                             <div class="col-sm-12">
-                                <input required type="text" id="lastName" class="form-control" name="person.lastName" th:field="*{person.lastName}">
+                                <input required type="text" id="lastName" class="form-control" name="person.lastName"
+                                       th:field="*{person.lastName}">
                             </div>
                         </div>
                         <div class="row-sm-7">
                             <label class="col-sm-5"></label>
                             <div class="col-sm-12 input-group mb-3">
                                 <label for="sex" class="input-group-text col-sm-2" data-i18n="sex">Sex</label>
-                                <select class="form-select col-sm-10" id="sex" required name="person.sex" th:field="*{person.sex}">
+                                <select class="form-select col-sm-10" id="sex" required name="person.sex"
+                                        th:field="*{person.sex}">
                                     <option value="" disabled selected data-i18n="choose">Choose...</option>
-                                    <option th:each="option : ${sexOptions}" th:value="${option}" th:text="${option.getAlternativeName()}"></option>
+                                    <option th:each="option : ${sexOptions}" th:value="${option}"
+                                            th:text="${option.getAlternativeName()}"></option>
                                 </select>
                             </div>
                         </div>
                         <div class="row-sm-7">
-                            <label for="familyName" class="col-sm-5 form-label" data-i18n="familyName">Family name:</label>
+                            <label for="familyName" class="col-sm-5 form-label" data-i18n="familyName">Family
+                                name:</label>
                             <div class="col-sm-12">
-                                <input type="text" id="familyName" class="form-control" name="person.familyName" th:field="*{person.familyName}"/>
+                                <input type="text" id="familyName" class="form-control" name="person.familyName"
+                                       th:field="*{person.familyName}"/>
                             </div>
                         </div>
                         <div class="row-sm-7">
-                            <label for="birthPlace" class="col-sm-5 form-label" data-i18n="birthPlace">Birth place:</label>
+                            <label for="birthPlace" class="col-sm-5 form-label" data-i18n="birthPlace">Birth
+                                place:</label>
                             <div class="col-sm-12">
-                                <input type="text" id="birthPlace" class="form-control" name="person.birthPlace" th:field="*{person.birthPlace}">
+                                <input type="text" id="birthPlace" class="form-control" name="person.birthPlace"
+                                       th:field="*{person.birthPlace}">
                             </div>
                         </div>
                         <div class="row-sm-7">
                             <label for="birthDate" class="col-sm-5 form-label" data-i18n="birthDate">Birth date:</label>
                             <div class="col-sm-12">
-                                <input required type="date" id="birthDate" class="form-control" name="person.birthDate" th:field="*{person.birthDate}"/>
+                                <input required type="date" id="birthDate" class="form-control" name="person.birthDate"
+                                       th:field="*{person.birthDate}"/>
                             </div>
                         </div>
                         <div class="row-sm-7">
                             <div class="col-sm-12">
-                                <p><span data-i18n="updateDate">Update date:</span> <span th:text="${#dates.format(person.updateDate, 'dd-MM-yyyy HH:mm:ss')}"></span></p>
+                                <p><span data-i18n="updateDate">Update date:</span> <span
+                                        th:text="${#dates.format(person.updateDate, 'dd-MM-yyyy HH:mm:ss')}"></span></p>
                             </div>
                         </div>
                         <div>
                             <br>
-                            <button class="btn btn-primary btn-lg" type="submit" id="saveButton" data-i18n="save">Save</button>
+                            <button class="btn btn-primary btn-lg" type="submit" id="saveButton" data-i18n="save">Save
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -215,11 +245,15 @@
                     </div>
                     <div class="row partners">
                         <div class="col">
-                            <div class="row d-flex justify-content-center" th:if="${partners != null and !partners.isEmpty()}">
+                            <div class="row d-flex justify-content-center"
+                                 th:if="${partners != null and !partners.isEmpty()}">
                                 <label for="partner" data-i18n="partners">Partners:</label>
                             </div>
                             <div class="row partners-list list-group p-2" th:each="partner : ${partners}">
-                                <a th:href="@{/person/{id}(id=${partner.id})}" class="list-group-item list-group-item-action list-group-item-secondary" th:data-first-name="${partner.firstName}" th:data-last-name="${partner.lastName}" data-i18n-format-fullName="formatName">...</a>
+                                <a th:href="@{/person/{id}(id=${partner.id})}"
+                                   class="list-group-item list-group-item-action list-group-item-secondary"
+                                   th:data-first-name="${partner.firstName}" th:data-last-name="${partner.lastName}"
+                                   data-i18n-format-fullName="formatName">...</a>
                             </div>
                         </div>
                     </div>
@@ -229,10 +263,13 @@
                 <div class="col">
                     <div th:if="${partners == null}" class="row add-children-disable">
                         <div class="col text-center daughter">
-                            <button type="button" class="btn btn-lg btn-primary" disabled data-i18n="addDaughter">Add daughter</button>
+                            <button type="button" class="btn btn-lg btn-primary" disabled data-i18n="addDaughter">Add
+                                daughter
+                            </button>
                         </div>
                         <div class="col text-center son">
-                            <button type="button" class="btn btn-lg btn-primary" disabled data-i18n="addSon">Add son</button>
+                            <button type="button" class="btn btn-lg btn-primary" disabled data-i18n="addSon">Add son
+                            </button>
                         </div>
                     </div>
                     <div th:if="${partners.size() == 1}" class="row add-children">
@@ -263,25 +300,32 @@
             </div>
             <div th:if="${partners.size() > 1 }" class="row add-children">
                 <div class="col text-center daughter">
-                    <button type="button" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#chooseSecondParentForDaughterModal" data-i18n="addDaughter">
+                    <button type="button" class="btn btn-lg btn-primary" data-toggle="modal"
+                            data-target="#chooseSecondParentForDaughterModal" data-i18n="addDaughter">
                         Add daughter
                     </button>
-                    <div class="modal fade" id="chooseSecondParentForDaughterModal" tabindex="-1" role="dialog" aria-labelledby="chooseSecondParentModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="chooseSecondParentForDaughterModal" tabindex="-1" role="dialog"
+                         aria-labelledby="chooseSecondParentModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="chooseSecondParentModalLabel" data-i18n="chooseSecondParentModalTitle">Choose second parent</h5>
+                                    <h5 class="modal-title" id="chooseSecondParentModalLabel"
+                                        data-i18n="chooseSecondParentModalTitle">Choose second parent</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
                                     <p data-i18n="chooseSecondParentModalContent"></p>
-                                    <h1 th:data-first-name="${person.firstName}" th:data-last-name="${person.lastName}" data-i18n-format-fullName="formatName"></h1>
+                                    <h1 th:data-first-name="${person.firstName}" th:data-last-name="${person.lastName}"
+                                        data-i18n-format-fullName="formatName"></h1>
                                     <div class="col-sm-12 form-group mb-3">
-                                        <label for="secondParent" data-i18n="chooseSecondParent">Choose second parent</label>
+                                        <label for="secondParent" data-i18n="chooseSecondParent">Choose second
+                                            parent</label>
                                         <select class="form-control form-control-lg" id="secondParent">
-                                            <option disabled selected data-i18n="chooseSecondParent">Choose second parent</option>
+                                            <option disabled selected data-i18n="chooseSecondParent">Choose second
+                                                parent
+                                            </option>
                                             <option th:each="secondParent : ${partners}"
                                                     th:data-first-name="${secondParent.firstName}"
                                                     th:data-last-name="${secondParent.lastName}"
@@ -291,7 +335,10 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" data-i18n="close">Close</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                            data-i18n="close">
+                                        Close
+                                    </button>
                                     <a id="addDaughterButton" href="#"
                                        role="button" class="btn btn-primary"
                                        data-i18n="addDaughter" disabled>
@@ -303,25 +350,32 @@
                     </div>
                 </div>
                 <div class="col text-center son">
-                    <button type="button" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#chooseSecondParentForSonModal" data-i18n="addSon">
+                    <button type="button" class="btn btn-lg btn-primary" data-toggle="modal"
+                            data-target="#chooseSecondParentForSonModal" data-i18n="addSon">
                         Add son
                     </button>
-                    <div class="modal fade" id="chooseSecondParentForSonModal" tabindex="-1" role="dialog" aria-labelledby="chooseSecondParentModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="chooseSecondParentForSonModal" tabindex="-1" role="dialog"
+                         aria-labelledby="chooseSecondParentModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="chooseSecondParentModalLabel" data-i18n="chooseSecondParentModalTitle">Choose second parent</h5>
+                                    <h5 class="modal-title" id="chooseSecondParentModalLabel"
+                                        data-i18n="chooseSecondParentModalTitle">Choose second parent</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
                                     <p data-i18n="chooseSecondParentModalContent"></p>
-                                    <h1 th:data-first-name="${person.firstName}" th:data-last-name="${person.lastName}" data-i18n-format-fullName="formatName"></h1>
+                                    <h1 th:data-first-name="${person.firstName}" th:data-last-name="${person.lastName}"
+                                        data-i18n-format-fullName="formatName"></h1>
                                     <div class="col-sm-12 form-group mb-3">
-                                        <label for="secondParent" data-i18n="chooseSecondParent">Choose second parent</label>
+                                        <label for="secondParent" data-i18n="chooseSecondParent">Choose second
+                                            parent</label>
                                         <select class="form-control form-control-lg" id="secondParent">
-                                            <option disabled selected data-i18n="chooseSecondParent">Choose second parent</option>
+                                            <option disabled selected data-i18n="chooseSecondParent">Choose second
+                                                parent
+                                            </option>
                                             <option th:each="secondParent : ${partners}"
                                                     th:data-first-name="${secondParent.firstName}"
                                                     th:data-last-name="${secondParent.lastName}"
@@ -331,7 +385,10 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" data-i18n="close">Close</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                            data-i18n="close">
+                                        Close
+                                    </button>
                                     <a id="addDaughterButton" href="#"
                                        role="button" class="btn btn-primary"
                                        data-i18n="addSon" disabled>
@@ -350,7 +407,10 @@
                     </div>
                     <div class="row">
                         <div class="col children-list list-group p-2" th:each="child : ${children}">
-                            <a th:href="@{/person/{id}(id=${child.id})}" class="list-group-item list-group-item-action list-group-item-secondary" th:data-first-name="${child.firstName}" th:data-last-name="${child.lastName}" data-i18n-format-fullName="formatName">...</a>
+                            <a th:href="@{/person/{id}(id=${child.id})}"
+                               class="list-group-item list-group-item-action list-group-item-secondary"
+                               th:data-first-name="${child.firstName}" th:data-last-name="${child.lastName}"
+                               data-i18n-format-fullName="formatName">...</a>
                         </div>
                     </div>
                 </div>
@@ -401,6 +461,6 @@
                 });
             });
         </script>
-        <div th:insert="~{static/fragments :: footer}"></div>
+        <footer th:replace="~{common/fragments :: footer}"></footer>
     </body>
 </html>

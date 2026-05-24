@@ -1,13 +1,12 @@
 <!DOCTYPE HTML>
 <html lang="en-EN" xmlns:th="http://www.thymeleaf.org">
-    <div th:insert="~{static/fragments :: bootstrapStylesheet}"></div>
     <head>
-        <div th:insert="~{static/fragments :: languageScript}"></div>
+        <meta charset="UTF-8">
+        <th:block th:replace="~{common/fragments :: headResources}"></th:block>
         <title data-i18n="login">Login</title>
-        <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     </head>
-   <body class="main-background">
-        <div th:insert="~{static/fragments :: header}"></div>
+    <body class="main-background">
+        <header th:replace="~{common/fragments :: header}"></header>
 
         <h1>Login</h1>
         <form th:action="@{/login}" class="col-sm-6" method="post">
@@ -21,8 +20,10 @@
                 <label for="password" class="col-sm-2 col-form-label" data-i18n="password">Password:</label>
                 <div class="col-sm-10">
                     <div class="input-group">
-                        <input type="password" class="form-control" id="password" name="password" placeholder="Password">
-                        <span class="input-group-text" id="togglePassword" style="cursor: pointer; user-select: none;" title="Press and hold to show password">
+                        <input type="password" class="form-control" id="password" name="password"
+                               placeholder="Password">
+                        <span class="input-group-text" id="togglePassword" style="cursor: pointer; user-select: none;"
+                              title="Press and hold to show password">
                             👁️
                         </span>
                     </div>
@@ -55,6 +56,6 @@
             </div>
         </form>
 
-        <div th:insert="~{static/fragments :: footer}"></div>
+        <footer th:replace="~{common/fragments :: footer}"></footer>
     </body>
 </html>
