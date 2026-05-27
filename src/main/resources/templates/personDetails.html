@@ -61,20 +61,31 @@
                             <div class="d-flex justify-content-center p-2">
                                 <div class="rounded-3 text-center mh-100 d-flex justify-content-center align-items-center">
                                     <div class="align-self-center">
-                                        <a th:href="@{/api/person/add/sibling/sister/for/{id}(id=${person.id})}"
+                                        <a th:if="${mother != null or father != null}"
+                                           th:href="@{/api/person/add/sibling/sister/for/{id}(id=${person.id})}"
                                            role="button" class="btn btn-primary btn-sm"
                                            data-i18n="addSister">Add sister</a>
+
+                                        <button th:if="${mother == null and father == null}"
+                                                type="button" class="btn btn-primary btn-sm" disabled
+                                                data-i18n="addSister">Add sister</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-6 text-center brother">
                             <div class="d-flex justify-content-center p-2">
                                 <div class="rounded-3 text-center mh-100 d-flex justify-content-center align-items-center">
                                     <div class="align-self-center">
-                                        <a th:href="@{/api/person/add/sibling/brother/for/{id}(id=${person.id})}"
+                                        <a th:if="${mother != null or father != null}"
+                                           th:href="@{/api/person/add/sibling/brother/for/{id}(id=${person.id})}"
                                            role="button" class="btn btn-primary btn-sm"
                                            data-i18n="addBrother">Add brother</a>
+
+                                        <button th:if="${mother == null and father == null}"
+                                                type="button" class="btn btn-primary btn-sm" disabled
+                                                data-i18n="addBrother">Add brother</button>
                                     </div>
                                 </div>
                             </div>
@@ -261,18 +272,19 @@
             </div>
             <div th:if="${partners == null or partners.size() == 1 }" class="row add-children">
                 <div class="col">
-                    <div th:if="${partners == null}" class="row add-children-disable">
+                    <div th:if="${partners == null or partners.isEmpty()}" class="row add-children-disable">
                         <div class="col text-center daughter">
-                            <button type="button" class="btn btn-lg btn-primary" disabled data-i18n="addDaughter">Add
-                                daughter
+                            <button type="button" class="btn btn-lg btn-primary" disabled data-i18n="addDaughter">
+                                Add daughter
                             </button>
                         </div>
                         <div class="col text-center son">
-                            <button type="button" class="btn btn-lg btn-primary" disabled data-i18n="addSon">Add son
+                            <button type="button" class="btn btn-lg btn-primary" disabled data-i18n="addSon">
+                                Add son
                             </button>
                         </div>
                     </div>
-                    <div th:if="${partners.size() == 1}" class="row add-children">
+                    <div th:if="${partners != null and partners.size() == 1}" class="row add-children">
                         <div class="col-6 text-center daughter">
                             <div class="d-flex justify-content-center p-2">
                                 <div class="rounded-3 text-center mh-100 d-flex justify-content-center align-items-center">
@@ -298,7 +310,7 @@
                     </div>
                 </div>
             </div>
-            <div th:if="${partners.size() > 1 }" class="row add-children">
+            <div th:if="${partners != null and partners.size() > 1}" class="row add-children">
                 <div class="col text-center daughter">
                     <button type="button" class="btn btn-lg btn-primary" data-toggle="modal"
                             data-target="#chooseSecondParentForDaughterModal" data-i18n="addDaughter">
