@@ -11,14 +11,14 @@
         <h1 class="text-center text-lg-left" data-i18n="register">Register</h1>
         <form th:action="@{/register}" class="col-sm-6" method="post"
               oninput='retypePassword.setCustomValidity(retypePassword.value !== password.value ? "Passwords do not match." : "")'>
-            <div class="row-sm-7">
+            <div class="row-sm-7 required-field">
                 <label for="firstName" class="col-sm-5 form-label" data-i18n="firstName">First name:</label>
                 <div class="col-sm-12">
                     <input required type="text" id="firstName" class="form-control" name="person.firstName"
                            th:field="*{person.firstName}">
                 </div>
             </div>
-            <div class="row-sm-7">
+            <div class="row-sm-7 required-field">
                 <label for="lastName" class="col-sm-5 form-label" data-i18n="lastName">Last name:</label>
                 <div class="col-sm-12">
                     <input required type="text" id="lastName" class="form-control" name="person.lastName"
@@ -27,7 +27,7 @@
             </div>
             <div class="row-sm-7">
                 <label class="col-sm-5"></label>
-                <div class="col-sm-12 input-group mb-3">
+                <div class="col-sm-12 input-group mb-3 required-field">
                     <label for="sex" class="input-group-text col-sm-2" data-i18n="sex">Sex</label>
                     <select class="form-select col-sm-10" id="sex" required name="person.sex" th:field="*{person.sex}">
                         <option value="" disabled selected data-i18n="choose">Choose...</option>
@@ -36,7 +36,7 @@
                     </select>
                 </div>
             </div>
-            <div th:if="${loginError}" class="row-sm-7">
+            <div th:if="${loginError}" class="row-sm-7 required-field">
                 <label for="login" class="col-sm-5 form-label">Login:</label>
                 <div class="col-sm-12">
                     <input id="login" placeholder="Enter Login" required type="text" class="form-control is-invalid"
@@ -44,7 +44,7 @@
                 </div>
                 <div class="invalid-feedback col-sm-7" th:text="${loginError}"></div>
             </div>
-            <div th:if="!${loginError}" class="row-sm-7">
+            <div th:if="!${loginError}" class="row-sm-7 required-field">
                 <label for="login" class="col-sm-5 form-label">Login:</label>
                 <div class="col-sm-12">
                     <input id="login" placeholder="Enter Login" required type="text" class="form-control"
@@ -53,7 +53,7 @@
                 </div>
                 <div class="valid-feedback col-sm-7"></div>
             </div>
-            <div class="row-sm-7">
+            <div class="row-sm-7 required-field">
                 <label for="password" class="col-sm-5 form-label" data-i18n="password">
                     Password:
                 </label>
@@ -89,7 +89,7 @@
                 </div>
             </div>
 
-            <div class="row-sm-7">
+            <div class="row-sm-7 required-field">
                 <label for="retypePassword" class="col-sm-5 form-label" data-i18n="repeatPassword">
                     Repeat password:
                 </label>

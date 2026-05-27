@@ -64,3 +64,10 @@
     transform: scale(1.1);
     box-shadow: 0 0 6px rgba(35, 173, 255, 1);
 }
+
+.required-field > label::after {
+    content: "*";
+    color: #dc3545;
+    font-weight: 700;
+    margin-left: 0.25rem;
+}

@@ -180,14 +180,14 @@
 
                     <form id="editForm" th:action="@{/person/edit}" class="col-sm-12 hidden" method="post">
                         <input type="hidden" id="id" class="form-control" name="person.id" th:field="*{person.id}"/>
-                        <div class="row-sm-7">
+                        <div class="row-sm-7 required-field">
                             <label for="firstName" class="col-sm-5 form-label" data-i18n="firstName">First name:</label>
                             <div class="col-sm-12">
                                 <input required type="text" id="firstName" class="form-control" name="person.firstName"
                                        th:field="*{person.firstName}">
                             </div>
                         </div>
-                        <div class="row-sm-7">
+                        <div class="row-sm-7 required-field">
                             <label for="lastName" class="col-sm-5 form-label" data-i18n="lastName">Last name:</label>
                             <div class="col-sm-12">
                                 <input required type="text" id="lastName" class="form-control" name="person.lastName"
@@ -196,7 +196,7 @@
                         </div>
                         <div class="row-sm-7">
                             <label class="col-sm-5"></label>
-                            <div class="col-sm-12 input-group mb-3">
+                            <div class="col-sm-12 input-group mb-3 required-field">
                                 <label for="sex" class="input-group-text col-sm-2" data-i18n="sex">Sex</label>
                                 <select class="form-select col-sm-10" id="sex" required name="person.sex"
                                         th:field="*{person.sex}">
@@ -222,7 +222,7 @@
                                        th:field="*{person.birthPlace}">
                             </div>
                         </div>
-                        <div class="row-sm-7">
+                        <div class="row-sm-7 required-field">
                             <label for="birthDate" class="col-sm-5 form-label" data-i18n="birthDate">Birth date:</label>
                             <div class="col-sm-12">
                                 <input required type="date" id="birthDate" class="form-control" name="person.birthDate"
