@@ -44,6 +44,7 @@
   "familyName" : "Family name",
   "birthDate" : "Birth date",
   "birthPlace" : "Birth place",
+  "parents" : "Parents:",
   "children" : "Children:",
   "siblings" : "Siblings:",
   "partners" : "Partners:",

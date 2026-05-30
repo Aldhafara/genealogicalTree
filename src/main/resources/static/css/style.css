@@ -71,3 +71,107 @@
     font-weight: 700;
     margin-left: 0.25rem;
 }
+
+.mobile-details {
+    display: none;
+}
+
+.desktop-details {
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .desktop-details {
+        display: none;
+    }
+
+    .mobile-details {
+        display: block;
+    }
+
+    .mobile-summary-actions .btn,
+    .mobile-section-actions .btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+
+    .mobile-relation-list .list-group-item {
+        font-size: 0.95rem;
+    }
+}
+
+.mobile-details .accordion {
+    --bs-accordion-bg: transparent;
+    --bs-accordion-border-color: transparent;
+    --bs-accordion-btn-bg: #f8f9fa;
+    --bs-accordion-active-bg: #f8f9fa;
+    --bs-accordion-btn-color: #212529;
+    --bs-accordion-active-color: #212529;
+    --bs-accordion-btn-focus-box-shadow: none;
+    --bs-accordion-inner-border-radius: 0.5rem;
+    --bs-accordion-border-radius: 0.5rem;
+}
+
+.mobile-details .accordion-item {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef !important;
+    border-radius: 0.5rem;
+    margin-bottom: 0.75rem;
+    overflow: hidden;
+    box-shadow: none;
+}
+
+.mobile-details .accordion-header {
+    margin: 0;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.mobile-details .accordion-button span::after {
+    content: "";
+    display: inline-block;
+    width: 0.95em;
+    height: 0.95em;
+    margin-left: 0.35rem;
+    background-image: url("/svg/alt-arrow-down-svgrepo-com.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+
+.mobile-details .accordion-button {
+    background-color: #f8f9fa;
+    color: #212529;
+    font-weight: 600;
+    box-shadow: none !important;
+    border: none;
+}
+
+.mobile-details .accordion-button:not(.collapsed) {
+    background-color: #f8f9fa;
+    color: #212529;
+    box-shadow: none !important;
+}
+
+.mobile-details .accordion-button:focus,
+.mobile-details .accordion-button:active {
+    box-shadow: none !important;
+    outline: none;
+    border: none;
+}
+
+.mobile-details .accordion-button::after {
+    margin-left: 0.75rem;
+}
+
+.mobile-details .accordion-body {
+    background-color: #ffffff;
+    border-top: 1px solid #f1f3f5;
+}
+
+.mobile-details .accordion-button > span {
+    display: block;
+    width: 100%;
+    text-align: center;
+}
