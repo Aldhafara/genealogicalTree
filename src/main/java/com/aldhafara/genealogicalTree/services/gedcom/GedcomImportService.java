@@ -7,21 +7,28 @@ import com.aldhafara.genealogicalTree.mappers.PersonDtoMapper;
 import com.aldhafara.genealogicalTree.models.dto.PersonDto;
 import com.aldhafara.genealogicalTree.services.person.PersonMatcher;
 import com.aldhafara.genealogicalTree.services.person.PersonServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static java.util.Comparator.comparingDouble;
 
 @Service
+@Slf4j
 public class GedcomImportService {
+
     private final PersonServiceImpl personService;
     private final PersonDtoMapper personDtoMapper;
     private final SecurityContextFacade securityContextFacade;
     private final PersonMatcher personMatcher;
 
-    public GedcomImportService(PersonServiceImpl personService, PersonDtoMapper personDtoMapper, SecurityContextFacade securityContextFacade, PersonMatcher personMatcher) {
+    public GedcomImportService(PersonServiceImpl personService,
+                               PersonDtoMapper personDtoMapper,
+                               SecurityContextFacade securityContextFacade,
+                               PersonMatcher personMatcher) {
         this.personService = personService;
         this.personDtoMapper = personDtoMapper;
         this.securityContextFacade = securityContextFacade;
@@ -32,25 +39,39 @@ public class GedcomImportService {
         List<PersonDto> persons = new ArrayList<>();
 
         for (String gedcomPerson : gedcomPeople) {
-            var person = personDtoMapper.mapJsonPersonToPerson(gedcomPerson);
-            persons.add(person);
+            persons.add(personDtoMapper.mapJsonPersonToPerson(gedcomPerson));
         }
+
         if (persons.isEmpty()) {
+            log.warn("GEDCOM import aborted. No persons found in parsed input.");
             throw new PersonNotFoundException();
         }
 
-        Person loggedPerson = personService.getById(securityContextFacade.getCurrentUserDetailsId());
-        persons.forEach(personDto -> personDto.setMatchResult(personMatcher.similarityScore(personDto, loggedPerson)));
+        UUID currentUserDetailsId = securityContextFacade.getCurrentUserDetailsId();
+        Person loggedPerson = personService.getById(currentUserDetailsId);
+
+        persons.forEach(personDto ->
+                personDto.setMatchResult(personMatcher.similarityScore(personDto, loggedPerson)));
+
         List<PersonDto> topMatchedPersons = persons.stream()
                 .filter(p -> p.getMatchResult().comparedFields() >= 3)
                 .sorted(comparingDouble((PersonDto p) -> p.getMatchResult().score()).reversed())
                 .toList();
+
         if (topMatchedPersons.isEmpty()) {
+            log.warn("GEDCOM import aborted. No sufficiently matched persons found. currentUserDetailsId={}, inputSize={}",
+                    currentUserDetailsId, persons.size());
             throw new PersonNotFoundException();
         }
 
-        if (topMatchedPersons.get(0).getMatchResult().score() >= 0.9) {
+        double bestScore = topMatchedPersons.get(0).getMatchResult().score();
+        if (bestScore >= 0.9) {
             personService.saveAll(persons);
+            log.info("GEDCOM import completed. currentUserDetailsId={}, importedPersons={}, bestMatchScore={}",
+                    currentUserDetailsId, persons.size(), bestScore);
+        } else {
+            log.warn("GEDCOM import skipped. Best match score below threshold. currentUserDetailsId={}, bestMatchScore={}, inputSize={}",
+                    currentUserDetailsId, bestScore, persons.size());
         }
         // TODO [Refactor idea]:
         // Instead of saving all persons from the input list directly to the database,

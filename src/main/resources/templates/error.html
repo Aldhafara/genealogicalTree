@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html lang="en-EN" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <th:block th:replace="~{common/fragments :: headResources}"></th:block>
+        <title data-i18n="errorTitle">Oops, something went wrong</title>
+    </head>
+    <body class="main-background">
+        <header th:replace="~{common/fragments :: header}"></header>
+
+        <div class="container-fluid px-3 px-md-4 py-3">
+            <h1 data-i18n="errorTitle">Oops, something went wrong</h1>
+            <p class="text-muted small" th:if="${requestId}">
+                Request ID: <code th:text="${requestId}"></code>
+            </p>
+        </div>
+
+        <footer th:replace="~{common/fragments :: footer}"></footer>
+    </body>
+</html>

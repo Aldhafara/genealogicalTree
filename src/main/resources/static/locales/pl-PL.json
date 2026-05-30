@@ -2,6 +2,7 @@
   "title": "Moje drzewo genealogiczne",
   "password" : "Hasło:",
   "login" : "Zaloguj się",
+  "loginError" : "Nieprawidłowy login lub hasło.",
   "register" : "Zarejestruj się",
   "sex" : "Płeć",
   "choose" : "Wybierz...",
@@ -11,6 +12,7 @@
 
   "mainPage" : "Strona główna",
   "logout" : "Wyloguj się",
+  "errorTitle" : "Ups, coś poszło nie tak",
 
   "firstName" : "Imię:",
   "lastName" : "Nazwisko:",

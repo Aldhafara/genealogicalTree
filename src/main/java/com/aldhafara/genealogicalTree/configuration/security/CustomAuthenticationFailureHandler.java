@@ -27,7 +27,7 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
         String username = request.getParameter("username");
         String ip = request.getRemoteAddr();
 
-        log.warn("Nieudane logowanie. username={}, ip={}, reason={}",
+        log.warn("Login failed. username={}, ip={}, reason={}",
                 username, ip, exception.getMessage());
 
         super.onAuthenticationFailure(request, response, exception);

@@ -1,6 +1,7 @@
 package com.aldhafara.genealogicalTree.configuration;
 
 import com.aldhafara.genealogicalTree.configuration.security.CustomAuthenticationFailureHandler;
+import com.aldhafara.genealogicalTree.configuration.security.CustomAuthenticationSuccessHandler;
 import com.aldhafara.genealogicalTree.repositories.UserRepository;
 import com.aldhafara.genealogicalTree.services.CustomerUserDetailsService;
 import org.springframework.context.annotation.Bean;
@@ -11,17 +12,22 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 public class SecurityConfiguration {
 
     private final UserRepository userRepository;
     private final CustomAuthenticationFailureHandler failureHandler;
+    private final CustomAuthenticationSuccessHandler successHandler;
+    private final CorrelationIdFilter correlationIdFilter;
 
     public SecurityConfiguration(UserRepository userRepository,
-                                 CustomAuthenticationFailureHandler failureHandler) {
+                                 CustomAuthenticationFailureHandler failureHandler, CustomAuthenticationSuccessHandler successHandler, CorrelationIdFilter correlationIdFilter) {
         this.userRepository = userRepository;
         this.failureHandler = failureHandler;
+        this.successHandler = successHandler;
+        this.correlationIdFilter = correlationIdFilter;
     }
 
     @Bean
@@ -37,6 +43,7 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .addFilterBefore(correlationIdFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/", "/register", "/login").permitAll()
                         .requestMatchers("/js/**", "/locales/**", "/css/**", "/svg/**").permitAll()
@@ -45,6 +52,7 @@ public class SecurityConfiguration {
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
+                        .successHandler(successHandler)
                         .failureHandler(failureHandler)
                         .defaultSuccessUrl("/home", true)
                         .permitAll()

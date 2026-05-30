@@ -13,6 +13,10 @@
                 <div class="col-12 col-lg-6">
                     <h1 class="text-center text-lg-left" data-i18n="login">Login</h1>
 
+                    <div th:if="${param.error}" data-i18n="loginError" style="color: #dc3545; font-weight: 700;">
+                        Incorrect login or password.
+                    </div>
+
                     <form th:action="@{/login}" method="post">
                         <div class="mb-3">
                             <label for="username" class="form-label">Login:</label>

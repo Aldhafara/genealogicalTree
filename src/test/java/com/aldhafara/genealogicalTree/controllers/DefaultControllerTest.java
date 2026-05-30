@@ -64,9 +64,9 @@ class DefaultControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("login"))
                 .andExpect(content().contentType("text/html;charset=UTF-8"))
-                .andExpect(content().string(org.hamcrest.Matchers.containsString("<h1>Login</h1>")))
-                .andExpect(content().string(org.hamcrest.Matchers.containsString("username")))
-                .andExpect(content().string(org.hamcrest.Matchers.containsString("password")));
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("data-i18n=\"login\"")))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("name=\"username\"")))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("name=\"password\"")));
     }
 
     @Test

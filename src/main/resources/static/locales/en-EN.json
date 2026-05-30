@@ -2,6 +2,7 @@
   "title": "My Genealogical Tree",
   "password" : "Password:",
   "login" : "Login",
+  "loginError" : "Incorrect login or password.",
   "register" : "Register",
   "sex" : "Sex",
   "choose" : "Choose...",
@@ -11,6 +12,7 @@
 
   "mainPage" : "Main page",
   "logout" : "Logout",
+  "errorTitle" : "Oops, something went wrong",
 
   "firstName" : "First name:",
   "lastName" : "Last name:",

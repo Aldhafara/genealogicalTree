@@ -11,6 +11,7 @@ import com.aldhafara.genealogicalTree.repositories.PersonRepository;
 import com.aldhafara.genealogicalTree.services.interfaces.PersonService;
 import jakarta.transaction.Transactional;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.Clock;
@@ -21,6 +22,7 @@ import java.util.UUID;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @Service
+@Slf4j
 public class PersonServiceImpl implements PersonService {
 
     private final PersonRepository personRepository;
@@ -46,12 +48,11 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public Person getById(UUID id) throws PersonNotFoundException {
-
-        Optional<Person> optionalPerson = personRepository.findById(id);
-        if (optionalPerson.isEmpty()) {
-            throw new PersonNotFoundException();
-        }
-        return optionalPerson.get();
+        return personRepository.findById(id)
+                .orElseThrow(() -> {
+                    log.warn("Person not found. personId={}", id);
+                    return new PersonNotFoundException();
+                });
     }
 
     @Override
@@ -168,6 +169,7 @@ public class PersonServiceImpl implements PersonService {
         for (PersonDto dto : persons) {
             saveAndReturn(dto);
         }
+        log.info("Saved persons batch. count={}", persons.size());
     }
 
 }
