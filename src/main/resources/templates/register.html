@@ -8,126 +8,150 @@
     <body class="main-background">
         <header th:replace="~{common/fragments :: header}"></header>
 
-        <h1 class="text-center text-lg-left" data-i18n="register">Register</h1>
-        <form th:action="@{/register}" class="col-sm-6" method="post"
-              oninput='retypePassword.setCustomValidity(retypePassword.value !== password.value ? "Passwords do not match." : "")'>
-            <div class="row-sm-7 required-field">
-                <label for="firstName" class="col-sm-5 form-label" data-i18n="firstName">First name:</label>
-                <div class="col-sm-12">
-                    <input required type="text" id="firstName" class="form-control" name="person.firstName"
-                           th:field="*{person.firstName}">
-                </div>
-            </div>
-            <div class="row-sm-7 required-field">
-                <label for="lastName" class="col-sm-5 form-label" data-i18n="lastName">Last name:</label>
-                <div class="col-sm-12">
-                    <input required type="text" id="lastName" class="form-control" name="person.lastName"
-                           th:field="*{person.lastName}">
-                </div>
-            </div>
-            <div class="row-sm-7">
-                <label class="col-sm-5"></label>
-                <div class="col-sm-12 input-group mb-3 required-field">
-                    <label for="sex" class="input-group-text col-sm-2" data-i18n="sex">Sex</label>
-                    <select class="form-select col-sm-10" id="sex" required name="person.sex" th:field="*{person.sex}">
-                        <option value="" disabled selected data-i18n="choose">Choose...</option>
-                        <option th:each="option : ${sexOptions}" th:value="${option}"
-                                th:text="${option.getAlternativeName()}"></option>
-                    </select>
-                </div>
-            </div>
-            <div th:if="${loginError}" class="row-sm-7 required-field">
-                <label for="login" class="col-sm-5 form-label">Login:</label>
-                <div class="col-sm-12">
-                    <input id="login" placeholder="Enter Login" required type="text" class="form-control is-invalid"
-                           name="user.login" th:field="*{user.login}"/>
-                </div>
-                <div class="invalid-feedback col-sm-7" th:text="${loginError}"></div>
-            </div>
-            <div th:if="!${loginError}" class="row-sm-7 required-field">
-                <label for="login" class="col-sm-5 form-label">Login:</label>
-                <div class="col-sm-12">
-                    <input id="login" placeholder="Enter Login" required type="text" class="form-control"
-                           name="user.login"
-                           th:field="*{user.login}"/>
-                </div>
-                <div class="valid-feedback col-sm-7"></div>
-            </div>
-            <div class="row-sm-7 required-field">
-                <label for="password" class="col-sm-5 form-label" data-i18n="password">
-                    Password:
-                </label>
-                <div class="col-sm-12">
-                    <div class="input-group">
-                        <input required
-                               type="password"
-                               id="password"
-                               class="form-control"
-                               name="user.password"
-                               th:field="*{user.password}"
-                               placeholder="Password"
-                               autocomplete="new-password"
-                               autocapitalize="off"
-                               autocorrect="off"
-                               spellcheck="false">
+        <div class="container-fluid px-3 px-md-4">
+            <div class="row justify-content-center justify-content-lg-start">
+                <div class="col-12 col-lg-6">
+                    <h1 class="text-center text-lg-left" data-i18n="register">Register</h1>
 
-                        <button type="button"
-                                class="input-group-text toggle-password"
-                                data-target="password"
-                                th:data-eye-open="@{/svg/eye-open-svgrepo-com.svg}"
-                                th:data-eye-closed="@{/svg/eye-closed-svgrepo-com.svg}"
-                                aria-label="Show password"
-                                aria-pressed="false"
-                                title="Press and hold to show password">
-                            <img th:src="@{/svg/eye-open-svgrepo-com.svg}"
-                                 alt=""
-                                 width="20"
-                                 height="20"
-                                 aria-hidden="true">
-                        </button>
-                    </div>
+                    <form th:action="@{/register}"
+                          method="post"
+                          oninput='retypePassword.setCustomValidity(retypePassword.value !== password.value ? "Passwords do not match." : "")'>
+
+                        <div class="mb-3 required-field">
+                            <label for="firstName" class="form-label" data-i18n="firstName">First name:</label>
+                            <input required
+                                   type="text"
+                                   id="firstName"
+                                   class="form-control"
+                                   name="person.firstName"
+                                   th:field="*{person.firstName}">
+                        </div>
+
+                        <div class="mb-3 required-field">
+                            <label for="lastName" class="form-label" data-i18n="lastName">Last name:</label>
+                            <input required
+                                   type="text"
+                                   id="lastName"
+                                   class="form-control"
+                                   name="person.lastName"
+                                   th:field="*{person.lastName}">
+                        </div>
+
+                        <div class="form-group required-field">
+                            <label for="sex" class="form-label" data-i18n="sex">Sex</label>
+                            <select class="form-control"
+                                    id="sex"
+                                    required
+                                    name="person.sex"
+                                    th:field="*{person.sex}">
+                                <option value="" disabled data-i18n="choose">Choose...</option>
+                                <option th:each="option : ${sexOptions}"
+                                        th:value="${option}"
+                                        th:text="${option.getAlternativeName()}"></option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3 required-field" th:if="${loginError}">
+                            <label for="login" class="form-label">Login:</label>
+                            <input id="login"
+                                   placeholder="Enter Login"
+                                   required
+                                   type="text"
+                                   class="form-control is-invalid"
+                                   name="user.login"
+                                   th:field="*{user.login}"/>
+                            <div class="invalid-feedback" th:text="${loginError}"></div>
+                        </div>
+
+                        <div class="mb-3 required-field" th:unless="${loginError}">
+                            <label for="login" class="form-label">Login:</label>
+                            <input id="login"
+                                   placeholder="Enter Login"
+                                   required
+                                   type="text"
+                                   class="form-control"
+                                   name="user.login"
+                                   th:field="*{user.login}"/>
+                        </div>
+
+                        <div class="mb-3 required-field">
+                            <label for="password" class="form-label" data-i18n="password">
+                                Password:
+                            </label>
+                            <div class="input-group">
+                                <input required
+                                       type="password"
+                                       id="password"
+                                       class="form-control"
+                                       name="user.password"
+                                       th:field="*{user.password}"
+                                       placeholder="Password"
+                                       autocomplete="new-password"
+                                       autocapitalize="off"
+                                       autocorrect="off"
+                                       spellcheck="false">
+
+                                <button type="button"
+                                        class="input-group-text toggle-password"
+                                        data-target="password"
+                                        th:data-eye-open="@{/svg/eye-open-svgrepo-com.svg}"
+                                        th:data-eye-closed="@{/svg/eye-closed-svgrepo-com.svg}"
+                                        aria-label="Show password"
+                                        aria-pressed="false"
+                                        title="Press and hold to show password">
+                                    <img th:src="@{/svg/eye-open-svgrepo-com.svg}"
+                                         alt=""
+                                         width="20"
+                                         height="20"
+                                         aria-hidden="true">
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 required-field">
+                            <label for="retypePassword" class="form-label" data-i18n="repeatPassword">
+                                Repeat password:
+                            </label>
+                            <div class="input-group">
+                                <input required
+                                       type="password"
+                                       id="retypePassword"
+                                       class="form-control"
+                                       name="retypePassword"
+                                       placeholder="Retype password"
+                                       autocomplete="new-password"
+                                       autocapitalize="off"
+                                       autocorrect="off"
+                                       spellcheck="false">
+
+                                <button type="button"
+                                        class="input-group-text toggle-password"
+                                        data-target="retypePassword"
+                                        th:data-eye-open="@{/svg/eye-open-svgrepo-com.svg}"
+                                        th:data-eye-closed="@{/svg/eye-closed-svgrepo-com.svg}"
+                                        aria-label="Show password"
+                                        aria-pressed="false"
+                                        title="Press and hold to show password">
+                                    <img th:src="@{/svg/eye-open-svgrepo-com.svg}"
+                                         alt=""
+                                         width="20"
+                                         height="20"
+                                         aria-hidden="true">
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mt-3">
+                            <button class="btn btn-primary btn-lg w-100 w-md-auto"
+                                    type="submit"
+                                    data-i18n="register">
+                                Register
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
-
-            <div class="row-sm-7 required-field">
-                <label for="retypePassword" class="col-sm-5 form-label" data-i18n="repeatPassword">
-                    Repeat password:
-                </label>
-                <div class="col-sm-12">
-                    <div class="input-group">
-                        <input required
-                               type="password"
-                               id="retypePassword"
-                               class="form-control"
-                               name="retypePassword"
-                               placeholder="Retype password"
-                               autocomplete="new-password"
-                               autocapitalize="off"
-                               autocorrect="off"
-                               spellcheck="false">
-
-                        <button type="button"
-                                class="input-group-text toggle-password"
-                                data-target="retypePassword"
-                                th:data-eye-open="@{/svg/eye-open-svgrepo-com.svg}"
-                                th:data-eye-closed="@{/svg/eye-closed-svgrepo-com.svg}"
-                                aria-label="Show password"
-                                aria-pressed="false"
-                                title="Press and hold to show password">
-                            <img th:src="@{/svg/eye-open-svgrepo-com.svg}"
-                                 alt=""
-                                 width="20"
-                                 height="20"
-                                 aria-hidden="true">
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div>
-                <br>
-                <button class="btn btn-primary btn-lg" type="submit" data-i18n="register">Register</button>
-            </div>
-        </form>
+        </div>
 
         <footer th:replace="~{common/fragments :: footer}"></footer>
         <script th:src="@{/js/password-toggle.js}"></script>
