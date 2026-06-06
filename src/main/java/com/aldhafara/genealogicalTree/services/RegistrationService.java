@@ -27,8 +27,7 @@ public class RegistrationService {
         UserDto savedUser = userService.save(userDto);
         personDto.setAddBy(savedUser.getId());
         UUID savedPersonId = personService.saveAndReturnId(personDto, null);
-        savedUser.setDetailsId(savedPersonId);
-        userService.update(savedUser);
+        userService.updateDetailsId(savedUser.getId(), savedPersonId);
 
         log.info("User registration completed. userId={}, detailsId={}, username={}",
                 savedUser.getId(), savedPersonId, savedUser.getLogin());

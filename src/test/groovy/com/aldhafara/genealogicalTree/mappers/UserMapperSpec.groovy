@@ -1,4 +1,4 @@
-package genealogicalTree.mappers
+package com.aldhafara.genealogicalTree.mappers
 
 import com.aldhafara.genealogicalTree.entities.RegisterUser
 import com.aldhafara.genealogicalTree.mappers.UserMapper

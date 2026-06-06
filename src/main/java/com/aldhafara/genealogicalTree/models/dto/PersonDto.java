@@ -3,9 +3,14 @@ package com.aldhafara.genealogicalTree.models.dto;
 import com.aldhafara.genealogicalTree.models.PersonBasicData;
 import com.aldhafara.genealogicalTree.models.SexEnum;
 import com.aldhafara.genealogicalTree.models.gedcom.MatchResult;
+import com.aldhafara.genealogicalTree.validation.annotations.HumanName;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.validation.annotation.Validated;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -16,14 +21,22 @@ import static java.time.ZoneOffset.UTC;
 
 @Getter
 @Setter
+@Validated
 public class PersonDto {
 
     private UUID id;
     private UUID addBy;
+    @NotBlank(message = "{validation.humanName.required}")
+    @HumanName
     private String firstName;
+    @NotBlank(message = "{validation.humanName.required}")
+    @HumanName
     private String lastName;
     private Instant updateDate;
+    @Size(max = 255)
+    @HumanName
     private String familyName;
+    @NotNull
     private SexEnum sex;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;

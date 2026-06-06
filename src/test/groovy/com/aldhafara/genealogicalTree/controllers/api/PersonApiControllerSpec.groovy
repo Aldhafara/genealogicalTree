@@ -1,22 +1,21 @@
-package genealogicalTree.controllers.api
+package com.aldhafara.genealogicalTree.controllers.api
 
-import com.aldhafara.genealogicalTree.controllers.api.PersonApiController
 import com.aldhafara.genealogicalTree.entities.Person
 import com.aldhafara.genealogicalTree.exceptions.PersonNotFoundException
 import com.aldhafara.genealogicalTree.services.FamilyServiceImpl
 import com.aldhafara.genealogicalTree.services.person.PersonServiceImpl
-import spock.lang.Specification
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.web.servlet.setup.MockMvcBuilders
+import spock.lang.Specification
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import static com.aldhafara.genealogicalTree.models.SexEnum.FEMALE
 import static com.aldhafara.genealogicalTree.models.SexEnum.MALE
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
-@SpringBootTest
 class PersonApiControllerSpec extends Specification {
 
     @Autowired

@@ -1,4 +1,4 @@
-package genealogicalTree.services
+package com.aldhafara.genealogicalTree.services
 
 import com.aldhafara.genealogicalTree.entities.Family
 import com.aldhafara.genealogicalTree.entities.Person

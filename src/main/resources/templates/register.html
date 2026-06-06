@@ -14,8 +14,15 @@
                     <h1 class="text-center text-lg-left" data-i18n="register">Register</h1>
 
                     <form th:action="@{/register}"
+                          th:object="${registrationRequest}"
                           method="post"
                           oninput='retypePassword.setCustomValidity(retypePassword.value !== password.value ? "Passwords do not match." : "")'>
+
+                        <div class="alert alert-danger"
+                             th:if="${#fields.hasGlobalErrors()}">
+                            <p th:each="err : ${#fields.globalErrors()}"
+                               th:text="${err}"></p>
+                        </div>
 
                         <div class="mb-3 required-field">
                             <label for="firstName" class="form-label" data-i18n="firstName">First name:</label>
@@ -23,8 +30,11 @@
                                    type="text"
                                    id="firstName"
                                    class="form-control"
-                                   name="person.firstName"
-                                   th:field="*{person.firstName}">
+                                   th:field="*{personDetails.firstName}"
+                                   th:classappend="${#fields.hasErrors('personDetails.firstName')} ? ' is-invalid' : ''">
+                            <div class="invalid-feedback"
+                                 th:if="${#fields.hasErrors('personDetails.firstName')}"
+                                 th:errors="*{personDetails.firstName}"></div>
                         </div>
 
                         <div class="mb-3 required-field">
@@ -33,58 +43,58 @@
                                    type="text"
                                    id="lastName"
                                    class="form-control"
-                                   name="person.lastName"
-                                   th:field="*{person.lastName}">
+                                   th:field="*{personDetails.lastName}"
+                                   th:classappend="${#fields.hasErrors('personDetails.lastName')} ? ' is-invalid' : ''">
+                            <div class="invalid-feedback"
+                                 th:if="${#fields.hasErrors('personDetails.lastName')}"
+                                 th:errors="*{personDetails.lastName}"></div>
                         </div>
 
-                        <div class="form-group required-field">
+                        <div class="mb-3 required-field">
                             <label for="sex" class="form-label" data-i18n="sex">Sex</label>
                             <select class="form-control"
                                     id="sex"
                                     required
-                                    name="person.sex"
-                                    th:field="*{person.sex}">
-                                <option value="" disabled data-i18n="choose">Choose...</option>
+                                    th:field="*{personDetails.sex}"
+                                    th:classappend="${#fields.hasErrors('personDetails.sex')} ? ' is-invalid' : ''">
+                                <option value="" data-i18n="choose">Choose...</option>
                                 <option th:each="option : ${sexOptions}"
                                         th:value="${option}"
                                         th:text="${option.getAlternativeName()}"></option>
                             </select>
+                            <div class="invalid-feedback"
+                                 th:if="${#fields.hasErrors('personDetails.sex')}"
+                                 th:errors="*{personDetails.sex}"></div>
                         </div>
 
-                        <div class="mb-3 required-field" th:if="${loginError}">
-                            <label for="login" class="form-label">Login:</label>
-                            <input id="login"
-                                   placeholder="Enter Login"
-                                   required
-                                   type="text"
-                                   class="form-control is-invalid"
-                                   name="user.login"
-                                   th:field="*{user.login}"/>
-                            <div class="invalid-feedback" th:text="${loginError}"></div>
-                        </div>
-
-                        <div class="mb-3 required-field" th:unless="${loginError}">
+                        <div class="mb-3 required-field">
                             <label for="login" class="form-label">Login:</label>
                             <input id="login"
                                    placeholder="Enter Login"
                                    required
                                    type="text"
                                    class="form-control"
-                                   name="user.login"
-                                   th:field="*{user.login}"/>
+                                   th:field="*{registerUser.login}"
+                                   th:classappend="${#fields.hasErrors('registerUser.login')} ? ' is-invalid' : ''"/>
+
+                            <div class="invalid-feedback d-block"
+                                 th:if="${#fields.hasErrors('registerUser.login')}"
+                                 th:errors="*{registerUser.login}"></div>
+
+                            <div class="invalid-feedback d-block"
+                                 th:if="${loginError != null}"
+                                 th:text="${loginError}"></div>
                         </div>
 
                         <div class="mb-3 required-field">
-                            <label for="password" class="form-label" data-i18n="password">
-                                Password:
-                            </label>
+                            <label for="password" class="form-label" data-i18n="password">Password:</label>
                             <div class="input-group">
                                 <input required
                                        type="password"
                                        id="password"
                                        class="form-control"
-                                       name="user.password"
-                                       th:field="*{user.password}"
+                                       th:field="*{registerUser.password}"
+                                       th:classappend="${#fields.hasErrors('registerUser.password')} ? ' is-invalid' : ''"
                                        placeholder="Password"
                                        autocomplete="new-password"
                                        autocapitalize="off"
@@ -106,6 +116,9 @@
                                          aria-hidden="true">
                                 </button>
                             </div>
+                            <div class="invalid-feedback d-block"
+                                 th:if="${#fields.hasErrors('registerUser.password')}"
+                                 th:errors="*{registerUser.password}"></div>
                         </div>
 
                         <div class="mb-3 required-field">

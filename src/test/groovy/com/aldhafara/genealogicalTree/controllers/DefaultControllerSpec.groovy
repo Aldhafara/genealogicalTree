@@ -1,4 +1,4 @@
-package genealogicalTree.controllers
+package com.aldhafara.genealogicalTree.controllers
 
 import com.aldhafara.genealogicalTree.controllers.DefaultController
 import org.springframework.security.core.Authentication

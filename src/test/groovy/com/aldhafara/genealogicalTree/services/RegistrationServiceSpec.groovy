@@ -1,10 +1,8 @@
-package genealogicalTree.services
+package com.aldhafara.genealogicalTree.services
 
 import com.aldhafara.genealogicalTree.exceptions.NotUniqueLogin
 import com.aldhafara.genealogicalTree.models.dto.PersonDto
 import com.aldhafara.genealogicalTree.models.dto.UserDto
-import com.aldhafara.genealogicalTree.services.RegisterUserServiceImpl
-import com.aldhafara.genealogicalTree.services.RegistrationService
 import com.aldhafara.genealogicalTree.services.person.PersonServiceImpl
 import spock.lang.Specification
 import spock.lang.Subject
@@ -40,7 +38,10 @@ class RegistrationServiceSpec extends Specification {
             1 * personService.saveAndReturnId({ it.addBy == savedUserId }, null) >> UUID.fromString("00000000-0000-0000-0000-000000000001")
 
         and:
-            1 * userService.update({ it.detailsId == UUID.fromString("00000000-0000-0000-0000-000000000001") })
+            1 * userService.updateDetailsId(
+                    savedUserId,
+                    UUID.fromString("00000000-0000-0000-0000-000000000001")
+            )
     }
 
     def "should throw NotUniqueLogin when user service throws it"() {
@@ -59,6 +60,6 @@ class RegistrationServiceSpec extends Specification {
 
         and:
             0 * personService._
-            0 * userService.update(_)
+            0 * userService.updateDetailsId(_, _)
     }
 }

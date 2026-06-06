@@ -1,4 +1,4 @@
-package genealogicalTree.services
+package com.aldhafara.genealogicalTree.services
 
 import com.aldhafara.genealogicalTree.entities.RegisterUser
 import com.aldhafara.genealogicalTree.exceptions.NotUniqueLogin
@@ -45,7 +45,7 @@ class RegisterUserServiceImplSpec extends Specification {
             1 * userRepository.save({
                 it.login == "uniquelogin" &&
                 it.password == encodedPassword &&
-                it.roles == "USER"
+                it.roles == "ROLE_USER"
             })
 
         and:
@@ -71,22 +71,23 @@ class RegisterUserServiceImplSpec extends Specification {
             0 * userRepository.save(_)
     }
 
-    def "should update user successfully"() {
+    def "should update details id for existing user"() {
         given:
-            def userModel = new UserDto(id: UUID.randomUUID(), login: "testUser", password: "updatedPassword")
-            def registerUser = new RegisterUser(id: userModel.id, login: userModel.login, password: userModel.password)
-            def lowerCaseLogin = userModel.login.toLowerCase()
-        and:
-            userMapper.mapUserDtoToRegisterUser(userModel) >> registerUser
-            userRepository.save(_) >> registerUser
+            def userId = UUID.randomUUID()
+            def detailsId = UUID.randomUUID()
+            def registerUser = new RegisterUser(
+                    id: userId,
+                    login: "testUser",
+                    password: "password123",
+                    roles: "ROLE_USER"
+            )
 
         when:
-            registerUserService.update(userModel)
+            registerUserService.updateDetailsId(userId, detailsId)
 
         then:
-            1 * userRepository.save({
-                it.login == lowerCaseLogin
-                it.roles == "USER"
-            })
+            1 * userRepository.findById(_ as UUID) >> Optional.of(registerUser)
+            registerUser.detailsId == detailsId
+            0 * userRepository.save(_)
     }
 }

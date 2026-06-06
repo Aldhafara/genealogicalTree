@@ -1,4 +1,4 @@
-package genealogicalTree.services.gedcom
+package com.aldhafara.genealogicalTree.services.gedcom
 
 import com.aldhafara.genealogicalTree.configuration.SecurityContextFacade
 import com.aldhafara.genealogicalTree.entities.Person

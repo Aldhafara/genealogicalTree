@@ -7,12 +7,16 @@ import com.aldhafara.genealogicalTree.models.dto.UserDto;
 import com.aldhafara.genealogicalTree.repositories.UserRepository;
 import com.aldhafara.genealogicalTree.services.interfaces.RegisterUserService;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 import static java.util.Locale.ROOT;
 
 @Service
+@Slf4j
 public class RegisterUserServiceImpl implements RegisterUserService {
 
     private final UserRepository userRepository;
@@ -33,24 +37,23 @@ public class RegisterUserServiceImpl implements RegisterUserService {
         String lowerCaseLogin = registerUser.getLogin().toLowerCase(ROOT);
 
         if (userRepository.existsByLogin(lowerCaseLogin)) {
+            log.warn("Save failed. login={} already exist",
+                    lowerCaseLogin);
             throw new NotUniqueLogin();
         }
 
         registerUser.setPassword(passwordEncoder.encode(registerUser.getPassword()));
-        registerUser.setRoles("USER");
+        registerUser.setRoles("ROLE_USER");
         registerUser.setLogin(lowerCaseLogin);
         RegisterUser savedUser = userRepository.save(registerUser);
         return userMapper.mapRegisterUserToUserDto(savedUser);
     }
 
     @Override
-    public void update(UserDto userDto) {
-
-        RegisterUser registerUser = userMapper.mapUserDtoToRegisterUser(userDto);
-        String lowerCaseLogin = registerUser.getLogin().toLowerCase(ROOT);
-        registerUser.setRoles("USER");
-        registerUser.setLogin(lowerCaseLogin);
-        userRepository.save(registerUser);
-
+    @Transactional
+    public void updateDetailsId(UUID userId, UUID detailsId) {
+        RegisterUser user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found: " + userId));
+        user.setDetailsId(detailsId);
     }
 }

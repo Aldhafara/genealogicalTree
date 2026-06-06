@@ -1,21 +1,38 @@
 package com.aldhafara.genealogicalTree.models.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.Collection;
 import java.util.UUID;
 
 @Getter
+@Validated
 public class UserDto implements UserDetails {
     private UUID id;
     @Setter
+    @NotBlank
+    @Size(min = 3, max = 255)
+    @Pattern(
+            regexp = "^[A-Za-z0-9.]+$",
+            message = "{validation.login.required}")
     private String login;
     @Setter
+    @NotBlank
+    @Size(min = 8, max = 255)
+    @Pattern(
+            regexp = "^[A-Za-z0-9!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?`~]+$",
+            message = "{validation.password.unsupportedCharacters}"
+    )
     private String password;
     @Setter
+    @NotBlank
     private String roles;
     @Setter
     private UUID detailsId;

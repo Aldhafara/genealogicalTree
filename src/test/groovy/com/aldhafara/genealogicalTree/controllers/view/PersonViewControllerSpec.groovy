@@ -1,4 +1,4 @@
-package genealogicalTree.controllers.view
+package com.aldhafara.genealogicalTree.controllers.view
 
 import com.aldhafara.genealogicalTree.controllers.view.PersonViewController
 import com.aldhafara.genealogicalTree.entities.Family

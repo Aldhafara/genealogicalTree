@@ -1,32 +1,22 @@
 package com.aldhafara.genealogicalTree.models.dto;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.aldhafara.genealogicalTree.models.dto.registration.RegisterUserRequest;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class RegistrationRequest {
-    private UserDto registerUser;
+
+    @NotNull
+    @Valid
+    private RegisterUserRequest registerUser;
+
+    @NotNull
+    @Valid
     private PersonDto personDetails;
-
-    @JsonCreator
-    public RegistrationRequest(@JsonProperty("registerUser") UserDto registerUser,
-                               @JsonProperty("personDetails") PersonDto personDetails) {
-        this.registerUser = registerUser;
-        this.personDetails = personDetails;
-    }
-
-    public UserDto getRegisterUser() {
-        return registerUser;
-    }
-
-    public void setRegisterUser(UserDto registerUser) {
-        this.registerUser = registerUser;
-    }
-
-    public PersonDto getPersonDetails() {
-        return personDetails;
-    }
-
-    public void setPersonDetails(PersonDto personDetails) {
-        this.personDetails = personDetails;
-    }
 }

@@ -2,6 +2,7 @@ package com.aldhafara.genealogicalTree.controllers.view;
 
 import com.aldhafara.genealogicalTree.models.SexEnum;
 import com.aldhafara.genealogicalTree.models.dto.UserDto;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,11 @@ class RegistrationViewControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @AfterEach
+    void clearSecurityContext() {
+        SecurityContextHolder.clearContext();
+    }
+
     @Test
     void shouldRedirectToHomeIfUserIsNotAdmin() throws Exception {
         mockUserWithRole("user", "ROLE_USER");
@@ -43,8 +49,7 @@ class RegistrationViewControllerTest {
         mockMvc.perform(get("/register"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("register"))
-                .andExpect(model().attributeExists("user"))
-                .andExpect(model().attributeExists("person"))
+                .andExpect(model().attributeExists("registrationRequest"))
                 .andExpect(model().attribute("sexOptions", SexEnum.values()));
     }
 
