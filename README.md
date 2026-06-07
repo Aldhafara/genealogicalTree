@@ -6,6 +6,7 @@ Serwis do zarządzania drzewem genealogicznym, z obsługą użytkowników, zabez
 ## Spis treści
 
 - [Opis](#opis)
+- [Walidacja formularzy](#walidacja-formularzy)
 - [Technologie](#technologie)
 - [Konfiguracja bazy danych](#konfiguracja-bazy-danych)
 - [Uruchomienie lokalne](#uruchomienie-lokalne)
@@ -25,6 +26,50 @@ Aplikacja umożliwia:
 - Dokumentację API poprzez Swagger UI
 
 Dane każdego użytkownika są odseparowane – użytkownik widzi tylko swoje zasoby.
+
+---
+
+## Walidacja formularzy
+
+Aplikacja wykorzystuje walidację po stronie backendu dla formularzy i danych wejściowych.  
+Obecnie obejmuje ona formularz rejestracji, ale mechanizm jest przygotowany tak, aby był rozszerzany na kolejne formularze.
+
+### Zasady
+- Walidacja działa po stronie serwera.
+- Do walidacji wykorzystywany jest Jakarta Bean Validation.
+- Część reguł jest realizowana przez własne adnotacje, np. `@HumanName`.
+- Komunikaty błędów są pobierane z plików `messages*.properties`.
+
+### Rejestracja użytkownika
+Formularz rejestracji oraz odpowiadające mu endpointy API są walidowane po stronie serwera z użyciem Jakarta Bean Validation.
+
+#### Dane użytkownika
+- `login`:
+   - wymagany,
+   - długość od 3 do 255 znaków,
+   - dozwolone są litery, cyfry oraz kropki pomiędzy segmentami,
+   - przykłady poprawne: `jan`, `jan.kowalski`, `user123`.
+
+- `password`:
+   - wymagane,
+   - długość od 8 do 255 znaków,
+   - dozwolone są litery, cyfry oraz wybrane znaki specjalne.
+
+#### Dane osoby
+- `firstName` i `lastName`:
+   - walidowane własną adnotacją `@HumanName`,
+   - długość od 2 do 255 znaków,
+   - dopuszczają wyłącznie format zgodny z regułami dla imion i nazwisk zdefiniowanymi w aplikacji.
+
+### Komunikaty walidacyjne
+Komunikaty błędów są utrzymywane w plikach `messages*.properties` i ładowane przez Spring Boot `MessageSource`.  
+Domyślny bundle powinien zawierać plik `src/main/resources/messages.properties`, opcjonalnie rozszerzony o wersje językowe, np.:
+- `messages.properties`
+- `messages_pl.properties`
+- `messages_en.properties`
+
+### Uwagi
+Walidacja jest wykonywana po stronie backendu, dlatego obowiązuje zarówno dla formularza Thymeleaf, jak i dla wywołań API.
 
 ---
 
